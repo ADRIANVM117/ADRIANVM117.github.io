@@ -1,8 +1,28 @@
 lang: es
-toc: false
+author: "Adrián Vázquez"
+description: ""
+date: ""
+updated: ""
+type: ""
+topics: []
+status: ""
+series: ""
+series_number: ""
+github_url: ""
+previous_url: ""
+previous_title: ""
+next_url: ""
+next_title: ""
+toc: true
+toc-title: "Contenido"
+toc-depth: 3
 title-block: false
 translation_url: ""
+bibliography: ../references.bib
 format:
   html:
     include-before-body: ../_includes/article-header.html
     include-after-body: ../_includes/article-footer.html
+    code-copy: true
+    html-math-method:
+      method: mathjax
