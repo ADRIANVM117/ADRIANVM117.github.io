@@ -1,0 +1,40 @@
+# Quarto and local build caches
+.quarto/
+_site/
+**/*.quarto_ipynb
+
+# Local Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Operating-system and editor temporary files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+*.swp
+*~
+
+# Local credentials and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+secrets*.*
+
+# Private source materials; the site uses assets/profile-photo.jpg instead
+/Adrian_Vazquez_cv_l2026.pdf
+/WhatsApp Image 2026-10-22 at 10.10.11 AM.jpeg
+
+/.quarto/
