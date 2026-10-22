@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Research | Adrián Vázquez – Adrián Vázquez</title>
+<title>Research &amp; Ideas | Adrián Vázquez – Adrián Vázquez</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -30,6 +30,8 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -38,6 +40,35 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-html-640605f58ae58ee79329c070719e555b.min.css" rel="stylesheet" append-hash="true" data-mode="light">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-research-index .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: [{ data: ['index'] },{ data: ['categories'] }],
+      
+      searchColumns: [],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-research-index'] = new List('listing-research-index', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
 
@@ -53,7 +84,65 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="site-shell" data-language="en" data-page="research"><style>.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style><header class="site-header"><a class="wordmark" href="../en/index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">☰</button><nav id="main-nav" class="navigation" aria-label="Primary navigation"><a class="navlink " href="../en/index.html">Home</a><a class="navlink current" href="../en/research.html">Research</a><a class="navlink " href="../en/projects.html">Projects</a><a class="navlink " href="../en/writing.html">Writing</a><a class="navlink " href="../en/about.html">About</a><a class="navlink " href="../en/cv.html">CV &amp; Contact</a><div class="platform-links" aria-label="Professional platforms"><a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../assets/brands/medium.svg" alt=""></a></div></nav><div class="language-switch" aria-label="Language"><a href="../en/research.html" lang="en" class="active">EN</a><span>/</span><a href="../es/research.html" lang="es" class="">ES</a></div></header><main class="inner-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">Research | Adrián Vázquez</h1></header><section class="page-intro"><div class="micro">ADRIÁN VÁZQUEZ / RESEARCH</div><h1>Research<span class="period">.</span></h1><p>Questions, experiments, methodologies, and findings—along with their limits.</p></section><section class="content-section"><div class="section-heading"><span class="micro section-number">01 / Selected work</span><span class="section-rule"></span><span class="micro right-label">WORK IN PROGRESS</span></div><div class="project-grid"><article class="project-card"><div class="card-art contours"><span class="art-index">01</span></div><div class="micro muted">PORTFOLIO / RISK</div><h3>Portfolio diagnostics</h3><p>Mapping concentration, scenario exposure and the anatomy of a portfolio.</p><span class="stub">Research in progress ↗</span></article><article class="project-card"><div class="card-art candles"><span class="art-index">02</span></div><div class="micro muted">SYSTEMATIC STRATEGIES</div><h3>Momentum research</h3><p>Testing hypotheses, recording failures and understanding out-of-sample results.</p><span class="stub">Research in progress ↗</span></article><article class="project-card"><div class="card-art curves"><span class="art-index">03</span></div><div class="micro muted">DERIVATIVES / VOLATILITY</div><h3>Volatility studies</h3><p>Exploring skew, event uncertainty and the shape of volatility.</p><span class="stub">Research in progress ↗</span></article><article class="project-card"><div class="card-art grid-art"><span class="art-index">04</span></div><div class="micro muted">MARKET MICROSTRUCTURE</div><h3>Optimal execution</h3><p>Comparing execution strategies and their practical cost assumptions.</p><span class="stub">Research in progress ↗</span></article></div><p class="editorial-note">Project detail pages will be added as content is verified.</p></section></main><footer class="site-footer"><div><span class="footer-name">Adrián Vázquez.</span><p class="micro">Research, projects and notes in progress.</p></div><span class="footer-symbol">∴</span></footer></div><script src="../assets/site.js"></script>
+<style>#title-block-header{display:none}</style>
+<div class="site-shell" data-language="en" data-page="research">
+<style>.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style>
+<header class="site-header">
+<a class="wordmark" href="../en/index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+<nav id="main-nav" class="navigation" aria-label="Primary navigation">
+<a class="navlink" href="../en/index.html">Home</a><a class="navlink current" href="../en/research.html">Research</a><a class="navlink" href="../en/projects.html">Projects</a><a class="navlink" href="../en/writing.html">Writing</a><a class="navlink" href="../en/about.html">About</a><a class="navlink" href="../en/cv.html">CV &amp; Contact</a>
+<div class="platform-links" aria-label="Professional platforms">
+<a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../assets/brands/medium.svg" alt=""></a>
+</div>
+</nav>
+<div class="language-switch" aria-label="Language">
+<a href="../en/research.html" lang="en" class="active">EN</a><span>/</span><a href="../es/research.html" lang="es">ES</a>
+</div>
+</header>
+<main class="inner-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">Research &amp; Ideas | Adrián Vázquez</h1></header>
+<section class="page-intro">
+<div class="micro">
+ADRIÁN VÁZQUEZ / RESEARCH
+</div>
+<h1>
+Research &amp; Ideas<span class="period">.</span>
+</h1>
+<p>
+An evolving collection of quantitative research, technical notes, experiments, and questions worth exploring.
+</p>
+</section>
+<section class="content-section">
+<div class="section-heading">
+<span class="micro section-number">01 / Research index</span><span class="section-rule"></span><span class="micro right-label">AN EVOLVING RECORD</span>
+</div>
+<nav class="research-category-nav" aria-label="Research categories">
+<a href="#research-index">All</a><a href="#research-index">Research Projects</a><a href="#research-index">Research Notes</a><a href="#research-index">Research Journal</a>
+</nav>
+<div id="listing-research-index" class="quarto-listing quarto-listing-container-custom">
+<div class="research-listing list">
+
+<div class="research-empty">
+  <p class="micro">IN DEVELOPMENT</p>
+  <p>Research will appear here when it is ready to be shared.</p>
+</div>
+
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<span class="footer-name">Adrián Vázquez.</span>
+<p class="micro">
+Research, projects and notes in progress.
+</p>
+</div>
+<span class="footer-symbol">∴</span>
+</footer>
+</div>
+<script src="../assets/site.js"></script>
+
 
 
 <script id="quarto-html-after-body" type="application/javascript">

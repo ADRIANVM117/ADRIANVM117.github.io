@@ -1,0 +1,8 @@
+lang: en
+toc: false
+title-block: false
+translation_url: ""
+format:
+  html:
+    include-before-body: ../_includes/article-header.html
+    include-after-body: ../_includes/article-footer.html

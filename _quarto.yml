@@ -4,7 +4,9 @@ project:
   render:
     - index.qmd
     - en/*.qmd
+    - en/research/**/*.qmd
     - es/*.qmd
+    - es/research/**/*.qmd
   resources:
     - assets/**
 

@@ -3,6 +3,10 @@ from html import escape
 root=Path(__file__).parent
 site_name='Adrián Vázquez'
 pages=['index','research','projects','writing','about','cv']
+# Research indexes and their individual publications are maintained directly in
+# Quarto. Keep them out of this generator so future research pages are never
+# overwritten when the existing site pages are rebuilt.
+generated_pages=['index','projects','writing','about','cv']
 nav={'en':['Home','Research','Projects','Writing','About','CV & Contact'],'es':['Inicio','Investigación','Proyectos','Escritura','Sobre mí','CV y contacto']}
 data={
 'en':{
@@ -124,7 +128,7 @@ def approved_cv_sections(lang, body):
 for lang in ['en','es']:
  (root/lang).mkdir(exist_ok=True)
  (root/'preview'/lang).mkdir(parents=True,exist_ok=True)
- for p in pages:
+ for p in generated_pages:
   body=(home(lang) if p=='index' else inner(lang,p))
   if p=='cv': body=current_cv_content(lang,body)
   if p=='cv': body=approved_cv_sections(lang,body)
