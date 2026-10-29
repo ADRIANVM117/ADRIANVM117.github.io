@@ -50,9 +50,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: [{ data: ['index'] },{ data: ['categories'] }],
+      valueNames: ['listing-project','listing-website','listing-format','listing-engines','listing-language','listing-lang','listing-author','listing-description','listing-updated','listing-type','listing-topics','listing-status','listing-series','listing-series_number','listing-github_url','listing-previous_url','listing-previous_title','listing-next_url','listing-next_title','listing-toc','listing-toc-title','listing-toc-depth','listing-title-block','listing-translation_url','listing-bibliography','listing-title','listing-path','listing-outputHref','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: [],
+      searchColumns: ["listing-project","listing-website","listing-format","listing-engines","listing-language","listing-lang","listing-author","listing-description","listing-updated","listing-type","listing-topics","listing-status","listing-series","listing-series_number","listing-github_url","listing-previous_url","listing-previous_title","listing-next_url","listing-next_title","listing-toc","listing-toc-title","listing-toc-depth","listing-title-block","listing-translation_url","listing-bibliography","listing-title","listing-path","listing-outputHref","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -121,10 +121,21 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
 <div id="listing-research-index" class="quarto-listing quarto-listing-container-custom">
 <div class="research-listing list">
 
-<div class="research-empty">
-  <p class="micro">EN DESARROLLO</p>
-  <p>Las investigaciones aparecerán aquí cuando estén listas para compartirse.</p>
-</div>
+<article class="research-entry" data-index="0" data-listing-file-modified-sort="1793308007222" data-listing-reading-time-sort="8" data-listing-word-count-sort="1423">
+  <div>
+    <div class="micro research-entry-meta">
+      <span>Proyecto de investigación</span>
+      <span>·</span><span>Completada</span>
+    </div>
+    <h2><a href="../es/research/projects/03_joint_resampling.html" class="no-external">Joint Resampling: construcción de escenarios a partir de retornos históricos</a></h2>
+    <p>Construcción de escenarios mediante remuestreo conjunto de retornos históricos. Comparación de horizontes de una y cinco sesiones, ponderación exponencial y análisis del efecto del ruido Monte Carlo sobre los resultados simulados.</p>
+  </div>
+  <div class="research-entry-aside">
+    
+    <div class="research-topic-list"><span class="research-topic">Portfolio Construction</span><span class="research-topic">Monte Carlo</span><span class="research-topic">Resampling</span></div>
+    <a class="research-entry-link no-external" href="../es/research/projects/03_joint_resampling.html">Leer investigación ↗</a>
+  </div>
+</article>
 
 </div>
 <div class="listing-no-matching d-none">No hay resultados</div>

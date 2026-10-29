@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrián Vázquez">
+<meta name="description" content="Construcción de escenarios mediante remuestreo conjunto de retornos históricos. Comparación de horizontes de una y cinco sesiones, ponderación exponencial y análisis del efecto del ruido Monte Carlo sobre los resultados simulados.">
+
+<title>Joint Resampling: construcción de escenarios a partir de retornos históricos – Adrián Vázquez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-html-e82cabd1c1379058ebcaccc337c10230.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+
+<body>
+
+<div class="site-shell research-article-shell" data-language="es"><style>#title-block-header{display:none}.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style><header class="site-header"><a class="wordmark" href="../../../index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Alternar navegación">☰</button><nav id="main-nav" class="navigation" aria-label="Navegación principal"><a class="navlink" href="../../../index.html">Inicio</a><a class="navlink current" href="../../research.html">Investigación</a><a class="navlink" href="../../projects.html">Proyectos</a><a class="navlink" href="../../writing.html">Escritura</a><a class="navlink" href="../../about.html">Sobre mí</a><a class="navlink" href="../../cv.html">CV y contacto</a><div class="platform-links" aria-label="Plataformas profesionales"><a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../../../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../../../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../../../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../../../assets/brands/medium.svg" alt=""></a></div></nav><div class="language-switch research-language-switch" data-translation-url=""><a class="research-other-language" href="../../../en/research.html" lang="en">EN</a><span>/</span><a href="../../research.html" lang="es" class="active">ES</a><span class="translation-note">sin traducción</span></div></header><main class="inner-main research-article-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">Joint Resampling: construcción de escenarios a partir de retornos históricos</h1></header><article class="research-article"><header class="research-article-header"><div class="research-article-kicker"><span class="article-meta-item"><span class="article-meta-value">project</span></span><span class="article-meta-item article-series"><span class="article-meta-value">Portfolio Engine</span><span class="article-series-number">03</span></span></div><h1>Joint Resampling: construcción de escenarios a partir de retornos históricos</h1><p class="research-article-deck article-meta-item"><span class="article-meta-value">Construcción de escenarios mediante remuestreo conjunto de retornos históricos. Comparación de horizontes de una y cinco sesiones, ponderación exponencial y análisis del efecto del ruido Monte Carlo sobre los resultados simulados.</span></p><div class="research-article-details"><span class="article-meta-item">Por <span class="article-meta-value">Adrián Vázquez
+</span></span><span class="article-meta-item">Publicado <span class="article-meta-value article-published-date"></span></span><span class="article-meta-item">Actualizado <span class="article-meta-value"></span></span><span class="article-meta-item">Estado <span class="article-meta-value">completed</span></span><span class="article-meta-item article-topics"><span class="article-meta-value">Portfolio Construction
+
+Monte Carlo
+
+Resampling
+</span></span></div></header>
+
+<header id="title-block-header">
+
+<p class="author">Adrián Vázquez</p>
+
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contenido</h2>
+   
+  <ul>
+  <li><a href="#datos-de-partida-la-matriz-a" id="toc-datos-de-partida-la-matriz-a">Datos de partida: la matriz A</a></li>
+  <li><a href="#de-una-sesión-a-un-recorrido-de-cinco" id="toc-de-una-sesión-a-un-recorrido-de-cinco">2. De una sesión a un recorrido de cinco</a></li>
+  <li><a href="#cómo-se-reparten-los-resultados" id="toc-cómo-se-reparten-los-resultados">3. ¿Cómo se reparten los resultados?</a></li>
+  <li><a href="#dar-más-peso-a-la-historia-reciente" id="toc-dar-más-peso-a-la-historia-reciente">4. Dar más peso a la historia reciente</a></li>
+  <li><a href="#comparar-ambas-formas-de-ponderar-la-historia" id="toc-comparar-ambas-formas-de-ponderar-la-historia">5. Comparar ambas formas de ponderar la historia</a></li>
+  <li><a href="#separar-el-efecto-del-modelo-del-ruido-de-simulación" id="toc-separar-el-efecto-del-modelo-del-ruido-de-simulación">6. Separar el efecto del modelo del ruido de simulación</a></li>
+  <li><a href="#próximos-pasos" id="toc-próximos-pasos">Próximos pasos</a></li>
+  </ul>
+</nav>
+<p>Este es el primer post que publico en mi página personal, aunque la serie comenzó antes en mi <a href="https://substack.com/@radian117">Substack</a>. Por eso, quiero empezar explicando brevemente qué me motivó a escribirla.</p>
+<p>La idea detrás de esta serie es compartir el desarrollo del motor de portafolio que utilizo en mi día a día, explicando sus componentes a través de notebooks construidas con datos reales. Mi objetivo es compartir conocimiento y explorar métodos que van más allá del marco clásico de media-varianza y Black-Litterman.</p>
+<p>El trabajo está inspirado en el enfoque de <a href="https://antonvorobets.substack.com/">Anton Vorobets</a> y, en particular, en su libro <strong>Portfolio Risk Management</strong>.</p>
+<p>En esta entrega trabajamos con datos históricos disponibles hasta el <strong>9 de octubre de 2026</strong>. El objetivo es entender cómo generar escenarios, qué cambia al modificar los pesos de las observaciones y cómo interpretar los resultados obtenidos.</p>
+<p>La notebook correspondiente a esta entrega está disponible <a href="https://github.com/ADRIANVM117/data-science-portfolio/blob/main/scenario-portfolio-lab/notebooks/03_joint_resampling.ipynb">aquí</a>, junto con las demás notebooks de la serie en mi repositorio de <a href="https://github.com/ADRIANVM117/data-science-portfolio/tree/main/scenario-portfolio-lab">GitHub</a>.</p>
+<h2 id="datos-de-partida-la-matriz-a">Datos de partida: la matriz A</h2>
+<p>Comencemos por los datos de entrada. Llamaré <strong>A</strong> a una matriz de <strong>2,204 sesiones históricas × 125 instrumentos</strong>. Sus valores son retornos calculados a partir de precios ajustados reales: cada fila corresponde a una sesión histórica y cada columna a un instrumento.</p>
+<p>Leer una fila completa de <strong>A</strong> significa observar cómo se movieron los 125 instrumentos durante una misma sesión de mercado.</p>
+<div id="fig-matriz-a" class="quarto-float quarto-figure quarto-figure-center" alt="Matriz de retornos históricos reales con 2,204 sesiones y 125 instrumentos.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-matriz-a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/1r_post/matriz_a_rendimientos_reales.png" class="img-fluid" alt="Matriz de retornos históricos reales con 2,204 sesiones y 125 instrumentos.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matriz-a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Matriz A de retornos históricos reales: 2,204 sesiones por 125 instrumentos.
+</figcaption>
+</figure>
+</div>
+<p>Esta matriz será nuestro punto de partida para generar posibles movimientos bajo un modelo muy simple. Para producir una realización de una sesión, selecciono al azar un renglón completo de <strong>A</strong>. Inicialmente, cada sesión histórica tiene la misma probabilidad de ser elegida, es decir, (1/2204).</p>
+<p>El muestreo se realiza <strong>con reemplazo</strong>: después de cada selección, todos los renglones siguen disponibles, de modo que una misma observación puede aparecer varias veces.</p>
+<p>Seleccionar el renglón completo conserva los movimientos simultáneos observados históricamente. Si en una fecha <strong>SPY</strong> cayó mientras <strong>TLT</strong> y <strong>GLD</strong> subieron, esa combinación se recupera junta. Si, en cambio, sorteáramos cada instrumento por separado, romperíamos esa correspondencia histórica entre activos.</p>
+<p>Repito este procedimiento <strong>10,000 veces</strong>. El resultado es una nueva matriz <strong>B</strong> de <strong>10,000 realizaciones × 125 instrumentos</strong>, donde cada fila representa un posible movimiento conjunto de una sesión bajo este modelo.</p>
+<p>En <strong>A</strong>, cada renglón corresponde a una fecha histórica. En <strong>B</strong>, cada renglón corresponde a una realización simulada; la fecha original queda como referencia del origen de esos retornos.</p>
+<div id="fig-matriz-b" class="quarto-float quarto-figure quarto-figure-center" alt="Matriz de 10,000 escenarios simulados por 125 instrumentos.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-matriz-b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/1r_post/matriz_b_simulada_h1.png" class="img-fluid" alt="Matriz de 10,000 escenarios simulados por 125 instrumentos.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matriz-b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Matriz B de realizaciones simuladas: 10,000 escenarios por 125 instrumentos generados mediante muestreo con reemplazo de filas de A.
+</figcaption>
+</figure>
+</div>
+<p>Al utilizar esta distribución para representar una sesión futura, el supuesto es que la muestra histórica, con pesos uniformes, constituye una referencia adecuada. Generar estas realizaciones permite estudiar las implicaciones de ese supuesto. Su capacidad predictiva, sin embargo, es una cuestión distinta y requiere una evaluación posterior.</p>
+<h2 id="de-una-sesión-a-un-recorrido-de-cinco">2. De una sesión a un recorrido de cinco</h2>
+<p>Hasta ahora, cada realización representaba el movimiento conjunto de una sola sesión. Para ampliar el horizonte, construí trayectorias de <strong>cinco sesiones</strong>.</p>
+<p>El procedimiento consiste en seleccionar, para cada trayectoria, <strong>cinco sesiones históricas de forma independiente</strong>, recuperando siempre juntos los <strong>125 instrumentos</strong> en cada paso. Repetí este proceso hasta obtener <strong>10,000 trayectorias</strong>.</p>
+<p>Una vez formada cada trayectoria, sumé los <strong>log-retornos</strong> de cada instrumento a lo largo de las cinco sesiones y después los convertí a <strong>retornos simples acumulados</strong>. El resultado es una nueva distribución de <strong>10,000 resultados a cinco sesiones por instrumento</strong>.</p>
+<p>La diferencia respecto al caso anterior es que ahora cada trayectoria combina movimientos reales en una secuencia que no necesariamente ocurrió de esa forma en la historia. En ese sentido, el procedimiento conserva la dependencia transversal dentro de cada sesión, pero <strong>supone independencia entre los pasos del recorrido</strong>.</p>
+<div id="fig-cinco-sesiones" class="quarto-float quarto-figure quarto-figure-center" alt="Cinco selecciones históricas forman una trayectoria de retornos acumulados por instrumento.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-cinco-sesiones-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/1r_post/cinco_sesiones_retorno_acumulado.png" class="img-fluid" alt="Cinco selecciones históricas forman una trayectoria de retornos acumulados por instrumento.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cinco-sesiones-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Cinco selecciones históricas forman una trayectoria. Al componer sus movimientos obtenemos un retorno acumulado por instrumento; repetimos el procedimiento para generar 10,000 resultados conjuntos.
+</figcaption>
+</figure>
+</div>
+<h2 id="cómo-se-reparten-los-resultados">3. ¿Cómo se reparten los resultados?</h2>
+<p>Con los retornos acumulados construí las <strong>distribuciones terminales</strong> y comparé los horizontes de <strong>una</strong> y <strong>cinco sesiones</strong>. Para ilustrarlo, utilicé <strong>SPY, TLT y GLD</strong>.</p>
+<p>En el caso de <strong>SPY</strong>, la desviación estándar del retorno simple simulado pasó de <strong>1.22%</strong> a <strong>2.68%</strong>, lo que indica que los resultados a cinco sesiones quedaron más dispersos.</p>
+<p>Los histogramas permiten ver cómo se reparte la distribución de los <strong>10,000 resultados terminales</strong> en cada horizonte.</p>
+<div id="fig-distribuciones" class="quarto-float quarto-figure quarto-figure-center" alt="Histogramas de retornos terminales simulados para SPY, TLT y GLD en horizontes de una y cinco sesiones.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-distribuciones-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/1r_post/distribuciones.png" class="img-fluid" alt="Histogramas de retornos terminales simulados para SPY, TLT y GLD en horizontes de una y cinco sesiones.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-distribuciones-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4: Distribución de los 10,000 resultados terminales para cada horizonte.
+</figcaption>
+</figure>
+</div>
+<p>Además de la distribución final, también resulta útil observar las trayectorias que conducen a esos resultados. Para ello, seleccioné cinco trayectorias mediante <strong>identificadores fijos</strong>, no por el valor de su resultado final.</p>
+<div id="fig-trayectorias" class="quarto-float quarto-figure quarto-figure-center" alt="Cinco trayectorias de retornos acumulados seleccionadas mediante identificadores fijos.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-trayectorias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/1r_post/trayectorias.png" class="img-fluid" alt="Cinco trayectorias de retornos acumulados seleccionadas mediante identificadores fijos.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trayectorias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5: Cinco trayectorias seleccionadas por identificadores fijos, no por su resultado.
+</figcaption>
+</figure>
+</div>
+<p>Ambas gráficas describen el comportamiento del modelo bajo esta construcción. Su capacidad predictiva, sin embargo, todavía no ha sido evaluada.</p>
+<h2 id="dar-más-peso-a-la-historia-reciente">4. Dar más peso a la historia reciente</h2>
+<p>Hasta aquí, todas las sesiones históricas tenían la misma probabilidad de selección. A continuación, introduje un esquema de <strong>ponderación exponencial</strong>, en el que las observaciones más recientes reciben mayor probabilidad, mientras que las más antiguas permanecen disponibles.</p>
+<p>Utilicé una <strong>semivida de 1,102 sesiones</strong>, con la que la mitad más reciente del historial concentra el <strong>66.67%</strong> de la probabilidad total, frente al <strong>50%</strong> que le correspondería bajo el esquema uniforme.</p>
+<p>Este cambio modifica cuánto pesa cada observación dentro del muestreo, pero no altera la mecánica básica del modelo: las sesiones siguen siendo seleccionadas con reemplazo y la simulación continúa sin introducir dependencia entre los pasos.</p>
+<div id="fig-ponderacion-exponencial" class="quarto-float quarto-figure quarto-figure-center" alt="Probabilidades de selección de sesiones históricas bajo ponderación exponencial, con mayor peso en las observaciones recientes.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-ponderacion-exponencial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/1r_post/ponderacion_exponencial.png" class="img-fluid" alt="Probabilidades de selección de sesiones históricas bajo ponderación exponencial, con mayor peso en las observaciones recientes.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ponderacion-exponencial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6: Probabilidad de selección de cada sesión histórica. La ponderación exponencial favorece las observaciones recientes sin eliminar las antiguas.
+</figcaption>
+</figure>
+</div>
+<p>La elección de esta semivida es, por ahora, <strong>ilustrativa</strong>. Permite estudiar cómo cambia la distribución simulada al dar más importancia a la historia reciente, pero todavía no implica una validación de capacidad predictiva.</p>
+<h2 id="comparar-ambas-formas-de-ponderar-la-historia">5. Comparar ambas formas de ponderar la historia</h2>
+<p>Para comparar ambos esquemas, generé trayectorias de <strong>cinco sesiones</strong> utilizando los mismos números aleatorios en las dos simulaciones. Esto permite emparejar los resultados y observar cómo cambian al modificar las probabilidades de selección de las sesiones históricas.</p>
+<p>En <strong>SPY</strong>, la media del retorno simple acumulado simulado pasó de <strong>0.2833% con pesos uniformes</strong> a <strong>0.3517% con pesos exponenciales</strong>. Por su parte, la desviación estándar disminuyó de <strong>2.6819% a 2.5897%</strong>.</p>
+<p>En esta ejecución, la ponderación exponencial produjo una distribución con un promedio ligeramente mayor y una dispersión algo menor.</p>
+<div id="fig-sec-5" class="quarto-float quarto-figure quarto-figure-center" alt="Distribuciones acumuladas de retornos simulados a cinco sesiones bajo ponderación uniforme y exponencial.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-sec-5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/1r_post/sec_5.png" class="img-fluid" alt="Distribuciones acumuladas de retornos simulados a cinco sesiones bajo ponderación uniforme y exponencial.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sec-5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7: Distribuciones acumuladas de los retornos simulados a cinco sesiones. Ambas utilizan la misma historia y números aleatorios comunes, con distintas probabilidades de selección.
+</figcaption>
+</figure>
+</div>
+<p>La diferencia observada combina el efecto de reponderar la historia con la variabilidad de la simulación Monte Carlo. Por tanto, estos resultados describen cómo cambió la distribución bajo los supuestos elegidos, pero <strong>no demuestran una mejora en la capacidad predictiva del modelo</strong>.</p>
+<h2 id="separar-el-efecto-del-modelo-del-ruido-de-simulación">6. Separar el efecto del modelo del ruido de simulación</h2>
+<p>Finalmente, comparé las medias obtenidas mediante simulación con sus <strong>referencias analíticas</strong>, calculadas directamente bajo cada esquema de ponderación.</p>
+<p>El caso de <strong>TLT</strong> muestra por qué esta distinción es importante. En las simulaciones, la media del retorno acumulado a cinco sesiones pasó de <strong>−0.0441% con pesos uniformes</strong> a <strong>−0.0334% con pesos exponenciales</strong>, lo que inicialmente sugería una mejora.</p>
+<p>Sin embargo, las medias exactas bajo ambos modelos mostraban lo contrario: pasaban de <strong>−0.0267% a −0.0583%</strong>, respectivamente. Es decir, una vez separado el ruido de simulación, el efecto del cambio de ponderación tenía el <strong>signo opuesto</strong> al que sugerían las realizaciones Monte Carlo.</p>
+<div id="tbl-tlt-comparison" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tlt-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: TLT — Retorno acumulado medio a cinco sesiones
+</figcaption>
+<div aria-describedby="tbl-tlt-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Medida</th>
+<th style="text-align: right;">Uniforme</th>
+<th style="text-align: right;">Exponencial</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Simulación Monte Carlo</td>
+<td style="text-align: right;">−0.0441%</td>
+<td style="text-align: right;">−0.0334%</td>
+</tr>
+<tr class="even">
+<td>Referencia analítica</td>
+<td style="text-align: right;">−0.0267%</td>
+<td style="text-align: right;">−0.0583%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="comparison-indicators">
+<div class="comparison-indicator">
+<p>Cambio simulado</p>
+<p><strong>+0.0107 pp</strong></p>
+</div>
+<div class="comparison-indicator">
+<p>Cambio analítico</p>
+<p><strong>−0.0316 pp</strong></p>
+</div>
+</div>
+<p><span class="comparison-note">pp = puntos porcentuales.</span></p>
+<p>Este resultado ilustra una limitación importante: <strong>el ruido Monte Carlo puede alterar la interpretación de diferencias pequeñas</strong>, incluso cuando la implementación es correcta. Por eso, siempre que sea posible, conviene contrastar las estimaciones simuladas con referencias analíticas del modelo.</p>
+<h2 id="próximos-pasos">Próximos pasos</h2>
+<p>Hasta ahora, las probabilidades de selección permanecen fijas durante cada trayectoria y los pasos se generan independientemente.</p>
+<p>En la <strong>notebook 04</strong> estudiaré el <strong>condicionamiento por estado</strong>: cómo describir el estado del mercado y utilizar esa información para construir escenarios condicionados. Será el siguiente paso para explorar mecanismos que permitan incorporar dependencia temporal al proceso.</p>
+<p>La implementación, los controles y los resultados completos de esta entrega están disponibles en la <a href="https://github.com/ADRIANVM117/data-science-portfolio/blob/main/scenario-portfolio-lab/notebooks/03_joint_resampling.ipynb">notebook 03 de GitHub</a>.</p>
+
+
+</article><nav class="research-article-nav" aria-label="Navegación del artículo" data-previous-url="" data-previous-title="" data-next-url="" data-next-title="" data-github-url="https://github.com/ADRIANVM117/data-science-portfolio/blob/main/scenario-portfolio-lab/notebooks/03_joint_resampling.ipynb"><a class="article-nav-link article-previous" hidden=""><span>Artículo anterior</span><strong></strong></a><a class="article-nav-link article-back" href="../../research.html">Volver a Investigación</a><a class="article-nav-link article-next" hidden=""><span>Artículo siguiente</span><strong></strong></a><a class="article-nav-link article-source" target="_blank" rel="noopener noreferrer" hidden="">Ver código ↗</a></nav></main><footer class="site-footer"><div><span class="footer-name">Adrián Vázquez.</span><p class="micro">Investigaciones, proyectos y notas en desarrollo.</p></div><span class="footer-symbol">∴</span></footer></div><script src="../../../assets/site.js"></script><script src="../../../assets/research-article.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

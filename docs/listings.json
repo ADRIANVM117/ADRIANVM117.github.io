@@ -1,10 +1,12 @@
 [
   {
-    "listing": "/en/research.html",
-    "items": []
+    "listing": "/es/research.html",
+    "items": [
+      "/es/research/projects/03_joint_resampling.html"
+    ]
   },
   {
-    "listing": "/es/research.html",
+    "listing": "/en/research.html",
     "items": []
   }
 ]
