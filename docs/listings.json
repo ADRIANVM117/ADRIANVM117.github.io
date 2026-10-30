@@ -7,6 +7,8 @@
   },
   {
     "listing": "/en/research.html",
-    "items": []
+    "items": [
+      "/en/research/projects/03_joint_resampling.html"
+    ]
   }
 ]

@@ -19,7 +19,7 @@
     <% if (item.description) { %><p><%= item.description %></p><% } %>
   </div>
   <div class="research-entry-aside">
-    <% if (item.date) { %><div class="micro research-entry-date"><%= item.date %></div><% } %>
+<% if (item.date) { %>    <div class="micro research-entry-date"><%= item.date %></div><% } %>
     <% if (item.topics && item.topics.length) { %><div class="research-topic-list"><% for (const topic of item.topics) { %><span class="research-topic"><%= topic %></span><% } %></div><% } %>
     <a class="research-entry-link no-external" href="<%- item.path %>">Read research ↗</a>
   </div>

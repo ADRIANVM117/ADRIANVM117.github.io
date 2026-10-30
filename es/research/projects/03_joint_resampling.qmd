@@ -9,6 +9,7 @@ topics: [Portfolio Construction, Monte Carlo, Resampling]
 series: "Portfolio Engine"
 series_number: "03"
 github_url: "https://github.com/ADRIANVM117/data-science-portfolio/blob/main/scenario-portfolio-lab/notebooks/03_joint_resampling.ipynb"
+translation_url: "../../../en/research/projects/03_joint_resampling.html"
 ---
 
 Este es el primer post que publico en mi página personal, aunque la serie comenzó antes en mi [Substack](https://substack.com/@radian117). Por eso, quiero empezar explicando brevemente qué me motivó a escribirla.

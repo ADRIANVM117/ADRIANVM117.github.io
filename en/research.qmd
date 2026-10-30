@@ -2,8 +2,8 @@
 title: "Research & Ideas | Adrián Vázquez"
 lang: en
 page-layout: full
-toc: false
 title-block: false
+toc: false
 listing:
   id: research-index
   contents:

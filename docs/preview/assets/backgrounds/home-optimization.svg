@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1100" fill="none">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" stroke="#8a847b" stroke-width=".55"/></pattern>
+    <linearGradient id="surface" x1="120" y1="160" x2="1070" y2="790" gradientUnits="userSpaceOnUse"><stop stop-color="#c6b5a5" stop-opacity=".42"/><stop offset="1" stop-color="#8a6853" stop-opacity=".04"/></linearGradient>
+  </defs>
+  <rect width="1440" height="1100" fill="url(#grid)" opacity=".55"/>
+  <g stroke="#8a6853" stroke-width="1.1" opacity=".55">
+    <path d="M80 630C230 410 370 790 538 522S797 212 970 455s220 119 390-197"/>
+    <path d="M80 665C230 445 370 825 538 557S797 247 970 490s220 119 390-197"/>
+    <path d="M80 700C230 480 370 860 538 592S797 282 970 525s220 119 390-197"/>
+    <path d="M80 735C230 515 370 895 538 627S797 317 970 560s220 119 390-197"/>
+  </g>
+  <path d="M111 680C269 456 370 810 548 555S790 260 964 500s229 105 390-181V858H90Z" fill="url(#surface)" opacity=".72"/>
+  <g stroke="#6f6a61" stroke-width=".8" opacity=".42"><path d="M142 787 520 428 906 787 1285 428"/><path d="M142 787h1143"/><path d="M142 680h1143"/><path d="M142 573h1143"/><path d="M142 466h1143"/><path d="M142 359h1143"/><path d="M250 850V294"/><path d="M466 850V294"/><path d="M682 850V294"/><path d="M898 850V294"/><path d="M1114 850V294"/></g>
+  <g fill="#5f5b53" font-family="Georgia, serif" font-size="24" opacity=".62"><text x="118" y="174">min θ  𝔼[L(θ)] + λ‖θ‖²</text><text x="910" y="190">∂V/∂t + 𝓛V = 0</text><text x="152" y="997">θₜ₊₁ = θₜ − η∇ℒ(θₜ)</text><text x="897" y="974">dXₜ = μ(Xₜ,t)dt + σ(Xₜ,t)dWₜ</text></g>
+  <g stroke="#8a6853" stroke-width="1.4" opacity=".6"><circle cx="682" cy="541" r="8"/><path d="M682 541v235M682 541h272" stroke-dasharray="5 8"/></g>
+</svg>

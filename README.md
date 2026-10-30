@@ -12,14 +12,18 @@ python -m http.server 8000
 Go to `http://localhost:8000`.
 
 ## Develop with Quarto
-Install [Quarto](https://quarto.org/docs/get-started/) then run:
+
+This project is validated with Quarto 1.10.19. Install
+[Quarto](https://quarto.org/docs/get-started/) if needed, then run:
 
 ```bash
 quarto preview
 quarto render
 ```
 
-The render goes into `docs/`. This environment did **not** have Quarto available, so the generated Quarto version has not been rendered/visually tested; the independent HTML preview uses the same page markup and stylesheet.
+The render goes into `docs/`. The Quarto output has been rendered and
+validated locally. The independent HTML preview remains available for quick
+static checks.
 
 ## Deploy
 1. Create a new GitHub repository and push this folder to its `main` branch.
@@ -31,19 +35,22 @@ The render goes into `docs/`. This environment did **not** have Quarto available
 - Primary language English (`/en/`), Spanish equivalent (`/es/`)
 - Manual editorial translations, **not** automatic translation
 - Warm ivory `#F7F5EF`, charcoal `#252522`
-- Placeholder project descriptions based on research topics only; article dates and actual publications are **not** fabricated
-- Do **not** publish the site as a final CV until replacing `Personal Research`, adding verified GitHub/LinkedIn URLs, CV document, contact and real published links
+- Project and writing placeholders are explicitly labeled as drafts or work in
+  progress; article dates and actual publications are **not** fabricated
+- Research articles are individual bilingual Quarto documents with manual
+  translations only where a translation exists
 
 ## Structure
-- `en/` and `es/`: 6 Quarto pages each
+- `en/` and `es/`: core Quarto pages plus independent Research articles
 - `assets/site.css`: shared design system
 - `assets/site.js`: responsive menu
-- `build_content.py`: generates the current starter site pages; edit this when updating the starter content, or remove this generator and edit QMD directly later
+- `build_content.py`: regenerates the shared starter pages; approved CV and
+  Research documents are maintained directly as `.qmd` source files and are
+  not overwritten
 - `preview/`: static HTML preview (no Quarto required)
 
 ## Known next iteration
-- Replace placeholder name with the chosen public name
-- Add verified case studies and articles as standalone QMD pages, with real status, dates and links
-- Create real paired article translations, and show explicit translation availability
-- Replace conceptual illustration with a real chart/graphic from your work if desired
-- Test Quarto output and Pages URL after install/push
+- Review or replace draft cards before launch as editorial decisions are made
+- Add future research as standalone paired or single-language QMD documents,
+  with verified status, dates and links
+- Test the final GitHub Pages URL after the repository is created and deployed

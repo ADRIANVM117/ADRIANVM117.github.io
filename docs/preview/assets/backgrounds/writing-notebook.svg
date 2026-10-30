@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1100" fill="none">
+  <defs><pattern id="paper-grid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0V42" stroke="#8a847b" stroke-width=".5"/></pattern></defs>
+  <rect width="1440" height="1100" fill="url(#paper-grid)" opacity=".5"/>
+  <g stroke="#69655e" stroke-width="1.1" opacity=".56"><path d="M90 320H1350M90 596H1350M90 872H1350"/><path d="M246 126V1000M642 126V1000M1038 126V1000"/></g>
+  <g stroke="#8a6853" stroke-width="1.6" opacity=".66"><path d="M122 456c43-68 84 45 124-20s80-97 124-46 83 25 124-51 83 32 124-16 85-128 124-86 83 99 124 30 82-36 124 21 83-65 124-5 84 80 124-8"/><path d="M122 728c52 12 76-102 125-67s80 112 124 48 84-129 124-83 81 73 124 42 84-85 124-35 82 53 124 15 83-70 124-32 82 95 124 51"/></g>
+  <g stroke="#6f6a61" stroke-width=".85" opacity=".48"><path d="M122 480V363M246 479V295M370 479V344M494 479V306M618 479V370M742 479V274M866 479V332M990 479V288M1114 479V348M1238 479V301"/><path d="M122 754V650M246 754V590M370 754V668M494 754V617M618 754V644M742 754V568M866 754V624M990 754V594M1114 754V631M1238 754V605"/></g>
+  <g fill="#5f5b53" font-family="Georgia, serif" font-size="23" opacity=".6"><text x="120" y="198">rₜ = μ + φrₜ₋₁ + εₜ</text><text x="746" y="198">Cov(rₜ, rₜ₋ₖ) → 0</text><text x="132" y="1040">𝔼[Xₜ₊ₕ | ℱₜ]</text><text x="858" y="1040">σ²ₜ = ω + αε²ₜ₋₁ + βσ²ₜ₋₁</text></g>
+  <g fill="#8a6853" opacity=".48"><circle cx="246" cy="436" r="4"/><circle cx="742" cy="274" r="4"/><circle cx="990" cy="288" r="4"/><circle cx="494" cy="617" r="4"/><circle cx="1114" cy="631" r="4"/></g>
+</svg>

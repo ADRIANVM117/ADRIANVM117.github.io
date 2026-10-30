@@ -50,9 +50,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: [{ data: ['index'] },{ data: ['categories'] }],
+      valueNames: ['listing-project','listing-website','listing-format','listing-engines','listing-language','listing-lang','listing-author','listing-description','listing-updated','listing-type','listing-topics','listing-status','listing-series','listing-series_number','listing-github_url','listing-previous_url','listing-previous_title','listing-next_url','listing-next_title','listing-toc','listing-toc-title','listing-toc-depth','listing-title-block','listing-translation_url','listing-bibliography','listing-title','listing-path','listing-outputHref','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: [],
+      searchColumns: ["listing-project","listing-website","listing-format","listing-engines","listing-language","listing-lang","listing-author","listing-description","listing-updated","listing-type","listing-topics","listing-status","listing-series","listing-series_number","listing-github_url","listing-previous_url","listing-previous_title","listing-next_url","listing-next_title","listing-toc","listing-toc-title","listing-toc-depth","listing-title-block","listing-translation_url","listing-bibliography","listing-title","listing-path","listing-outputHref","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -121,10 +121,21 @@ An evolving collection of quantitative research, technical notes, experiments, a
 <div id="listing-research-index" class="quarto-listing quarto-listing-container-custom">
 <div class="research-listing list">
 
-<div class="research-empty">
-  <p class="micro">IN DEVELOPMENT</p>
-  <p>Research will appear here when it is ready to be shared.</p>
-</div>
+<article class="research-entry" data-index="0" data-listing-file-modified-sort="1793314946924" data-listing-reading-time-sort="7" data-listing-word-count-sort="1373">
+  <div>
+    <div class="micro research-entry-meta">
+      <span>Research project</span>
+      <span>·</span><span>Completed</span>
+    </div>
+    <h2><a href="../en/research/projects/03_joint_resampling.html" class="no-external">Joint Resampling: Building Scenarios from Historical Returns</a></h2>
+    <p>Scenario construction through joint resampling of historical returns. A comparison of one- and five-session horizons, exponential weighting, and the effect of Monte Carlo noise on simulated results.</p>
+  </div>
+  <div class="research-entry-aside">
+
+    <div class="research-topic-list"><span class="research-topic">Portfolio Construction</span><span class="research-topic">Monte Carlo</span><span class="research-topic">Resampling</span></div>
+    <a class="research-entry-link no-external" href="../en/research/projects/03_joint_resampling.html">Read research ↗</a>
+  </div>
+</article>
 
 </div>
 <div class="listing-no-matching d-none">No matching items</div>

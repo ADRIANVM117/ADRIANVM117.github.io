@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="1440" viewBox="0 0 3000 1440" role="img" aria-labelledby="title desc">
+  <title id="title">Historical log-return matrix</title>
+  <desc id="desc">Matrix A with 2,204 historical sessions and 125 instruments.</desc>
+  <style>
+    .bg{fill:#f7f5ef}.ink{fill:#292a2b}.muted{fill:#6d7171}.line{stroke:#292a2b;stroke-width:3}.soft{stroke:#d9ddd7;stroke-width:3}.sans{font-family:Arial,sans-serif}.mono{font-family:Consolas,"Courier New",monospace}.title{font-size:68px;letter-spacing:1px}.sub{font-size:39px;letter-spacing:1px}.label{font-size:35px}.value{font-size:38px}.small{font-size:31px}
+  </style>
+  <rect class="bg" width="3000" height="1440"/>
+  <text x="110" y="180" class="ink" font-family="Georgia,serif" font-size="115" font-style="italic">A</text>
+  <text x="280" y="143" class="ink sans title">Historical log-return matrix</text>
+  <text x="280" y="222" class="muted sans sub">2,204 sessions × 125 instruments</text>
+  <text x="1710" y="362" class="muted sans label">INSTRUMENTS</text>
+  <line x1="870" y1="406" x2="2830" y2="406" class="soft"/>
+  <text x="120" y="486" class="muted sans label">Session</text><text x="470" y="486" class="muted sans label">Date</text>
+  <text x="986" y="486" class="ink sans label">AA</text><text x="1334" y="486" class="ink sans label">AAL</text><text x="1682" y="486" class="ink sans label">AAPL</text><text x="1937" y="486" class="ink sans label">…</text><text x="2208" y="486" class="ink sans label">XOM</text><text x="2580" y="486" class="ink sans label">XYZ</text>
+  <line x1="110" y1="542" x2="2890" y2="542" class="line"/>
+  <rect x="110" y="574" width="2780" height="112" fill="#ebeee9"/>
+  <text x="170" y="642" class="muted sans value">1</text><text x="425" y="642" class="ink mono value">2018-01-03</text><text x="908" y="642" class="ink mono value">-0.012219</text><text x="1268" y="642" class="ink mono value">-0.012342</text><text x="1626" y="642" class="ink mono value">-0.000174</text><text x="1942" y="642" class="muted mono value">…</text><text x="2155" y="642" class="ink mono value">0.019450</text><text x="2528" y="642" class="ink mono value">0.031031</text>
+  <text x="170" y="759" class="muted sans value">2</text><text x="425" y="759" class="ink mono value">2018-01-04</text><text x="918" y="759" class="ink mono value">0.003663</text><text x="1278" y="759" class="ink mono value">0.006285</text><text x="1636" y="759" class="ink mono value">0.004634</text><text x="1942" y="759" class="muted mono value">…</text><text x="2155" y="759" class="ink mono value">0.001383</text><text x="2528" y="759" class="ink mono value">0.020953</text>
+  <text x="170" y="877" class="muted sans value">3</text><text x="425" y="877" class="ink mono value">2018-01-05</text><text x="908" y="877" class="ink mono value">-0.011214</text><text x="1268" y="877" class="ink mono value">-0.000380</text><text x="1636" y="877" class="ink mono value">0.011321</text><text x="1942" y="877" class="muted mono value">…</text><text x="2155" y="877" class="ink mono value">-0.000807</text><text x="2528" y="877" class="ink mono value">0.076767</text>
+  <text x="170" y="1000" class="muted sans value">⋮</text><text x="512" y="1000" class="muted sans value">⋮</text><text x="996" y="1000" class="muted sans value">⋮</text><text x="1352" y="1000" class="muted sans value">⋮</text><text x="1712" y="1000" class="muted sans value">⋮</text><text x="1950" y="1000" class="muted sans value">⋱</text><text x="2220" y="1000" class="muted sans value">⋮</text><text x="2610" y="1000" class="muted sans value">⋮</text>
+  <text x="130" y="1122" class="muted sans value">2,203</text><text x="425" y="1122" class="ink mono value">2026-10-08</text><text x="918" y="1122" class="ink mono value">0.008205</text><text x="1268" y="1122" class="ink mono value">-0.003899</text><text x="1636" y="1122" class="ink mono value">0.011077</text><text x="1942" y="1122" class="muted mono value">…</text><text x="2155" y="1122" class="ink mono value">0.026764</text><text x="2528" y="1122" class="ink mono value">-0.011104</text>
+  <text x="130" y="1243" class="muted sans value">2,204</text><text x="425" y="1243" class="ink mono value">2026-10-09</text><text x="908" y="1243" class="ink mono value">-0.014819</text><text x="1268" y="1243" class="ink mono value">-0.003130</text><text x="1626" y="1243" class="ink mono value">-0.011166</text><text x="1942" y="1243" class="muted mono value">…</text><text x="2155" y="1243" class="ink mono value">0.002608</text><text x="2528" y="1243" class="ink mono value">0.026367</text>
+  <line x1="110" y1="1315" x2="2890" y2="1315" class="soft"/>
+  <text x="120" y="1394" class="muted sans small">One row contains the movements from the same session.</text><text x="2400" y="1394" class="muted sans small">Decimal values · Excerpt</text>
+</svg>
