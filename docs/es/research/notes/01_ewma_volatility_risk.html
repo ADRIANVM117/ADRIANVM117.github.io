@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrián Vázquez">
+<meta name="dcterms.date" content="2026-11-11">
+<meta name="description" content="Una investigación con datos reales de SPY sobre shocks, persistencia y periodos tranquilos, y sobre los límites de lo que podemos concluir a partir de un estimador de volatilidad.">
+
+<title>Antes de GARCH: qué nos enseña realmente EWMA sobre el riesgo – Adrián Vázquez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-html-e82cabd1c1379058ebcaccc337c10230.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+
+<body>
+
+<div class="site-shell research-article-shell" data-language="es"><style>#title-block-header{display:none}.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style><header class="site-header"><a class="wordmark" href="../../../index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Alternar navegación">☰</button><nav id="main-nav" class="navigation" aria-label="Navegación principal"><a class="navlink" href="../../../index.html">Inicio</a><a class="navlink current" href="../../research.html">Investigación</a><a class="navlink" href="../../projects.html">Proyectos</a><a class="navlink" href="../../writing.html">Escritura</a><a class="navlink" href="../../about.html">Sobre mí</a><a class="navlink" href="../../cv.html">CV y contacto</a><div class="platform-links" aria-label="Plataformas profesionales"><a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../../../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../../../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../../../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../../../assets/brands/medium.svg" alt=""></a></div></nav><div class="language-switch research-language-switch" data-translation-url="../../../en/research/notes/01_ewma_volatility_risk.html"><a class="research-other-language" href="../../../en/research.html" lang="en">EN</a><span>/</span><a href="../../research.html" lang="es" class="active">ES</a><span class="translation-note">sin traducción</span></div></header><main class="inner-main research-article-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">Antes de GARCH: qué nos enseña realmente EWMA sobre el riesgo</h1></header><article class="research-article"><header class="research-article-header"><div class="research-article-kicker"><span class="article-meta-item"><span class="article-meta-value">note</span></span><span class="article-meta-item article-series"><span class="article-meta-value">Volatility Targeting</span><span class="article-series-number">01</span></span></div><h1>Antes de GARCH: qué nos enseña realmente EWMA sobre el riesgo</h1><p class="research-article-deck article-meta-item"><span class="article-meta-value">Una investigación con datos reales de SPY sobre shocks, persistencia y periodos tranquilos, y sobre los límites de lo que podemos concluir a partir de un estimador de volatilidad.</span></p><div class="research-article-details"><span class="article-meta-item">Por <span class="article-meta-value">Adrián Vázquez
+</span></span><span class="article-meta-item">Publicado <span class="article-meta-value article-published-date"></span></span><span class="article-meta-item">Actualizado <span class="article-meta-value"></span></span><span class="article-meta-item">Estado <span class="article-meta-value">completed</span></span><span class="article-meta-item article-topics"><span class="article-meta-value">volatility
+
+EWMA
+
+risk management
+
+SPY
+</span></span></div></header>
+
+<header id="title-block-header">
+
+<p class="author">Adrián Vázquez</p>
+
+<p class="date">2026-11-11</p>
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contenido</h2>
+   
+  <ul>
+  <li><a href="#por-qué-comenzar-con-ewma" id="toc-por-qué-comenzar-con-ewma">¿Por qué comenzar con EWMA?</a></li>
+  <li><a href="#cuando-el-mercado-se-mueve-violentamente" id="toc-cuando-el-mercado-se-mueve-violentamente">Cuando el mercado se mueve violentamente</a></li>
+  <li><a href="#qué-sucede-cuando-el-mercado-está-tranquilo" id="toc-qué-sucede-cuando-el-mercado-está-tranquilo">¿Qué sucede cuando el mercado está tranquilo?</a></li>
+  <li><a href="#lo-que-ewma-todavía-no-ha-demostrado" id="toc-lo-que-ewma-todavía-no-ha-demostrado">Lo que EWMA todavía no ha demostrado</a></li>
+  </ul>
+</nav>
+<span class="article-header-details-source" data-header-details="POR ADRIÁN VÁZQUEZ · 11 NOV 2026 · VOLATILITY · EWMA · RISK MANAGEMENT · SPY" hidden=""></span>
+<script>document.addEventListener('DOMContentLoaded',()=>{const source=document.querySelector('.article-header-details-source');const details=document.querySelector('.research-article-details');if(source&&details)details.textContent=source.dataset.headerDetails||'';});</script>
+<style>.research-article .article-resource-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.research-article .article-resource-links a{display:flex;align-items:center;gap:13px;min-height:54px;padding:10px 17px 10px 0;border-bottom:0;font:10px/1.55 'DM Mono',monospace;letter-spacing:.35px;color:var(--ink);transition:color .18s ease,opacity .18s ease}.research-article .article-resource-links a+a{border-left:1px solid var(--line);padding-left:18px}.research-article .article-resource-links a:hover{color:var(--accent);opacity:.78}.research-article .article-resource-links a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.research-article .article-resource-links img{width:22px;height:22px;flex:0 0 22px;object-fit:contain}.research-article .article-resource-links span{display:block}@media(max-width:720px){.research-article .article-resource-links{grid-template-columns:1fr}.research-article .article-resource-links a{min-height:50px;padding:11px 0}.research-article .article-resource-links a+a{border-left:0;border-top:1px solid var(--line);padding-left:0}}</style>
+<div class="article-resource-links" aria-label="Recursos de la notebook">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/volatility_target/01_rebalancing_policies" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/github.svg" alt=""><span>Repositorio y documentación · GitHub</span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/01_volatility_targeting.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span>Ejecutar notebook 01 · Google Colab</span></a></p>
+</div>
+<hr>
+<h2 id="por-qué-comenzar-con-ewma">¿Por qué comenzar con EWMA?</h2>
+<p>Cuando comencé a estudiar modelos de volatilidad, me resultaba atractivo avanzar hacia metodologías cada vez más sofisticadas: GARCH, modelos de volatilidad estocástica y, eventualmente, técnicas de aprendizaje automático.</p>
+<p>Sin embargo, mientras desarrollaba los componentes de riesgo de mi propio Quant Desk, empecé a considerar una pregunta más importante: <strong>¿qué necesito entender realmente sobre un modelo de volatilidad antes de utilizarlo para tomar decisiones de inversión?</strong></p>
+<p>Un modelo puede estar correctamente implementado y comportarse como esperamos matemáticamente. Eso no significa necesariamente que pronostique bien el riesgo futuro. Y aunque sus pronósticos fueran útiles, todavía faltaría demostrar que incorporarlos a una estrategia genera valor económico.</p>
+<p>Son tres preguntas diferentes, y considero importante no confundirlas.</p>
+<p>Por eso decidí comenzar con un modelo relativamente sencillo: <strong>Exponentially Weighted Moving Average (EWMA)</strong>.</p>
+<p>En esta primera entrega utilizo datos diarios reales de SPY para estudiar cómo evoluciona la estimación de volatilidad, cómo responde después de movimientos extremos y qué ocurre durante periodos relativamente tranquilos.</p>
+<p>Mi intención no es demostrar que EWMA sea superior a otros modelos, sino entender qué información obtenemos de él, cuáles son sus limitaciones y qué preguntas debemos resolver antes de utilizar sus estimaciones para gestionar exposición y riesgo.</p>
+<p>La implementación completa y los experimentos están disponibles en la notebook que acompaña esta publicación.</p>
+<h2 id="cuando-el-mercado-se-mueve-violentamente">Cuando el mercado se mueve violentamente</h2>
+<p>Una de las primeras preguntas que quise responder fue cómo cambia el riesgo estimado después de un movimiento extremo de mercado.</p>
+<p>Utilizando datos diarios de SPY, identifiqué <strong>112 sesiones</strong> cuyos retornos absolutos superaron un umbral de <strong>2.30%</strong>, correspondiente al percentil 95 de la muestra histórica.</p>
+<p>Tras estos movimientos, el pronóstico de volatilidad EWMA para la sesión siguiente aumentó, en promedio, <strong>14.68% respecto a su nivel previo</strong>.</p>
+<p>Pero lo interesante no fue únicamente la reacción inmediata, sino lo que ocurrió después.</p>
+<p>A cinco y diez sesiones, la volatilidad estimada permanecía por encima del nivel anterior al evento. En lugar de disiparse rápidamente, el riesgo estimado continuaba elevado durante los episodios de turbulencia.</p>
+<p>Esto plantea una distinción importante: <strong>EWMA tiene memoria por construcción, pero los mercados también pueden experimentar movimientos extremos consecutivos</strong>. Cuando ambos fenómenos coinciden, el estimador puede permanecer elevado durante más tiempo del que sugeriría el efecto aislado de un único shock.</p>
+<div id="fig-ewma-shock-response" class="quarto-float quarto-figure quarto-figure-center" alt="Cambio porcentual medio y mediano de la volatilidad estimada por EWMA después de movimientos extremos de SPY.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-ewma-shock-response-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/volatility_targeting/01_ewma/ewma_shock_response.png" class="img-fluid" alt="Cambio porcentual medio y mediano de la volatilidad estimada por EWMA después de movimientos extremos de SPY.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ewma-shock-response-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Cambio porcentual medio y mediano de la volatilidad estimada por EWMA después de movimientos extremos de SPY. Las trayectorias reflejan tanto la memoria del estimador como los retornos observados posteriormente.
+</figcaption>
+</figure>
+</div>
+<p>Otra observación fue la diferencia entre media y mediana: unos pocos episodios especialmente intensos elevaban considerablemente el promedio.</p>
+<p>En otras palabras, EWMA no solo refleja el tamaño del último movimiento; su estimación también depende de la secuencia reciente de retornos.</p>
+<p>Sin embargo, nada de esto demuestra todavía que anticipe correctamente la volatilidad futura. Lo que hemos observado es cómo responde el estimador ante la historia que acaba de recibir.</p>
+<h2 id="qué-sucede-cuando-el-mercado-está-tranquilo">¿Qué sucede cuando el mercado está tranquilo?</h2>
+<p>Después de estudiar los movimientos extremos, quise observar el comportamiento contrario: ¿qué ocurre con EWMA cuando SPY atraviesa periodos de relativa calma?</p>
+<p>Para identificarlos, utilicé ventanas de <strong>20 sesiones</strong> y calculé el promedio de los retornos absolutos. Clasifiqué como tranquilas aquellas observaciones situadas en el 25% inferior de esta medida, equivalente a un promedio diario de movimientos de <strong>0.50% o menos</strong>.</p>
+<p>El resultado fue una diferencia considerable.</p>
+<p>Durante las <strong>553 sesiones tranquilas</strong>, la mediana de volatilidad anualizada estimada por EWMA fue de <strong>9.85%</strong>, frente al <strong>15.91%</strong> observado en las otras 1,653 sesiones.</p>
+<p>Pero la diferencia no estaba solamente en el nivel de volatilidad.</p>
+<p>Durante los periodos tranquilos, las estimaciones estaban mucho más concentradas y la media era prácticamente idéntica a la mediana. En el resto de la muestra, la media superaba considerablemente a la mediana, reflejando la influencia de episodios de turbulencia.</p>
+<div id="fig-ewma-calm-periods" class="quarto-float quarto-figure quarto-figure-center" alt="Distribución de la volatilidad anualizada estimada por EWMA durante periodos tranquilos y el resto de las sesiones de SPY.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-ewma-calm-periods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/volatility_targeting/01_ewma/ewma_calm_vs_other.png" class="img-fluid" alt="Distribución de la volatilidad anualizada estimada por EWMA durante periodos tranquilos y el resto de las sesiones de SPY.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ewma-calm-periods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Distribución de la volatilidad anualizada estimada por EWMA durante 553 sesiones identificadas retrospectivamente como tranquilas y 1,653 sesiones restantes de SPY.
+</figcaption>
+</figure>
+</div>
+<p>Esto muestra cómo EWMA refleja diferentes condiciones históricas de riesgo: sus estimaciones son menores y menos dispersas cuando los movimientos recientes han sido contenidos, mientras que los episodios extremos pueden elevar sustancialmente la distribución.</p>
+<p>Sin embargo, hay una distinción fundamental: <strong>identificamos los periodos tranquilos utilizando los movimientos históricos observados, no mediante una predicción anticipada del modelo</strong>.</p>
+<p>Por tanto, encontramos una relación descriptiva coherente, pero todavía no hemos demostrado que EWMA permita anticipar cuándo comenzará o terminará un periodo de calma.</p>
+<h2 id="lo-que-ewma-todavía-no-ha-demostrado">Lo que EWMA todavía no ha demostrado</h2>
+<p>EWMA nos permitió entender cómo evoluciona el riesgo estimado, cómo responde a movimientos extremos y por qué puede permanecer elevado después de un shock.</p>
+<p>Sin embargo, <strong>todavía no hemos demostrado capacidad predictiva ni justificado que utilizar estas estimaciones genere valor económico</strong>. Que un modelo funcione matemáticamente no significa que ayude a tomar mejores decisiones.</p>
+<p>Antes de avanzar hacia GARCH o modelos más sofisticados, quiero explorar esa diferencia. En la siguiente entrega evaluaré <strong>políticas de exposición y rebalanceo con bandas</strong>, incorporando costos, restricciones y benchmarks para investigar si utilizar EWMA mejora la gestión del riesgo o los resultados de inversión.</p>
+<p>Quizá descubramos que una política sencilla aporta más valor que un modelo complejo. O que, en determinadas condiciones, es mejor no intervenir.</p>
+<hr>
+<p><em>Los experimentos, cálculos y controles de esta entrega están disponibles en la notebook 01 de la serie Volatility Targeting.</em></p>
+<div class="article-resource-links" aria-label="Recursos de la notebook">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/volatility_target/01_rebalancing_policies" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/github.svg" alt=""><span>Repositorio y documentación · GitHub</span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/01_volatility_targeting.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span>Ejecutar notebook 01 · Google Colab</span></a></p>
+</div>
+
+
+</article><nav class="research-article-nav" aria-label="Navegación del artículo" data-previous-url="" data-previous-title="" data-next-url="" data-next-title="" data-github-url=""><a class="article-nav-link article-previous" hidden=""><span>Artículo anterior</span><strong></strong></a><a class="article-nav-link article-back" href="../../research.html">Volver a Investigación</a><a class="article-nav-link article-next" hidden=""><span>Artículo siguiente</span><strong></strong></a><a class="article-nav-link article-source" target="_blank" rel="noopener noreferrer" hidden="">Ver código ↗</a></nav></main><footer class="site-footer"><div><span class="footer-name">Adrián Vázquez.</span><p class="micro">Investigaciones, proyectos y notas en desarrollo.</p></div><span class="footer-symbol">∴</span></footer></div><script src="../../../assets/site.js"></script><script src="../../../assets/research-article.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

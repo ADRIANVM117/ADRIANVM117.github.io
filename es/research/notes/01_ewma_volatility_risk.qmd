@@ -1,0 +1,107 @@
+---
+title: "Antes de GARCH: qué nos enseña realmente EWMA sobre el riesgo"
+description: "Una investigación con datos reales de SPY sobre shocks, persistencia y periodos tranquilos, y sobre los límites de lo que podemos concluir a partir de un estimador de volatilidad."
+lang: es
+author: "Adrián Vázquez"
+type: note
+date: 2026-11-11
+status: completed
+topics: [volatility, EWMA, risk management, SPY]
+series: "Volatility Targeting"
+series_number: "01"
+header_details: "POR ADRIÁN VÁZQUEZ · 11 NOV 2026 · VOLATILITY · EWMA · RISK MANAGEMENT · SPY"
+translation_url: "../../../en/research/notes/01_ewma_volatility_risk.html"
+---
+
+<span class="article-header-details-source" data-header-details="{{< meta header_details >}}" hidden></span>
+<script>document.addEventListener('DOMContentLoaded',()=>{const source=document.querySelector('.article-header-details-source');const details=document.querySelector('.research-article-details');if(source&&details)details.textContent=source.dataset.headerDetails||'';});</script>
+
+<style>.research-article .article-resource-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.research-article .article-resource-links a{display:flex;align-items:center;gap:13px;min-height:54px;padding:10px 17px 10px 0;border-bottom:0;font:10px/1.55 'DM Mono',monospace;letter-spacing:.35px;color:var(--ink);transition:color .18s ease,opacity .18s ease}.research-article .article-resource-links a+a{border-left:1px solid var(--line);padding-left:18px}.research-article .article-resource-links a:hover{color:var(--accent);opacity:.78}.research-article .article-resource-links a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.research-article .article-resource-links img{width:22px;height:22px;flex:0 0 22px;object-fit:contain}.research-article .article-resource-links span{display:block}@media(max-width:720px){.research-article .article-resource-links{grid-template-columns:1fr}.research-article .article-resource-links a{min-height:50px;padding:11px 0}.research-article .article-resource-links a+a{border-left:0;border-top:1px solid var(--line);padding-left:0}}</style>
+
+<div class="article-resource-links" aria-label="Recursos de la notebook">
+<a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/volatility_target/01_rebalancing_policies" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/github.svg" alt=""><span>Repositorio y documentación · GitHub</span></a>
+<a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/01_volatility_targeting.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span>Ejecutar notebook 01 · Google Colab</span></a>
+</div>
+
+---
+
+## ¿Por qué comenzar con EWMA?
+
+Cuando comencé a estudiar modelos de volatilidad, me resultaba atractivo avanzar hacia metodologías cada vez más sofisticadas: GARCH, modelos de volatilidad estocástica y, eventualmente, técnicas de aprendizaje automático.
+
+Sin embargo, mientras desarrollaba los componentes de riesgo de mi propio Quant Desk, empecé a considerar una pregunta más importante: **¿qué necesito entender realmente sobre un modelo de volatilidad antes de utilizarlo para tomar decisiones de inversión?**
+
+Un modelo puede estar correctamente implementado y comportarse como esperamos matemáticamente. Eso no significa necesariamente que pronostique bien el riesgo futuro. Y aunque sus pronósticos fueran útiles, todavía faltaría demostrar que incorporarlos a una estrategia genera valor económico.
+
+Son tres preguntas diferentes, y considero importante no confundirlas.
+
+Por eso decidí comenzar con un modelo relativamente sencillo: **Exponentially Weighted Moving Average (EWMA)**.
+
+En esta primera entrega utilizo datos diarios reales de SPY para estudiar cómo evoluciona la estimación de volatilidad, cómo responde después de movimientos extremos y qué ocurre durante periodos relativamente tranquilos.
+
+Mi intención no es demostrar que EWMA sea superior a otros modelos, sino entender qué información obtenemos de él, cuáles son sus limitaciones y qué preguntas debemos resolver antes de utilizar sus estimaciones para gestionar exposición y riesgo.
+
+La implementación completa y los experimentos están disponibles en la notebook que acompaña esta publicación.
+
+## Cuando el mercado se mueve violentamente
+
+Una de las primeras preguntas que quise responder fue cómo cambia el riesgo estimado después de un movimiento extremo de mercado.
+
+Utilizando datos diarios de SPY, identifiqué **112 sesiones** cuyos retornos absolutos superaron un umbral de **2.30%**, correspondiente al percentil 95 de la muestra histórica.
+
+Tras estos movimientos, el pronóstico de volatilidad EWMA para la sesión siguiente aumentó, en promedio, **14.68% respecto a su nivel previo**.
+
+Pero lo interesante no fue únicamente la reacción inmediata, sino lo que ocurrió después.
+
+A cinco y diez sesiones, la volatilidad estimada permanecía por encima del nivel anterior al evento. En lugar de disiparse rápidamente, el riesgo estimado continuaba elevado durante los episodios de turbulencia.
+
+Esto plantea una distinción importante: **EWMA tiene memoria por construcción, pero los mercados también pueden experimentar movimientos extremos consecutivos**. Cuando ambos fenómenos coinciden, el estimador puede permanecer elevado durante más tiempo del que sugeriría el efecto aislado de un único shock.
+
+![Cambio porcentual medio y mediano de la volatilidad estimada por EWMA después de movimientos extremos de SPY. Las trayectorias reflejan tanto la memoria del estimador como los retornos observados posteriormente.](../../../img/volatility_targeting/01_ewma/ewma_shock_response.png){#fig-ewma-shock-response fig-alt="Cambio porcentual medio y mediano de la volatilidad estimada por EWMA después de movimientos extremos de SPY."}
+
+Otra observación fue la diferencia entre media y mediana: unos pocos episodios especialmente intensos elevaban considerablemente el promedio.
+
+En otras palabras, EWMA no solo refleja el tamaño del último movimiento; su estimación también depende de la secuencia reciente de retornos.
+
+Sin embargo, nada de esto demuestra todavía que anticipe correctamente la volatilidad futura. Lo que hemos observado es cómo responde el estimador ante la historia que acaba de recibir.
+
+## ¿Qué sucede cuando el mercado está tranquilo?
+
+Después de estudiar los movimientos extremos, quise observar el comportamiento contrario: ¿qué ocurre con EWMA cuando SPY atraviesa periodos de relativa calma?
+
+Para identificarlos, utilicé ventanas de **20 sesiones** y calculé el promedio de los retornos absolutos. Clasifiqué como tranquilas aquellas observaciones situadas en el 25% inferior de esta medida, equivalente a un promedio diario de movimientos de **0.50% o menos**.
+
+El resultado fue una diferencia considerable.
+
+Durante las **553 sesiones tranquilas**, la mediana de volatilidad anualizada estimada por EWMA fue de **9.85%**, frente al **15.91%** observado en las otras 1,653 sesiones.
+
+Pero la diferencia no estaba solamente en el nivel de volatilidad.
+
+Durante los periodos tranquilos, las estimaciones estaban mucho más concentradas y la media era prácticamente idéntica a la mediana. En el resto de la muestra, la media superaba considerablemente a la mediana, reflejando la influencia de episodios de turbulencia.
+
+![Distribución de la volatilidad anualizada estimada por EWMA durante 553 sesiones identificadas retrospectivamente como tranquilas y 1,653 sesiones restantes de SPY.](../../../img/volatility_targeting/01_ewma/ewma_calm_vs_other.png){#fig-ewma-calm-periods fig-alt="Distribución de la volatilidad anualizada estimada por EWMA durante periodos tranquilos y el resto de las sesiones de SPY."}
+
+Esto muestra cómo EWMA refleja diferentes condiciones históricas de riesgo: sus estimaciones son menores y menos dispersas cuando los movimientos recientes han sido contenidos, mientras que los episodios extremos pueden elevar sustancialmente la distribución.
+
+Sin embargo, hay una distinción fundamental: **identificamos los periodos tranquilos utilizando los movimientos históricos observados, no mediante una predicción anticipada del modelo**.
+
+Por tanto, encontramos una relación descriptiva coherente, pero todavía no hemos demostrado que EWMA permita anticipar cuándo comenzará o terminará un periodo de calma.
+
+## Lo que EWMA todavía no ha demostrado
+
+EWMA nos permitió entender cómo evoluciona el riesgo estimado, cómo responde a movimientos extremos y por qué puede permanecer elevado después de un shock.
+
+Sin embargo, **todavía no hemos demostrado capacidad predictiva ni justificado que utilizar estas estimaciones genere valor económico**. Que un modelo funcione matemáticamente no significa que ayude a tomar mejores decisiones.
+
+Antes de avanzar hacia GARCH o modelos más sofisticados, quiero explorar esa diferencia. En la siguiente entrega evaluaré **políticas de exposición y rebalanceo con bandas**, incorporando costos, restricciones y benchmarks para investigar si utilizar EWMA mejora la gestión del riesgo o los resultados de inversión.
+
+Quizá descubramos que una política sencilla aporta más valor que un modelo complejo. O que, en determinadas condiciones, es mejor no intervenir.
+
+---
+
+*Los experimentos, cálculos y controles de esta entrega están disponibles en la notebook 01 de la serie Volatility Targeting.*
+
+<div class="article-resource-links" aria-label="Recursos de la notebook">
+<a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/volatility_target/01_rebalancing_policies" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/github.svg" alt=""><span>Repositorio y documentación · GitHub</span></a>
+<a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/01_volatility_targeting.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span>Ejecutar notebook 01 · Google Colab</span></a>
+</div>
