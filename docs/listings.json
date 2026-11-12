@@ -1,16 +1,18 @@
 [
   {
-    "listing": "/en/research.html",
-    "items": [
-      "/en/research/projects/03_joint_resampling.html",
-      "/en/research/notes/01_ewma_volatility_risk.html"
-    ]
-  },
-  {
     "listing": "/es/research.html",
     "items": [
       "/es/research/projects/03_joint_resampling.html",
+      "/es/research/notes/02_rebalancing_policies.html",
       "/es/research/notes/01_ewma_volatility_risk.html"
+    ]
+  },
+  {
+    "listing": "/en/research.html",
+    "items": [
+      "/en/research/projects/03_joint_resampling.html",
+      "/en/research/notes/02_rebalancing_policies.html",
+      "/en/research/notes/01_ewma_volatility_risk.html"
     ]
   }
 ]

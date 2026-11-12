@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2089" height="753" viewBox="0 0 2089 753" role="img" aria-labelledby="title desc">
+  <title id="title">Causal backtesting engine</title>
+  <desc id="desc">An English localization of the approved causal backtesting-engine diagram. The original geometry, boxes, arrows, and feedback loop remain unchanged.</desc>
+  <image href="../backtest_engine_flow.png" width="2089" height="753"/>
+  <g fill="#fdf8f1">
+    <rect x="350" y="76" width="430" height="80" fill="#fdf7f1"/><rect x="1350" y="76" width="550" height="80" fill="#fef8f1"/>
+    <rect x="40" y="217" width="250" height="218" rx="14" fill="#fbf8f0"/><rect x="332" y="217" width="250" height="218" rx="14" fill="#faf5ec"/>
+    <rect x="622" y="217" width="238" height="218" rx="14" fill="#fdf7ee"/><rect x="1190" y="217" width="285" height="218" rx="14" fill="#fcf8f1"/>
+    <rect x="1483" y="217" width="260" height="218" rx="14" fill="#fdf8f1"/><rect x="1784" y="217" width="265" height="218" rx="14" fill="#fefbf6"/>
+    <rect x="900" y="217" width="247" height="218" rx="14" fill="#f5eee5"/>
+    <rect x="805" y="500" width="485" height="66" fill="#fef9f1"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <g fill="#6e5f4e" font-size="31" font-weight="400">
+      <text x="565" y="140">01 / SIGNAL &amp; DECISION</text>
+      <text x="1625" y="140">02 / EXECUTION &amp; PORTFOLIO</text>
+    </g>
+    <g fill="#111111" font-size="31" font-weight="700">
+      <text x="165" y="294">Data at</text><text x="165" y="334">Close t</text>
+      <text x="457" y="294">EWMA</text><text x="457" y="334">Volatility</text>
+      <text x="741" y="294">Target</text><text x="741" y="334">Weight</text>
+      <text x="1023" y="294">Rebalancing</text><text x="1023" y="334">Policy</text>
+      <text x="1332" y="294">Order</text><text x="1332" y="334">Creation</text>
+      <text x="1613" y="294">Simulated</text><text x="1613" y="334">Execution</text>
+      <text x="1916" y="294">Updated</text><text x="1916" y="334">Portfolio</text>
+    </g>
+    <g fill="#756350" font-size="25" font-weight="400">
+      <text x="165" y="398">SPY</text><text x="457" y="398">σ estimate</text><text x="741" y="398">Exposure</text>
+      <text x="1023" y="398">P0 · P1 · P2</text><text x="1332" y="398">Buy / sell</text>
+      <text x="1613" y="398">Fill / no-fill</text><text x="1916" y="398">Effective weight</text>
+      <text x="1047" y="544" font-size="29">Next Session → Repeat</text>
+    </g>
+  </g>
+</svg>

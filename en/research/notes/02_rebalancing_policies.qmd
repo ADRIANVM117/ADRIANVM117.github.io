@@ -1,0 +1,146 @@
+---
+title: "Designing a Causal Backtest for Volatility Targeting Policies"
+description: "From an EWMA signal to decisions, orders, and positions: what it takes to build a backtest that respects chronology and implementation constraints."
+lang: en
+author: "Adrián Vázquez"
+type: note
+date: 2026-11-12
+status: completed
+topics: ["volatility targeting", EWMA, backtesting, rebalancing, execution]
+series: "Volatility Targeting"
+series_number: "02"
+header_details: "BY ADRIÁN VÁZQUEZ · NOV 12, 2026 · VOLATILITY TARGETING · BACKTESTING · REBALANCING · EXECUTION"
+translation_url: "../../../es/research/notes/02_rebalancing_policies.html"
+---
+
+<span class="article-header-details-source" data-header-details="{{< meta header_details >}}" hidden></span>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const source = document.querySelector('.article-header-details-source');
+  const details = document.querySelector('.research-article-details');
+  if (source && details) details.textContent = source.dataset.headerDetails || '';
+});
+</script>
+
+<style>
+.research-article .article-resource-links{margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.research-article .article-resource-links>p{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
+.research-article .article-resource-links>p>a{display:flex;align-items:center;gap:13px;min-height:54px;padding:10px 17px 10px 0;border-bottom:0;font:10px/1.55 'DM Mono',monospace;letter-spacing:.35px;color:var(--ink);transition:color .18s ease,opacity .18s ease}
+.research-article .article-resource-links>p>a+a{border-left:1px solid var(--line);padding-left:18px}
+.research-article .article-resource-links>p>a:hover{color:var(--accent);opacity:.78}
+.research-article .article-resource-links>p>a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.research-article .article-resource-links>p>a img{width:22px;height:22px;flex:0 0 22px;object-fit:contain}
+.research-article .article-resource-copy{display:flex;flex-direction:column;gap:2px}
+.research-article .article-resource-title{font-weight:500;color:var(--ink)}
+.research-article .article-resource-source{font-size:9px;color:var(--muted);letter-spacing:.55px}
+@media(max-width:720px){.research-article .article-resource-links>p{grid-template-columns:1fr}.research-article .article-resource-links>p>a{min-height:50px;padding:11px 0}.research-article .article-resource-links>p>a+a{border-left:0;border-top:1px solid var(--line);padding-left:0}}
+</style>
+
+<div class="article-resource-links" aria-label="Notebook resources">
+  <a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/volatility_target/01_rebalancing_policies" target="_blank" rel="noopener noreferrer">
+    <img src="../../../assets/brands/github.svg" alt="">
+    <span class="article-resource-copy"><span class="article-resource-title">Repository &amp; Documentation</span><span class="article-resource-source">GitHub</span></span>
+  </a>
+  <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/02_rebalancing_policies.ipynb" target="_blank" rel="noopener noreferrer">
+    <img src="../../../assets/brands/google-colab.svg" alt="">
+    <span class="article-resource-copy"><span class="article-resource-title">Run Notebook 02</span><span class="article-resource-source">Google Colab</span></span>
+  </a>
+</div>
+
+In the first installment, I examined how EWMA responds to extreme movements and quiet periods. The next step seemed simple: use that estimate to define a target exposure, apply rebalancing bands, and compare policies.
+
+However, a more interesting problem emerged.
+
+**How could I know what would actually have happened if I had tried to apply those policies in every historical session?**
+
+A signal calculated at the close is not the same as an executed trade. The market may open at a different price, an order may not be filled, the portfolio accrues dividends, and costs affect available capital.
+
+What initially seemed like a simple rule became an exercise in chronology, execution, and accounting.
+
+This installment is precisely about that: **what it means to build a backtest that does not use future information and represents, under explicit assumptions, the decisions a strategy could have made.**
+
+## 1. From a Signal to an Executable Decision
+
+The first step was to transform the EWMA estimate into a desired exposure.
+
+I used a **12% annual** target-volatility rule to determine what proportion of the portfolio I should hold in SPY. When estimated volatility rises, I reduce the desired exposure; when it falls, I can increase it, without exceeding 100%.
+
+The rule is simple:
+
+$$
+w^*_{t+1|t}=\min\left(1,\frac{0.12}{\widehat{\sigma}_{t+1|t}}\right)
+$$
+
+But an important distinction appears here: **the target weight is not necessarily the weight my portfolio actually holds**.
+
+Effective exposure also depends on market movements, existing positions, available cash, and the trades that are actually executed.
+
+I therefore needed more than an allocation rule. I built an engine that connects the information available, rebalancing decisions, order preparation, simulated execution, and portfolio accounting.
+
+![From an EWMA signal to a simulated portfolio: causal flow of the backtesting engine used to evaluate exposure and rebalancing policies.](../../../img/volatility_targeting/02_rebalancing/en/backtest_engine_flow.svg){#fig-vt02-backtest-engine fig-alt="Causal-flow diagram from data at the close and EWMA volatility to target weight, rebalancing policy, order, simulated execution, and the updated portfolio."}
+
+The goal was not merely to calculate how much I should invest, but to represent what would have happened had I tried to put that decision into practice.
+
+## 2. Today's Close Is Not Tomorrow's Open
+
+One of the first problems I encountered was chronology. **Knowing a signal at the close of a session does not mean I can trade at that same price.**
+
+In my backtest, at the close of $t$ I observe returns, update EWMA, and calculate the target weight. With the available positions and cash, each policy decides whether it needs to rebalance and prepares its order.
+
+Execution occurs at the open of $t+1$, where conditions may be different.
+
+To approximate a real-world implementation, I used **Limit-on-Open (LOO)** orders for purchases and **Market-on-Open (MOO)** orders for sales. A purchase may not be executed if the opening price exceeds the limit price; when it is executed, the engine incorporates commissions and slippage.
+
+![Causal timeline of a target-volatility policy: decisions use information available through the close of session $t$, while execution is simulated at the open of $t+1$, subject to the model's conditions and constraints.](../../../img/volatility_targeting/02_rebalancing/en/causal_timeline.svg){#fig-vt02-causal-timeline fig-alt="Timeline from the close of session t to the open of t plus one, separating observed data, EWMA estimate, exposure decision, order, fill or no-fill, costs, and effective portfolio."}
+
+Here I understood that **a decision that is correct given the information available does not guarantee reaching the desired exposure**. Between those two things lie prices, orders, frictions, and constraints that the backtest needs to represent.
+
+This does not turn the simulation into a perfect market replica: for example, assuming a full fill when an LOO purchase meets its limit remains a simplification. But it does make it possible to distinguish what I would have decided from what my model assumes I would have executed.
+
+## 3. Three Policies, One Signal, Different Decisions
+
+Once the engine was built, I compared three rebalancing policies using exactly the same EWMA signal:
+
+- **P0 — Daily rebalancing:** seeks to adjust exposure toward the target weight in every session.
+- **P1 — ±5 percentage-point band:** allows some deviations before rebalancing.
+- **P2 — ±10 percentage-point band:** tolerates larger deviations and can therefore trade less frequently.
+
+The difference seems simple, but its operational consequences are important: **having the same target weight does not mean making the same decisions or ending with the same effective exposure**.
+
+To observe this, I selected a period of 100 historical sessions, from April 12 to September 2, 2022, using a criterion based on operational activity rather than policy returns.
+
+![Three rebalancing policies using the same EWMA signal. The evolution of the target weight and effective weights shows how bands modify operational decisions, executions, and tolerated deviations.](../../../img/volatility_targeting/02_rebalancing/rebalancing_policy_comparison.gif){#fig-vt02-policy-comparison fig-alt="Animation of 100 sessions with three panels for P0, P1, and P2. Each panel compares target and effective weights, marks executed rebalances, and shows a no-fill where applicable."}
+
+In this period, P1 executed **11 rebalances**, while P2 made **2**. We also observe one P1 order that did not execute.
+
+The GIF makes it possible to see something that a performance comparison would not show directly: bands reduce the need to intervene, but in exchange they allow the portfolio to remain further from the desired exposure.
+
+**Trading less does not necessarily mean trading better.** I still need to evaluate whether the costs avoided compensate for the risk deviations I accept.
+
+## 4. A More Realistic Backtest Does Not Guarantee a Profitable Strategy
+
+This notebook taught me that building a credible historical simulation involves much more than applying a signal to a historical return series.
+
+I need to distinguish what information was available, what decisions I could make, what orders I would have attempted to execute, and how those trades would actually affect my portfolio.
+
+The engine incorporates these differences through execution rules, costs, cash, and constraints. However, it remains a simulation with assumptions and simplifications, not a perfect reproduction of the market.
+
+And here a fundamental distinction emerges: **a policy trading less does not mean it manages risk better or produces better economic results**.
+
+For now, I have built an environment to investigate these questions, but I have not yet justified which policy adds more value.
+
+The next step will be to evaluate the differences with statistical and economic metrics, taking into account risk taken, costs, and relevant benchmarks.
+
+**Before asking which strategy wins, I need to make sure I am comparing decisions that I could actually have made.**
+
+<div class="article-resource-links" aria-label="Notebook resources">
+  <a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/volatility_target/01_rebalancing_policies" target="_blank" rel="noopener noreferrer">
+    <img src="../../../assets/brands/github.svg" alt="">
+    <span class="article-resource-copy"><span class="article-resource-title">Repository &amp; Documentation</span><span class="article-resource-source">GitHub</span></span>
+  </a>
+  <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/02_rebalancing_policies.ipynb" target="_blank" rel="noopener noreferrer">
+    <img src="../../../assets/brands/google-colab.svg" alt="">
+    <span class="article-resource-copy"><span class="article-resource-title">Run Notebook 02</span><span class="article-resource-source">Google Colab</span></span>
+  </a>
+</div>
