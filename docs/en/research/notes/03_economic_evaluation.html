@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrián Vázquez">
+<meta name="dcterms.date" content="2026-11-16">
+<meta name="description" content="An economic evaluation of three rebalancing policies built on the same EWMA signal.">
+
+<title>Costs, Growth, and Risk in Volatility Targeting Policies – Adrián Vázquez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-html-e82cabd1c1379058ebcaccc337c10230.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+
+<body>
+
+<div class="site-shell research-article-shell" data-language="en"><style>#title-block-header{display:none}.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style><header class="site-header"><a class="wordmark" href="../../../index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">☰</button><nav id="main-nav" class="navigation" aria-label="Primary navigation"><a class="navlink" href="../../../index.html">Home</a><a class="navlink current" href="../../research.html">Research</a><a class="navlink" href="../../projects.html">Projects</a><a class="navlink" href="../../writing.html">Writing</a><a class="navlink" href="../../about.html">About</a><a class="navlink" href="../../cv.html">CV &amp; Contact</a><div class="platform-links" aria-label="Professional platforms"><a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../../../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../../../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../../../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../../../assets/brands/medium.svg" alt=""></a></div></nav><div class="language-switch research-language-switch" data-translation-url="../../../es/research/notes/03_economic_evaluation.html"><a href="../../research.html" lang="en" class="active">EN</a><span>/</span><a class="research-other-language" href="../../../es/research.html" lang="es">ES</a><span class="translation-note">not translated</span></div></header><main class="inner-main research-article-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">Costs, Growth, and Risk in Volatility Targeting Policies</h1></header><article class="research-article"><header class="research-article-header"><div class="research-article-kicker"><span class="article-meta-item"><span class="article-meta-value">note</span></span><span class="article-meta-item article-series"><span class="article-meta-value">Volatility Targeting</span><span class="article-series-number">03</span></span></div><h1>Costs, Growth, and Risk in Volatility Targeting Policies</h1><p class="research-article-deck article-meta-item"><span class="article-meta-value">An economic evaluation of three rebalancing policies built on the same EWMA signal.</span></p><div class="research-article-details"><span class="article-meta-item">By <span class="article-meta-value">Adrián Vázquez
+</span></span><span class="article-meta-item">Published <span class="article-meta-value article-published-date"></span></span><span class="article-meta-item">Updated <span class="article-meta-value"></span></span><span class="article-meta-item">Status <span class="article-meta-value">completed</span></span><span class="article-meta-item article-topics"><span class="article-meta-value">Volatility Targeting
+
+Backtesting
+
+Rebalancing
+
+Portfolio Risk
+
+Economic Evaluation
+</span></span></div></header>
+
+<header id="title-block-header">
+
+<p class="author">Adrián Vázquez</p>
+
+<p class="date">2026-11-16</p>
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#five-portfolios-under-a-consistent-accounting-framework" id="toc-five-portfolios-under-a-consistent-accounting-framework">1. Five Portfolios Under a Consistent Accounting Framework</a></li>
+  <li><a href="#trading-less-is-not-enough-wealth-growth-and-benchmarks" id="toc-trading-less-is-not-enough-wealth-growth-and-benchmarks">2. Trading Less Is Not Enough: Wealth Growth and Benchmarks</a></li>
+  <li><a href="#the-cost-of-risk-volatility-and-drawdowns" id="toc-the-cost-of-risk-volatility-and-drawdowns">3. The Cost of Risk: Volatility and Drawdowns</a></li>
+  <li><a href="#lower-costs-do-not-necessarily-mean-better-decisions" id="toc-lower-costs-do-not-necessarily-mean-better-decisions">4. Lower Costs Do Not Necessarily Mean Better Decisions</a></li>
+  </ul>
+</nav>
+<p><span class="article-header-details-source" data-header-details="BY ADRIÁN VÁZQUEZ · NOV 16, 2026 · VOLATILITY TARGETING · BACKTESTING · REBALANCING · PORTFOLIO RISK · ECONOMIC EVALUATION" hidden=""></span></p>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const source = document.querySelector('.article-header-details-source');
+  const details = document.querySelector('.research-article-details');
+  if (source && details) details.textContent = source.dataset.headerDetails || '';
+});
+</script>
+<style>
+.research-article .article-resource-links{margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.research-article .article-resource-links>p{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
+.research-article .article-resource-links>p>a{display:flex;align-items:center;gap:13px;min-height:54px;padding:10px 17px 10px 0;border-bottom:0;font:10px/1.55 'DM Mono',monospace;letter-spacing:.35px;color:var(--ink);transition:color .18s ease,opacity .18s ease}
+.research-article .article-resource-links>p>a+a{border-left:1px solid var(--line);padding-left:18px}
+.research-article .article-resource-links>p>a:hover{color:var(--accent);opacity:.78}
+.research-article .article-resource-links>p>a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.research-article .article-resource-links>p>a img{width:22px;height:22px;flex:0 0 22px;object-fit:contain}
+.research-article .article-resource-copy{display:flex;flex-direction:column;gap:2px}
+.research-article .article-resource-title{font-weight:500;color:var(--ink)}
+.research-article .article-resource-source{font-size:9px;color:var(--muted);letter-spacing:.55px}
+@media(max-width:720px){.research-article .article-resource-links>p{grid-template-columns:1fr}.research-article .article-resource-links>p>a{min-height:50px;padding:11px 0}.research-article .article-resource-links>p>a+a{border-left:0;border-top:1px solid var(--line);padding-left:0}}
+</style>
+<div class="article-resource-links" aria-label="Notebook resources">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer"> <img src="../../../assets/brands/github.svg" alt=""> <span class="article-resource-copy"><span class="article-resource-title">Source Notebook</span><span class="article-resource-source">GitHub</span></span> </a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer"> <img src="../../../assets/brands/google-colab.svg" alt=""> <span class="article-resource-copy"><span class="article-resource-title">Run Notebook 03</span><span class="article-resource-source">Google Colab</span></span> </a></p>
+</div>
+<p>In the previous installment, I built a backtesting engine capable of translating a volatility signal into simulated decisions, orders, and positions. It was a necessary step before comparing investment policies: a strategy depends not only on its exposure rule, but also on how it is executed and the frictions it faces.</p>
+<p>With that infrastructure in place, the next question is more economic than mechanical: <strong>what happens when different policies use the same signal but rebalance at different frequencies?</strong></p>
+<p>Rebalancing bands appear attractive because they can reduce trading activity. However, trading less does not guarantee better outcomes. Less activity may mean lower costs, but it may also leave a portfolio further away from its desired exposure.</p>
+<p>In this installment, I compare three policies built on the same EWMA signal. The goal is not to declare a winner, but to understand the economic consequences of their decisions when they are evaluated under consistent accounting rules.</p>
+<div id="fig-vt03-cumulative-costs" class="quarto-float quarto-figure quarto-figure-center" alt="GIF showing cumulative executed trades and cumulative recorded trading costs for P0, P1, and P2 with a shared time cursor.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-vt03-cumulative-costs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/volatility_targeting/03_economic/en/cumulative_rebalancing_costs.gif" class="img-fluid" alt="GIF showing cumulative executed trades and cumulative recorded trading costs for P0, P1, and P2 with a shared time cursor.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vt03-cumulative-costs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Cumulative evolution of executed trades and recorded costs for three rebalancing policies built on the same EWMA signal.
+</figcaption>
+</figure>
+</div>
+<p>The operational difference is evident. But to understand its real significance, I also need to examine wealth growth and the risks experienced along the way.</p>
+<h2 id="five-portfolios-under-a-consistent-accounting-framework">1. Five Portfolios Under a Consistent Accounting Framework</h2>
+<p>To evaluate the economic consequences of rebalancing, I compared five portfolios under a homogeneous accounting framework.</p>
+<p>The first three use the same target-volatility signal:</p>
+<ul>
+<li><strong>P0 — Daily rebalancing:</strong> attempts to move exposure toward the target weight in every session.</li>
+<li><strong>P1 — ±5 pp band:</strong> rebalances when the effective-weight deviation exceeds five percentage points.</li>
+<li><strong>P2 — ±10 pp band:</strong> allows larger deviations before intervening.</li>
+</ul>
+<p>I also included two benchmarks: <strong>B1, Buy &amp; Hold SPY</strong>, which maintains an initial full position in the asset, and <strong>B2, 60% SPY / 40% cash</strong>, which maintains its initial allocation without subsequent rebalancing.</p>
+<p>These benchmarks provide economic reference points, but they do not pursue the same volatility target or necessarily assume equivalent risks.</p>
+<p>All portfolios share the same calendar, initial capital, valuation currency, and consistent accounting conventions. Their investment rules differ, but the methodology used to record positions, dividends, cash, and costs is comparable.</p>
+<p>The first thing I observed was a considerable operational divergence. <strong>P0 executed 1,547 trades</strong>, compared with <strong>263 for P1</strong> and <strong>115 for P2</strong>. Recorded costs also declined: from <strong>USD 1,278.52</strong> for P0 to <strong>USD 263.00</strong> and <strong>USD 115.00</strong>, respectively.</p>
+<p>These costs correspond to commissions and VAT. Slippage also affects portfolio economics, but it is already incorporated in execution prices.</p>
+<p>The initial interpretation favors bands: fewer trades and lower recorded costs. However, a policy can save on friction and still end with a less attractive wealth path. That is why I need to examine what happened to capital.</p>
+<h2 id="trading-less-is-not-enough-wealth-growth-and-benchmarks">2. Trading Less Is Not Enough: Wealth Growth and Benchmarks</h2>
+<p>Reducing rebalancing frequency has an evident operational benefit, but the important question is what happens to the wealth being managed.</p>
+<p>To investigate this, I built a wealth index for each portfolio using its net asset value (<em>NAV</em>) and the same initial-capital base. This makes it possible to observe how one unit of wealth would have evolved over the historical sample.</p>
+<p>NAV incorporates positions, cash, dividends, and the economic effects of simulated execution. Therefore, there is no need to subtract costs again or reconstruct returns using adjusted prices alone.</p>
+<div id="fig-vt03-normalized-wealth" class="quarto-float quarto-figure quarto-figure-center" alt="Normalized wealth chart from NAV for P0, P1, P2, Buy &amp; Hold SPY, and 60% SPY / 40% cash.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-vt03-normalized-wealth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/volatility_targeting/03_economic/en/normalized_wealth.png" class="img-fluid" alt="Normalized wealth chart from NAV for P0, P1, P2, Buy &amp; Hold SPY, and 60% SPY / 40% cash.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vt03-normalized-wealth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Normalized wealth evolution of the three volatility-targeting policies and the Buy &amp; Hold SPY and 60% SPY / 40% cash benchmarks under comparable accounting conventions.
+</figcaption>
+</figure>
+</div>
+<p>The results show differences that cannot be explained by the number of trades alone. <strong>P1 and P2 recorded slightly higher geometric growth than P0</strong> in this sample. However, this does not identify how much of the difference comes from lower costs and how much from the different exposures held along the way.</p>
+<p>I also observed that <strong>Buy &amp; Hold SPY ended with the highest cumulative wealth</strong>. But its strategy was fundamentally different: maintaining market exposure without attempting to adjust to a 12% volatility target.</p>
+<p>Comparing terminal capital alone could favor the alternative that assumed different risk. The 60% SPY / 40% cash benchmark provides another reference point, based on an initially moderate exposure that does not respond to changes in volatility.</p>
+<p>These comparisons make it possible to study the economic consequences of each policy, but they leave an open question: <strong>what losses and what volatility did we have to experience to obtain those outcomes?</strong></p>
+<h2 id="the-cost-of-risk-volatility-and-drawdowns">3. The Cost of Risk: Volatility and Drawdowns</h2>
+<p>Observing wealth growth is important, but it does not tell us how the journey unfolded. Two portfolios can end with similar outcomes while experiencing very different risks.</p>
+<p>To study this dimension, I evaluated realized volatility and historical <em>drawdowns</em> for the five alternatives. The former summarizes observed return variability; the latter shows how far each portfolio fell from the highest level of wealth it had reached up to that point.</p>
+<p>This distinction is especially relevant in volatility targeting. <strong>Estimating risk and adjusting exposure to pursue a target does not guarantee that realized volatility will match it exactly.</strong></p>
+<p>In the sample, <strong>P0 recorded annualized realized volatility of 11.89%</strong>, while P1 and P2 reached <strong>11.77% and 11.81%</strong>, respectively. All three were close to the 12% target, although this aggregate observation does not demonstrate that the bands provide the same degree of risk control over time.</p>
+<p>I also found differences in maximum losses from a historical high: <strong>−16.95% for P0, −16.32% for P1, and −16.05% for P2</strong>.</p>
+<div id="fig-vt03-historical-drawdowns" class="quarto-float quarto-figure quarto-figure-center" alt="Historical drawdown chart for P0, P1, P2, Buy &amp; Hold SPY, and 60% SPY / 40% cash.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-vt03-historical-drawdowns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/volatility_targeting/03_economic/en/historical_drawdowns.png" class="img-fluid" alt="Historical drawdown chart for P0, P1, P2, Buy &amp; Hold SPY, and 60% SPY / 40% cash.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vt03-historical-drawdowns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Evolution of the drawdowns of the three volatility-targeting policies and the two benchmarks. Each path shows the depth and persistence of losses relative to the historical high reached by its portfolio.
+</figcaption>
+</figure>
+</div>
+<p>The chart reveals something terminal wealth does not show: a loss does not end when the market stops falling. As long as capital remains below its previous high, the portfolio continues through a recovery period.</p>
+<p>In this research, the maximum-drawdown episodes of all five alternatives recovered within the sample. Even so, their differences in depth and duration show why risk should not be summarized solely by a terminal number.</p>
+<p>P1 and P2 recorded slightly lower volatility and maximum drawdown than P0. These are interesting results, but <strong>they still do not justify concluding that bands improve risk control</strong>.</p>
+<h2 id="lower-costs-do-not-necessarily-mean-better-decisions">4. Lower Costs Do Not Necessarily Mean Better Decisions</h2>
+<p>This research began with a simple question: if three policies use the same volatility estimate, what changes when we allow their portfolios to rebalance at different frequencies?</p>
+<p>The results show that bands can substantially reduce trading activity and implementation costs. In this sample, P1 and P2 also recorded slightly higher geometric growth and somewhat lower maximum drawdowns than P0.</p>
+<p>However, <strong>observing a favorable outcome is not the same as demonstrating that a policy is superior</strong>.</p>
+<p>Bands modify more than costs. They also change the exposures held along the way and how far a portfolio is allowed to move away from its desired allocation. Therefore, I cannot directly attribute differences in growth to savings in trading activity.</p>
+<p>This evaluation allowed me to move from studying how a policy is executed to investigating its economic consequences. But it also made the next problem clear: <strong>how much can we trust differences observed within a single historical path?</strong></p>
+<p>In the next installment, I will study their statistical uncertainty, the stability of the results, and tracking of the volatility target.</p>
+<p>Before choosing a policy for my Quant Desk, I need to distinguish what happened in the backtest from what I can actually infer from it.</p>
+<div class="article-resource-links" aria-label="Notebook resources">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer"> <img src="../../../assets/brands/github.svg" alt=""> <span class="article-resource-copy"><span class="article-resource-title">Source Notebook</span><span class="article-resource-source">GitHub</span></span> </a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer"> <img src="../../../assets/brands/google-colab.svg" alt=""> <span class="article-resource-copy"><span class="article-resource-title">Run Notebook 03</span><span class="article-resource-source">Google Colab</span></span> </a></p>
+</div>
+
+
+</article><nav class="research-article-nav" aria-label="Article navigation" data-previous-url="" data-previous-title="" data-next-url="" data-next-title="" data-github-url=""><a class="article-nav-link article-previous" hidden=""><span>Previous article</span><strong></strong></a><a class="article-nav-link article-back" href="../../research.html">Back to Research</a><a class="article-nav-link article-next" hidden=""><span>Next article</span><strong></strong></a><a class="article-nav-link article-source" target="_blank" rel="noopener noreferrer" hidden="">View source ↗</a></nav></main><footer class="site-footer"><div><span class="footer-name">Adrián Vázquez.</span><p class="micro">Research, projects and notes in progress.</p></div><span class="footer-symbol">∴</span></footer></div><script src="../../../assets/site.js"></script><script src="../../../assets/research-article.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
