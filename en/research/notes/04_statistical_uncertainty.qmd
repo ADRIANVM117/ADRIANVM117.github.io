@@ -1,0 +1,154 @@
+---
+title: "Statistical Uncertainty and the Limits of Evidence in Volatility Targeting"
+description: "Assessing growth, risk-target tracking, and uncertainty through block bootstrap."
+lang: en
+author: "Adrián Vázquez"
+type: note
+date: 2026-11-17
+status: completed
+topics: ["Volatility Targeting", "Statistical Inference", Bootstrap, "Risk Management", Backtesting]
+series: "Volatility Targeting"
+series_number: "04"
+header_details: "BY ADRIÁN VÁZQUEZ · NOV 17, 2026 · VOLATILITY TARGETING · STATISTICAL INFERENCE · BOOTSTRAP · RISK MANAGEMENT · BACKTESTING"
+translation_url: "../../../es/research/notes/04_statistical_uncertainty.html"
+---
+
+<span class="article-header-details-source" data-header-details="{{< meta header_details >}}" hidden></span>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const source = document.querySelector('.article-header-details-source');
+  const details = document.querySelector('.research-article-details');
+  if (source && details) details.textContent = source.dataset.headerDetails || '';
+});
+</script>
+
+<style>
+.research-article .article-resource-links{margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.research-article .article-resource-links>p{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
+.research-article .article-resource-links>p>a{display:flex;align-items:center;gap:13px;min-height:54px;padding:10px 17px 10px 0;border-bottom:0;font:10px/1.55 'DM Mono',monospace;letter-spacing:.35px;color:var(--ink);transition:color .18s ease,opacity .18s ease}
+.research-article .article-resource-links>p>a+a{border-left:1px solid var(--line);padding-left:18px}
+.research-article .article-resource-links>p>a:hover{color:var(--accent);opacity:.78}
+.research-article .article-resource-links>p>a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.research-article .article-resource-links>p>a img{width:22px;height:22px;flex:0 0 22px;object-fit:contain}
+.research-article .article-resource-copy{display:flex;flex-direction:column;gap:2px}
+.research-article .article-resource-title{font-weight:500;color:var(--ink)}
+.research-article .article-resource-source{font-size:9px;color:var(--muted);letter-spacing:.55px}
+@media(max-width:720px){.research-article .article-resource-links>p{grid-template-columns:1fr}.research-article .article-resource-links>p>a{min-height:50px;padding:11px 0}.research-article .article-resource-links>p>a+a{border-left:0;border-top:1px solid var(--line);padding-left:0}}
+</style>
+
+<div class="article-resource-links" aria-label="Notebook resources">
+  <a href="https://github.com/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer">
+    <img src="../../../assets/brands/github.svg" alt="">
+    <span class="article-resource-copy"><span class="article-resource-title">Research Notebook</span><span class="article-resource-source">GitHub</span></span>
+  </a>
+  <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer">
+    <img src="../../../assets/brands/google-colab.svg" alt="">
+    <span class="article-resource-copy"><span class="article-resource-title">Run Notebook</span><span class="article-resource-source">Google Colab</span></span>
+  </a>
+</div>
+
+In the previous installment, I evaluated the economic consequences of three rebalancing policies built on the same EWMA signal. The bands substantially reduced trading activity and costs, while their growth and risk outcomes showed relatively small differences from daily rebalancing.
+
+Until that point, the research described what had happened along one historical path.
+
+But a more difficult question emerged: **how much can we trust those differences before using them to make investment decisions?**
+
+A favorable backtest result does not necessarily represent a persistent advantage. It may depend on the particular conditions of the period analyzed, market variability, or choices made during the development of the research itself.
+
+In this installment, I examine the uncertainty around the observed differences and a second, equally important dimension: whether the bands preserved the risk control we were trying to achieve.
+
+## 1. Two Results Pointing in Different Directions
+
+The primary comparison in this research is P1, with a ±5 percentage-point band, against P0, which rebalances daily. P2, with a ±10 percentage-point band, is a secondary comparison.
+
+To evaluate their potential contribution, I used two complementary metrics.
+
+The first measures the **annualized log-growth differential**, constructed from daily portfolio returns. A positive value indicates greater observed growth relative to P0.
+
+The second measures the **mean absolute error (MAE) in tracking the 12% volatility target**, using 21-session rolling windows. In this case, a positive differential means that the policy moved further away from the desired risk level.
+
+This distinction reveals an important result: both bands recorded slightly higher log growth than P0, but also higher average tracking errors.
+
+![Observed differences in annualized log growth and tracking error for the 12% target for P1 and P2, using P0 as the reference.](../../../img/volatility_targeting/04_uncertainty/en/growth_vs_tracking_tradeoff.png){#fig-vt04-growth-tracking fig-alt="Two panels compare P1 and P2 with P0: positive annualized log-growth differences and higher mean absolute volatility-target tracking error."}
+
+Therefore, I am not simply looking for the policy that made the most money. I am examining whether the observed additional growth could justify the risk deviations we accepted.
+
+## 2. Why Temporal Dependence Matters
+
+One challenge when working with financial series is that observations are not always independent.
+
+Although daily returns may exhibit little autocorrelation, their volatility is persistent. In addition, our tracking measures use overlapping 21-session rolling windows, which introduces dependence among consecutive observations.
+
+To quantify uncertainty, I used a **date-paired circular block bootstrap**.
+
+Rather than resampling isolated days, the procedure selects consecutive segments of the differentials between policies. This preserves part of the temporal structure and keeps comparisons aligned over the same market days.
+
+I ran **2,000 resamples**, using 21-session blocks and a fixed seed to support reproducibility. I also repeated the analysis with 63-session blocks to assess how sensitive the intervals are to that methodological decision.
+
+![Diagram of the circular block bootstrap applied to date-paired daily differentials. Consecutive segments preserve part of the temporal dependence; block lengths of 21 and 63 sessions allow the sensitivity of the result to be studied.](../../../img/volatility_targeting/04_uncertainty/en/circular_block_bootstrap_scheme.png){#fig-vt04-circular-bootstrap fig-alt="Diagram of date-paired daily differentials, circular consecutive segments, and 21- and 63-session blocks used to estimate bootstrap intervals."}
+
+The method does not create new independent historical periods. Its intervals quantify uncertainty under the resampling assumptions and within the sample studied; they do not remove the limitations of having used these data earlier in model development.
+
+## 3. What Do Confidence Intervals Really Tell Us?
+
+Observed annualized log growth favored both bands relative to P0.
+
+For P1, the differential was **+0.573 percentage points**, with a 95% bootstrap interval of **[0.275, 0.874]** using 21-session blocks.
+
+P2 recorded **+0.552 percentage points**, with an interval of **[0.005, 1.067]**.
+
+Both intervals lay above zero, although P2's lower bound was particularly close to it.
+
+These results provide evidence favorable to incremental growth within the retrospective framework used. However, they do not demonstrate that the bands will retain that advantage in future data.
+
+Block length is also one of the decisions that conditions our inference. That is why it is important to compare the results obtained with 21 and 63 sessions rather than presenting a single interval as a definitive conclusion.
+
+And there is still the other side of the problem to examine: **if a policy showed higher growth, what happened to its ability to track the risk target?**
+
+## 4. A Statistically Detectable Deterioration Does Not Establish Its Economic Significance
+
+The volatility target was 12% annually. To evaluate tracking, I calculated each portfolio's realized volatility with 21-session rolling windows and measured its absolute distance from that target.
+
+Relative to P0, mean error increased by **0.077 percentage points for P1** and **0.303 percentage points for P2**.
+
+The bootstrap intervals for the MAE differential remained above zero for both policies and both block lengths. This strengthens the retrospective evidence of greater tracking error, but does not by itself establish whether that deterioration is economically acceptable.
+
+These differences indicate lower average tracking precision in the sample, but they do not by themselves determine whether the deterioration is economically acceptable.
+
+![Differences relative to P0 and bootstrap intervals for growth and volatility tracking, comparing 21- and 63-session blocks. The zero reference represents no average difference under each metric.](../../../img/volatility_targeting/04_uncertainty/en/bootstrap_intervals_growth_and_mae.png){#fig-vt04-bootstrap-intervals fig-alt="Two panels with point estimates and 95% bootstrap intervals for P1 and P2 versus P0 under 21- and 63-session blocks, for growth and tracking MAE."}
+
+Here a fundamental statistical distinction arises: **an interval that includes zero does not demonstrate that two policies are equivalent**.
+
+To claim that a band keeps risk control sufficiently close to P0, we would need to define in advance how much deterioration we are willing to accept and formally assess that non-inferiority condition.
+
+I did not set that margin before observing the results. Therefore, it would not be correct to conclude retrospectively that the bands preserve risk without a material deterioration.
+
+In addition, the 100% exposure cap can prevent the 12% target from being reached in certain periods, even when the policy follows its rules correctly.
+
+Risk tracking needs to be interpreted in light of both rebalancing decisions and the constraints of the system itself.
+
+## 5. A Research Candidate Is Not Yet a Validated Strategy
+
+The conclusion of this first stage of Volatility Targeting is more nuanced than it would appear from looking only at trades and costs.
+
+The rebalancing bands reduced operational friction and showed positive log-growth differentials in the sample. At the same time, they tolerated larger errors in tracking the volatility target.
+
+The bootstrap made it possible to quantify part of the uncertainty around those differences, but **it did not turn retrospective research into independent out-of-sample validation**.
+
+For now, I consider P1 and P2 candidates for further research, not policies authorized to trade real capital.
+
+This distinction will matter in the next stage. As I introduce GARCH, it will not be enough to obtain apparently better volatility forecasts: I will need to investigate whether that improvement changes our exposure decisions and produces economic benefits that withstand rigorous evaluation.
+
+**The next step is not to choose the backtest winner, but to improve the evidence used to make that decision.**
+
+<div class="article-resource-links" aria-label="Notebook resources">
+  <a href="https://github.com/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer">
+    <img src="../../../assets/brands/github.svg" alt="">
+    <span class="article-resource-copy"><span class="article-resource-title">Research Notebook</span><span class="article-resource-source">GitHub</span></span>
+  </a>
+  <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer">
+    <img src="../../../assets/brands/google-colab.svg" alt="">
+    <span class="article-resource-copy"><span class="article-resource-title">Run Notebook</span><span class="article-resource-source">Google Colab</span></span>
+  </a>
+</div>

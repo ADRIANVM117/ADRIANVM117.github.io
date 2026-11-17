@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrián Vázquez">
+<meta name="dcterms.date" content="2026-11-17">
+<meta name="description" content="Una evaluación de crecimiento, seguimiento del riesgo e incertidumbre mediante bootstrap por bloques.">
+
+<title>Incertidumbre estadística y límites de la evidencia en volatilidad objetivo – Adrián Vázquez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-html-e82cabd1c1379058ebcaccc337c10230.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+
+<body>
+
+<div class="site-shell research-article-shell" data-language="es"><style>#title-block-header{display:none}.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style><header class="site-header"><a class="wordmark" href="../../../index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Alternar navegación">☰</button><nav id="main-nav" class="navigation" aria-label="Navegación principal"><a class="navlink" href="../../../index.html">Inicio</a><a class="navlink current" href="../../research.html">Investigación</a><a class="navlink" href="../../projects.html">Proyectos</a><a class="navlink" href="../../writing.html">Escritura</a><a class="navlink" href="../../about.html">Sobre mí</a><a class="navlink" href="../../cv.html">CV y contacto</a><div class="platform-links" aria-label="Plataformas profesionales"><a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../../../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../../../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../../../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../../../assets/brands/medium.svg" alt=""></a></div></nav><div class="language-switch research-language-switch" data-translation-url="../../../en/research/notes/04_statistical_uncertainty.html"><a class="research-other-language" href="../../../en/research.html" lang="en">EN</a><span>/</span><a href="../../research.html" lang="es" class="active">ES</a><span class="translation-note">sin traducción</span></div></header><main class="inner-main research-article-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">Incertidumbre estadística y límites de la evidencia en volatilidad objetivo</h1></header><article class="research-article"><header class="research-article-header"><div class="research-article-kicker"><span class="article-meta-item"><span class="article-meta-value">note</span></span><span class="article-meta-item article-series"><span class="article-meta-value">Volatility Targeting</span><span class="article-series-number">04</span></span></div><h1>Incertidumbre estadística y límites de la evidencia en volatilidad objetivo</h1><p class="research-article-deck article-meta-item"><span class="article-meta-value">Una evaluación de crecimiento, seguimiento del riesgo e incertidumbre mediante bootstrap por bloques.</span></p><div class="research-article-details"><span class="article-meta-item">Por <span class="article-meta-value">Adrián Vázquez
+</span></span><span class="article-meta-item">Publicado <span class="article-meta-value article-published-date"></span></span><span class="article-meta-item">Actualizado <span class="article-meta-value"></span></span><span class="article-meta-item">Estado <span class="article-meta-value">completed</span></span><span class="article-meta-item article-topics"><span class="article-meta-value">Volatility Targeting
+
+Statistical Inference
+
+Bootstrap
+
+Risk Management
+
+Backtesting
+</span></span></div></header>
+
+<header id="title-block-header">
+
+<p class="author">Adrián Vázquez</p>
+
+<p class="date">2026-11-17</p>
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contenido</h2>
+   
+  <ul>
+  <li><a href="#dos-resultados-que-apuntan-en-direcciones-distintas" id="toc-dos-resultados-que-apuntan-en-direcciones-distintas">1. Dos resultados que apuntan en direcciones distintas</a></li>
+  <li><a href="#la-dependencia-temporal-también-importa" id="toc-la-dependencia-temporal-también-importa">2. La dependencia temporal también importa</a></li>
+  <li><a href="#qué-nos-dicen-realmente-los-intervalos-de-confianza" id="toc-qué-nos-dicen-realmente-los-intervalos-de-confianza">3. ¿Qué nos dicen realmente los intervalos de confianza?</a></li>
+  <li><a href="#un-deterioro-estadístico-no-determina-su-importancia-económica" id="toc-un-deterioro-estadístico-no-determina-su-importancia-económica">4. Un deterioro estadístico no determina su importancia económica</a></li>
+  <li><a href="#una-candidata-de-investigación-no-es-todavía-una-estrategia-validada" id="toc-una-candidata-de-investigación-no-es-todavía-una-estrategia-validada">5. Una candidata de investigación no es todavía una estrategia validada</a></li>
+  </ul>
+</nav>
+<p><span class="article-header-details-source" data-header-details="POR ADRIÁN VÁZQUEZ · 17 NOV 2026 · VOLATILITY TARGETING · STATISTICAL INFERENCE · BOOTSTRAP · RISK MANAGEMENT · BACKTESTING" hidden=""></span></p>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const source = document.querySelector('.article-header-details-source');
+  const details = document.querySelector('.research-article-details');
+  if (source && details) details.textContent = source.dataset.headerDetails || '';
+});
+</script>
+<style>
+.research-article .article-resource-links{margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.research-article .article-resource-links>p{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
+.research-article .article-resource-links>p>a{display:flex;align-items:center;gap:13px;min-height:54px;padding:10px 17px 10px 0;border-bottom:0;font:10px/1.55 'DM Mono',monospace;letter-spacing:.35px;color:var(--ink);transition:color .18s ease,opacity .18s ease}
+.research-article .article-resource-links>p>a+a{border-left:1px solid var(--line);padding-left:18px}
+.research-article .article-resource-links>p>a:hover{color:var(--accent);opacity:.78}
+.research-article .article-resource-links>p>a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.research-article .article-resource-links>p>a img{width:22px;height:22px;flex:0 0 22px;object-fit:contain}
+.research-article .article-resource-copy{display:flex;flex-direction:column;gap:2px}
+.research-article .article-resource-title{font-weight:500;color:var(--ink)}
+.research-article .article-resource-source{font-size:9px;color:var(--muted);letter-spacing:.55px}
+@media(max-width:720px){.research-article .article-resource-links>p{grid-template-columns:1fr}.research-article .article-resource-links>p>a{min-height:50px;padding:11px 0}.research-article .article-resource-links>p>a+a{border-left:0;border-top:1px solid var(--line);padding-left:0}}
+</style>
+<div class="article-resource-links" aria-label="Recursos de la notebook">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer"> <img src="../../../assets/brands/github.svg" alt=""> <span class="article-resource-copy"><span class="article-resource-title">Notebook de investigación</span><span class="article-resource-source">GitHub</span></span> </a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer"> <img src="../../../assets/brands/google-colab.svg" alt=""> <span class="article-resource-copy"><span class="article-resource-title">Ejecutar notebook</span><span class="article-resource-source">Google Colab</span></span> </a></p>
+</div>
+<p>En la entrega anterior evalué las consecuencias económicas de tres políticas de rebalanceo construidas sobre una misma señal EWMA. Las bandas redujeron considerablemente las operaciones y los costos, mientras que sus resultados de crecimiento y riesgo presentaron diferencias relativamente pequeñas frente al rebalanceo diario.</p>
+<p>Hasta ese momento, la investigación describía lo que había ocurrido en una trayectoria histórica.</p>
+<p>Pero apareció una pregunta más difícil: <strong>¿cuánto podemos confiar en esas diferencias antes de utilizarlas para tomar decisiones de inversión?</strong></p>
+<p>Un resultado favorable en un backtest no necesariamente representa una ventaja persistente. Puede depender de las condiciones particulares del periodo analizado, de la variabilidad de los mercados o de decisiones tomadas durante el propio desarrollo de la investigación.</p>
+<p>En esta entrega examino la incertidumbre de las diferencias observadas y una segunda dimensión igualmente importante: si las bandas preservaron el control de riesgo que intentábamos conseguir.</p>
+<h2 id="dos-resultados-que-apuntan-en-direcciones-distintas">1. Dos resultados que apuntan en direcciones distintas</h2>
+<p>La comparación principal de esta investigación es P1, con una banda de ±5 puntos porcentuales, frente a P0, que rebalancea diariamente. P2, con una banda de ±10 puntos, constituye una comparación secundaria.</p>
+<p>Para evaluar su posible contribución utilicé dos métricas complementarias.</p>
+<p>La primera mide el <strong>diferencial de crecimiento logarítmico anualizado</strong>, construido a partir de los rendimientos diarios de las carteras. Un valor positivo indica mayor crecimiento observado frente a P0.</p>
+<p>La segunda mide el <strong>error medio absoluto (MAE) de seguimiento del objetivo de volatilidad del 12%</strong>, utilizando ventanas móviles de 21 sesiones. En este caso, un diferencial positivo significa que la política se alejó más del riesgo deseado.</p>
+<p>Esta distinción revela un resultado importante: las dos bandas registraron un crecimiento logarítmico ligeramente superior al de P0, pero también errores medios de seguimiento mayores.</p>
+<div id="fig-vt04-growth-tracking" class="quarto-float quarto-figure quarto-figure-center" alt="Dos paneles comparan P1 y P2 frente a P0: crecimiento logarítmico anualizado positivo y mayor error medio absoluto de seguimiento del objetivo de volatilidad.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-vt04-growth-tracking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/volatility_targeting/04_uncertainty/growth_vs_tracking_tradeoff.png" class="img-fluid" alt="Dos paneles comparan P1 y P2 frente a P0: crecimiento logarítmico anualizado positivo y mayor error medio absoluto de seguimiento del objetivo de volatilidad.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vt04-growth-tracking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Diferencias observadas de crecimiento logarítmico anualizado y error de seguimiento del objetivo del 12% para P1 y P2, tomando P0 como referencia.
+</figcaption>
+</figure>
+</div>
+<p>Por tanto, no estamos buscando simplemente la política que ganó más dinero. Estamos investigando si el crecimiento adicional observado podría justificar las desviaciones de riesgo que aceptamos.</p>
+<h2 id="la-dependencia-temporal-también-importa">2. La dependencia temporal también importa</h2>
+<p>Una dificultad de trabajar con series financieras es que las observaciones no siempre son independientes.</p>
+<p>Aunque los rendimientos diarios pueden mostrar poca autocorrelación, su volatilidad presenta persistencia. Además, nuestras medidas de seguimiento utilizan ventanas móviles superpuestas de 21 sesiones, lo que introduce dependencia entre observaciones consecutivas.</p>
+<p>Para cuantificar la incertidumbre utilicé un <strong>bootstrap circular por bloques</strong>, emparejado por fecha.</p>
+<p>En lugar de remuestrear días aislados, el procedimiento selecciona segmentos consecutivos de los diferenciales entre políticas. Esto preserva parte de la estructura temporal y mantiene alineadas las comparaciones realizadas sobre los mismos días de mercado.</p>
+<p>Realicé <strong>2,000 remuestreos</strong>, utilizando bloques de 21 sesiones y una semilla fija para facilitar la reproducibilidad. También repetí el análisis con bloques de 63 sesiones para evaluar la sensibilidad de los intervalos a esta decisión metodológica.</p>
+<div id="fig-vt04-circular-bootstrap" class="quarto-float quarto-figure quarto-figure-center" alt="Diagrama de diferenciales diarios emparejados por fecha, segmentos consecutivos circulares y bloques de 21 y 63 sesiones usados para estimar intervalos bootstrap.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-vt04-circular-bootstrap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/volatility_targeting/04_uncertainty/circular_block_bootstrap_scheme.png" class="img-fluid" alt="Diagrama de diferenciales diarios emparejados por fecha, segmentos consecutivos circulares y bloques de 21 y 63 sesiones usados para estimar intervalos bootstrap.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vt04-circular-bootstrap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Esquema del bootstrap circular por bloques aplicado a diferenciales diarios emparejados. Los segmentos consecutivos conservan parte de la dependencia temporal; las longitudes de 21 y 63 sesiones permiten estudiar la sensibilidad del resultado.
+</figcaption>
+</figure>
+</div>
+<p>El método no crea nuevos periodos históricos independientes. Sus intervalos cuantifican incertidumbre bajo los supuestos del remuestreo y dentro de la muestra investigada, no eliminan las limitaciones de haber utilizado previamente esos datos durante el desarrollo del modelo.</p>
+<h2 id="qué-nos-dicen-realmente-los-intervalos-de-confianza">3. ¿Qué nos dicen realmente los intervalos de confianza?</h2>
+<p>El crecimiento logarítmico anualizado observado favoreció a ambas bandas frente a P0.</p>
+<p>Para P1, el diferencial fue de <strong>+0.573 puntos porcentuales</strong>, con un intervalo bootstrap del 95% de <strong>[0.275, 0.874]</strong> utilizando bloques de 21 sesiones.</p>
+<p>P2 registró <strong>+0.552 puntos porcentuales</strong>, con un intervalo de <strong>[0.005, 1.067]</strong>.</p>
+<p>Ambos intervalos quedaron por encima de cero, aunque el límite inferior de P2 fue particularmente cercano a él.</p>
+<p>Estos resultados proporcionan evidencia favorable al crecimiento incremental dentro del marco retrospectivo utilizado. Sin embargo, no demuestran que las bandas mantendrán esa ventaja en datos futuros.</p>
+<p>La longitud del bloque también forma parte de las decisiones que condicionan nuestra inferencia. Por eso es importante contrastar los resultados obtenidos con 21 y 63 sesiones, en lugar de presentar un único intervalo como una conclusión definitiva.</p>
+<p>Y aún falta examinar el otro lado del problema: <strong>si una política mostró mayor crecimiento, ¿qué ocurrió con su capacidad para seguir el objetivo de riesgo?</strong></p>
+<h2 id="un-deterioro-estadístico-no-determina-su-importancia-económica">4. Un deterioro estadístico no determina su importancia económica</h2>
+<p>El objetivo de volatilidad era del 12% anual. Para evaluar su seguimiento, calculé la volatilidad realizada de cada cartera mediante ventanas móviles de 21 sesiones y medí la distancia absoluta respecto a ese objetivo.</p>
+<p>Frente a P0, el error medio aumentó <strong>0.077 puntos porcentuales en P1</strong> y <strong>0.303 puntos porcentuales en P2</strong>.</p>
+<p>Los intervalos bootstrap del diferencial de MAE permanecieron por encima de cero para ambas políticas y ambas longitudes de bloque. Esto refuerza la evidencia retrospectiva de un mayor error de seguimiento, pero no establece por sí solo si ese deterioro es económicamente aceptable.</p>
+<p>Estas diferencias indican una menor precisión promedio de seguimiento en la muestra, pero no determinan por sí solas si el deterioro es económicamente aceptable.</p>
+<div id="fig-vt04-bootstrap-intervals" class="quarto-float quarto-figure quarto-figure-center" alt="Dos paneles con estimaciones puntuales e intervalos bootstrap del 95% para P1 y P2 frente a P0, bajo bloques de 21 y 63 sesiones, para crecimiento y MAE de seguimiento.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-vt04-bootstrap-intervals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/volatility_targeting/04_uncertainty/bootstrap_intervals_growth_and_mae.png" class="img-fluid" alt="Dos paneles con estimaciones puntuales e intervalos bootstrap del 95% para P1 y P2 frente a P0, bajo bloques de 21 y 63 sesiones, para crecimiento y MAE de seguimiento.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vt04-bootstrap-intervals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Diferenciales frente a P0 e intervalos bootstrap para crecimiento y seguimiento de volatilidad, comparando bloques de 21 y 63 sesiones. La referencia cero representa ausencia de diferencia promedio bajo cada métrica.
+</figcaption>
+</figure>
+</div>
+<p>Aquí aparece una distinción estadística fundamental: <strong>que un intervalo incluya cero no demuestra que dos políticas sean equivalentes</strong>.</p>
+<p>Para afirmar que una banda mantiene un control de riesgo suficientemente próximo al de P0 necesitaríamos definir previamente cuánto deterioro estamos dispuestos a aceptar y evaluar formalmente esa condición de no inferioridad.</p>
+<p>No establecí ese margen antes de observar los resultados. Por tanto, no sería correcto concluir retrospectivamente que las bandas preservan el riesgo sin un deterioro material.</p>
+<p>Además, el límite de exposición del 100% puede impedir alcanzar el objetivo del 12% en determinados periodos, incluso cuando la política sigue correctamente sus reglas.</p>
+<p>El seguimiento del riesgo necesita interpretarse considerando tanto las decisiones de rebalanceo como las restricciones del propio sistema.</p>
+<h2 id="una-candidata-de-investigación-no-es-todavía-una-estrategia-validada">5. Una candidata de investigación no es todavía una estrategia validada</h2>
+<p>La conclusión de esta primera etapa de Volatility Targeting es más matizada de lo que habría parecido al observar únicamente las operaciones y los costos.</p>
+<p>Las bandas de rebalanceo redujeron la fricción operativa y mostraron diferenciales positivos de crecimiento logarítmico en la muestra. Al mismo tiempo, toleraron mayores errores de seguimiento del objetivo de volatilidad.</p>
+<p>El bootstrap permitió cuantificar parte de la incertidumbre de esas diferencias, pero <strong>no transformó una investigación retrospectiva en una validación independiente fuera de muestra</strong>.</p>
+<p>Por ahora, considero P1 y P2 candidatas para continuar investigando, no políticas autorizadas para operar capital real.</p>
+<p>Esta distinción será importante en la siguiente etapa. Al incorporar GARCH, no bastará con obtener pronósticos de volatilidad aparentemente mejores: necesitaremos investigar si esa mejora modifica nuestras decisiones de exposición y produce beneficios económicos que resistan una evaluación rigurosa.</p>
+<p><strong>El siguiente paso no es elegir al ganador del backtest, sino mejorar la evidencia con la que tomaremos esa decisión.</strong></p>
+<div class="article-resource-links" aria-label="Recursos de la notebook">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer"> <img src="../../../assets/brands/github.svg" alt=""> <span class="article-resource-copy"><span class="article-resource-title">Notebook de investigación</span><span class="article-resource-source">GitHub</span></span> </a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/main/volatility_target/01_rebalancing_policies/03_economic_statistic_evaluation.ipynb" target="_blank" rel="noopener noreferrer"> <img src="../../../assets/brands/google-colab.svg" alt=""> <span class="article-resource-copy"><span class="article-resource-title">Ejecutar notebook</span><span class="article-resource-source">Google Colab</span></span> </a></p>
+</div>
+
+
+</article><nav class="research-article-nav" aria-label="Navegación del artículo" data-previous-url="" data-previous-title="" data-next-url="" data-next-title="" data-github-url=""><a class="article-nav-link article-previous" hidden=""><span>Artículo anterior</span><strong></strong></a><a class="article-nav-link article-back" href="../../research.html">Volver a Investigación</a><a class="article-nav-link article-next" hidden=""><span>Artículo siguiente</span><strong></strong></a><a class="article-nav-link article-source" target="_blank" rel="noopener noreferrer" hidden="">Ver código ↗</a></nav></main><footer class="site-footer"><div><span class="footer-name">Adrián Vázquez.</span><p class="micro">Investigaciones, proyectos y notas en desarrollo.</p></div><span class="footer-symbol">∴</span></footer></div><script src="../../../assets/site.js"></script><script src="../../../assets/research-article.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
