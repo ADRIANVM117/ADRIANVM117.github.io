@@ -38,3 +38,9 @@ secrets*.*
 /WhatsApp Image 2026-10-22 at 10.10.11 AM.jpeg
 
 /.quarto/
+
+# Approved source package for a local Writing draft; never publish the archive itself.
+/Blackjack_Writing_Publicacion_ES_V2.zip
+
+# Original Writing artwork; the cropped public asset lives under img/writing/blackjack/.
+/Blackjack_ Suerte y Estrategia.png

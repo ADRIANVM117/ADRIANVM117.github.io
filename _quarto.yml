@@ -5,10 +5,13 @@ project:
     - index.qmd
     - en/*.qmd
     - en/research/**/*.qmd
+    - en/writing/**/*.qmd
     - es/*.qmd
     - es/research/**/*.qmd
+    - es/writing/**/*.qmd
   resources:
     - assets/**
+    - img/writing/blackjack/**
 
 website:
   title: "Adrián Vázquez"

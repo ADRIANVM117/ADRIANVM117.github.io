@@ -1,0 +1,13 @@
+lang: es
+author: "Adrián Vázquez"
+description: ""
+date: ""
+type: essay
+topics: []
+header_details: ""
+title-block: false
+toc: false
+format:
+  html:
+    include-before-body: _includes/writing-header-with-reading.html
+    include-after-body: _includes/writing-footer.html

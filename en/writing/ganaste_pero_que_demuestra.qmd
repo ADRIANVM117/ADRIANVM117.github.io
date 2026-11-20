@@ -1,0 +1,113 @@
+---
+title: "You Won. But What Does It Prove?"
+description: "On blackjack, winning streaks, and our tendency to mistake outcomes for skill."
+lang: en
+author: "Adrián Vázquez"
+date: 2026-11-20
+type: "Writing / Essay"
+reading_time: "8–10 min read"
+topics: [Blackjack, Probability, Decision-Making, Cognitive Biases]
+header_details: "BY ADRIÁN VÁZQUEZ · NOV 20, 2026 · BLACKJACK · PROBABILITY · DECISION-MAKING · COGNITIVE BIASES"
+translation_url: "../../es/writing/ganaste_pero_que_demuestra.html"
+---
+
+## Three Nights, Three Wins
+
+On the first night, you leave the blackjack table with more money than you brought. You smile, cash in your chips, and think you got lucky.
+
+On the second night, you win again. This time, you proudly remember a few hands: the card you took at exactly the right moment, the hand where you chose to stand and the dealer went bust. You start talking about your strategy.
+
+On the third night, it happens again.
+
+Something has changed. You no longer feel so dependent on the cards. Maybe you have learned to read the table. Maybe your intuition is better than other players'. After all, **three winning nights in a row do not seem like a coincidence**.
+
+But imagine someone asks you:
+
+**How many games would you need to observe to know whether you play well or have simply been lucky?**
+
+## When Winning Makes Us Think We Are Right
+
+Blackjack is not simply about waiting for a favorable card. There are decisions to make: hit, stand, double down, or split a pair. Some are mathematically better than others depending on your hand and the dealer's upcard.
+
+Suppose you have twenty points. The sensible choice is to stand. But one night you decide to take another card, an ace appears, and you reach twenty-one. The play worked out. Does that mean it was a good decision?
+
+Not necessarily. **The outcome of a single hand does not, by itself, tell us whether the decision was sound**. You can also correctly stand on twenty and lose because the dealer reaches twenty-one.
+
+This is where a simple but powerful mathematical idea appears: *expected value*. It does not ask how much you won this time; it asks what average outcome a decision would produce if we could repeat comparable situations over and over again.
+
+It is possible to choose the best available alternative and lose. It is also possible to do something reckless and win. In blackjack, as in any game of chance, a decision and its outcome are not the same thing.
+
+Basic strategy aims to make decisions that are favorable on average under a specific set of rules. That does not mean it eliminates uncertainty or guarantees winnings against the casino.
+
+## The Mind Finds Patterns
+
+Now return to those three nights.
+
+It is tempting to build an explanation: *“I know when to take risks,”* *“I have a good hand,”* *“I finally understand how the game behaves.”* A story like that is much more satisfying than acknowledging how much chance may have mattered.
+
+Daniel Kahneman and Amos Tversky studied our tendency to place too much confidence in small samples. They called it the **belief in the law of small numbers**: we expect a handful of observations to faithfully represent a much broader phenomenon.
+
+But chance is not obliged to alternate wins and losses neatly. It can produce long streaks, puzzling sequences, and players who appear exceptional for a while.
+
+There is also something known as *outcome bias*: once we know that someone won, we tend to judge their decisions more favorably. And when they lose, we are inclined to judge them more harshly, even without knowing what alternatives were actually available to them.
+
+That is how a very human confusion begins: **“I won; therefore, I did the right thing.”**
+
+Can we test it without depending on any player's intuition?
+
+## One Hundred Players. One Strategy.
+
+Imagine one hundred people starting with **MXN 5,000** each. They all play blackjack under the same rules. They all follow the same basic strategy. The opening wager per hand is **MXN 100**, and no one counts cards.
+
+If someone doubles down or splits a hand, they follow the same rules as everyone else, provided their bankroll allows it. We have not made any players smarter or bolder. What changes is the deal of the cards.
+
+In our simulated experiment, a leader emerges after fifty rounds: **player 19**. Their MXN 5,000 has already become **MXN 7,350**.
+
+If we only saw that moment, we might attribute it to patience, instinct, or a special technique. We might say they were the best of them all.
+
+Yet we know one fact that dismantles that story: **all one hundred players use the same playing policy**.
+
+The question is no longer who seems to command the table. Now it is another one: **what will happen if we let the cards keep being dealt?**
+
+*Watch the simulation before continuing. Follow player 19's line and observe what happens to everyone else.*
+
+<p style="font:12px/1.6 'DM Mono', monospace; letter-spacing:.25px; color:var(--muted); margin:30px 0 -26px;">Video narrated in Spanish. An English version is planned.</p>
+
+<div class="writing-video">
+<video controls preload="metadata" poster="../../img/writing/blackjack/blackjack_v3_narracion_final-poster.jpg" aria-label="Spanish narrated simulation of one hundred blackjack trajectories">
+<source src="../../img/writing/blackjack/blackjack_v3_narracion_final.mp4" type="video/mp4" />
+Your browser does not support HTML5 video. You can download the video file to play it locally.
+</video>
+</div>
+
+## What the Cards Revealed
+
+After a maximum of one thousand rounds, player 19 finishes with **MXN 6,400**. They won MXN 1,400, but fell from first place to **twenty-ninth**.
+
+They did not end up bankrupt. And that makes the result more interesting: **the gain was real within the simulation; what had not been established was superior skill**.
+
+Among the one hundred players in the video, **41** finished with more money than they had at the start. **38** lost part of their bankroll but could still cover the minimum wager. The other **21** no longer had enough to keep playing; that does not necessarily mean their balance was zero.
+
+And how many managed to double their MXN 5,000? **Only nine finished with at least MXN 10,000**.
+
+The full experiment included **3,000 simulated players**—the one hundred in the video are part of that group. Of them, **203** finished with MXN 10,000 or more: approximately **6.8%**.
+
+That percentage is not a universal law of blackjack. It is an observed frequency under our rules, starting bankroll, wager size, and round limit. Changing any of those conditions can change the result. Nor does it mean that the remaining 93.2% lost everything: many finished with money, some even with gains, though without doubling it.
+
+## What Does Playing Well Really Mean?
+
+We do not want to conclude that skill does not exist in blackjack. **Choosing correctly among hitting, standing, doubling down, or splitting matters**. There are even specific circumstances in which a player can obtain a mathematical advantage.
+
+But a good strategy does not promise a win on every hand. And three winning nights, however spectacular they may seem, do not by themselves prove that we have discovered an edge.
+
+Perhaps the hardest part of chance is not enduring losses, but interpreting wins. We remember them, search for meaning in them, and sometimes turn them into a story about ourselves.
+
+The next time someone says they know how to win at blackjack, perhaps the most interesting question is not how much money they took home.
+
+**Perhaps it is: “What would we need to observe to know whether they really play better?”**
+
+---
+
+*Note on the experiment.* Reproducible blackjack simulation with six decks, a dealer standing on soft 17, a natural-blackjack payout of 3:2, a shared basic strategy, and no card counting. Doubling down and splitting are allowed according to the rules and the bankroll available. Starting bankroll: MXN 5,000; base wager: MXN 100; maximum horizon: 1,000 rounds per player. A trajectory ends earlier if its balance falls below the minimum wager. The one hundred trajectories in the video were selected by generation order, not by their outcomes. All figures represent simulated Mexican pesos.
+
+*References for further reading.* Daniel Kahneman, *Thinking, Fast and Slow*; Amos Tversky and Daniel Kahneman (1971), [“Belief in the Law of Small Numbers”](https://doi.org/10.1037/h0031322); Jonathan Baron and John C. Hershey (1988), [“Outcome Bias in Decision Evaluation”](https://doi.org/10.1037/0022-3514.54.4.569).

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrián Vázquez">
+<meta name="dcterms.date" content="2026-11-20">
+<meta name="description" content="On blackjack, winning streaks, and our tendency to mistake outcomes for skill.">
+
+<title>You Won. But What Does It Prove? – Adrián Vázquez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+
+
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-html-640605f58ae58ee79329c070719e555b.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+
+<body>
+
+<div class="site-shell writing-article-shell" data-language="en" data-page="writing"><style>#title-block-header{display:none}.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}.writing-article-kicker .writing-reading-time{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}.writing-book-icon{width:13px;height:13px;flex:0 0 auto}.writing-article-kicker .writing-kicker-separator{margin:0 1px}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}.writing-book-icon{width:12px;height:12px}}</style><header class="site-header"><a class="wordmark" href="../../index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">☰</button><nav id="main-nav" class="navigation" aria-label="Primary navigation"><a class="navlink" href="../../index.html">Home</a><a class="navlink" href="../research.html">Research</a><a class="navlink" href="../projects.html">Projects</a><a class="navlink current" href="../writing.html">Writing</a><a class="navlink" href="../about.html">About</a><a class="navlink" href="../cv.html">CV &amp; Contact</a><div class="platform-links" aria-label="Professional platforms"><a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../../assets/brands/medium.svg" alt=""></a></div></nav><div class="language-switch" aria-label="Language"><span class="active" lang="en">EN</span><span>/</span><a href="../../es/writing/ganaste_pero_que_demuestra.html" lang="es">ES</a></div></header><main class="inner-main writing-article-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">You Won. But What Does It Prove?</h1></header><article class="writing-article"><header class="writing-article-header"><div class="writing-article-kicker"><span class="writing-reading-time"><svg class="writing-book-icon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.75 4.75A2.75 2.75 0 0 1 5.5 2h4.25A2.25 2.25 0 0 1 12 4.25V21a2.25 2.25 0 0 0-2.25-2.25H5.5A2.75 2.75 0 0 0 2.75 21V4.75Z"></path><path d="M21.25 4.75A2.75 2.75 0 0 0 18.5 2h-4.25A2.25 2.25 0 0 0 12 4.25V21a2.25 2.25 0 0 1 2.25-2.25h4.25A2.75 2.75 0 0 1 21.25 21V4.75Z"></path></svg>8–10 min read</span><span class="writing-kicker-separator" aria-hidden="true">·</span><span>Writing / Essay</span></div><h1>You Won. But What Does It Prove?</h1><p class="writing-article-deck">On blackjack, winning streaks, and our tendency to mistake outcomes for skill.</p><div class="writing-article-details">BY ADRIÁN VÁZQUEZ · NOV 20, 2026 · BLACKJACK · PROBABILITY · DECISION-MAKING · COGNITIVE BIASES</div></header>
+
+<header id="title-block-header">
+<h1 class="title">You Won. But What Does It Prove?</h1>
+<p class="author">Adrián Vázquez</p>
+
+<p class="date">2026-11-20</p>
+</header>
+
+
+<h2 id="three-nights-three-wins">Three Nights, Three Wins</h2>
+<p>On the first night, you leave the blackjack table with more money than you brought. You smile, cash in your chips, and think you got lucky.</p>
+<p>On the second night, you win again. This time, you proudly remember a few hands: the card you took at exactly the right moment, the hand where you chose to stand and the dealer went bust. You start talking about your strategy.</p>
+<p>On the third night, it happens again.</p>
+<p>Something has changed. You no longer feel so dependent on the cards. Maybe you have learned to read the table. Maybe your intuition is better than other players’. After all, <strong>three winning nights in a row do not seem like a coincidence</strong>.</p>
+<p>But imagine someone asks you:</p>
+<p><strong>How many games would you need to observe to know whether you play well or have simply been lucky?</strong></p>
+<h2 id="when-winning-makes-us-think-we-are-right">When Winning Makes Us Think We Are Right</h2>
+<p>Blackjack is not simply about waiting for a favorable card. There are decisions to make: hit, stand, double down, or split a pair. Some are mathematically better than others depending on your hand and the dealer’s upcard.</p>
+<p>Suppose you have twenty points. The sensible choice is to stand. But one night you decide to take another card, an ace appears, and you reach twenty-one. The play worked out. Does that mean it was a good decision?</p>
+<p>Not necessarily. <strong>The outcome of a single hand does not, by itself, tell us whether the decision was sound</strong>. You can also correctly stand on twenty and lose because the dealer reaches twenty-one.</p>
+<p>This is where a simple but powerful mathematical idea appears: <em>expected value</em>. It does not ask how much you won this time; it asks what average outcome a decision would produce if we could repeat comparable situations over and over again.</p>
+<p>It is possible to choose the best available alternative and lose. It is also possible to do something reckless and win. In blackjack, as in any game of chance, a decision and its outcome are not the same thing.</p>
+<p>Basic strategy aims to make decisions that are favorable on average under a specific set of rules. That does not mean it eliminates uncertainty or guarantees winnings against the casino.</p>
+<h2 id="the-mind-finds-patterns">The Mind Finds Patterns</h2>
+<p>Now return to those three nights.</p>
+<p>It is tempting to build an explanation: <em>“I know when to take risks,”</em> <em>“I have a good hand,”</em> <em>“I finally understand how the game behaves.”</em> A story like that is much more satisfying than acknowledging how much chance may have mattered.</p>
+<p>Daniel Kahneman and Amos Tversky studied our tendency to place too much confidence in small samples. They called it the <strong>belief in the law of small numbers</strong>: we expect a handful of observations to faithfully represent a much broader phenomenon.</p>
+<p>But chance is not obliged to alternate wins and losses neatly. It can produce long streaks, puzzling sequences, and players who appear exceptional for a while.</p>
+<p>There is also something known as <em>outcome bias</em>: once we know that someone won, we tend to judge their decisions more favorably. And when they lose, we are inclined to judge them more harshly, even without knowing what alternatives were actually available to them.</p>
+<p>That is how a very human confusion begins: <strong>“I won; therefore, I did the right thing.”</strong></p>
+<p>Can we test it without depending on any player’s intuition?</p>
+<h2 id="one-hundred-players.-one-strategy.">One Hundred Players. One Strategy.</h2>
+<p>Imagine one hundred people starting with <strong>MXN 5,000</strong> each. They all play blackjack under the same rules. They all follow the same basic strategy. The opening wager per hand is <strong>MXN 100</strong>, and no one counts cards.</p>
+<p>If someone doubles down or splits a hand, they follow the same rules as everyone else, provided their bankroll allows it. We have not made any players smarter or bolder. What changes is the deal of the cards.</p>
+<p>In our simulated experiment, a leader emerges after fifty rounds: <strong>player 19</strong>. Their MXN 5,000 has already become <strong>MXN 7,350</strong>.</p>
+<p>If we only saw that moment, we might attribute it to patience, instinct, or a special technique. We might say they were the best of them all.</p>
+<p>Yet we know one fact that dismantles that story: <strong>all one hundred players use the same playing policy</strong>.</p>
+<p>The question is no longer who seems to command the table. Now it is another one: <strong>what will happen if we let the cards keep being dealt?</strong></p>
+<p><em>Watch the simulation before continuing. Follow player 19’s line and observe what happens to everyone else.</em></p>
+<p style="font:12px/1.6 'DM Mono', monospace; letter-spacing:.25px; color:var(--muted); margin:30px 0 -26px;">
+Video narrated in Spanish. An English version is planned.
+</p>
+<div class="writing-video">
+<video controls="" preload="metadata" poster="../../img/writing/blackjack/blackjack_v3_narracion_final-poster.jpg" aria-label="Spanish narrated simulation of one hundred blackjack trajectories">
+<source src="../../img/writing/blackjack/blackjack_v3_narracion_final.mp4" type="video/mp4">
+Your browser does not support HTML5 video. You can download the video file to play it locally.
+</video>
+</div>
+<h2 id="what-the-cards-revealed">What the Cards Revealed</h2>
+<p>After a maximum of one thousand rounds, player 19 finishes with <strong>MXN 6,400</strong>. They won MXN 1,400, but fell from first place to <strong>twenty-ninth</strong>.</p>
+<p>They did not end up bankrupt. And that makes the result more interesting: <strong>the gain was real within the simulation; what had not been established was superior skill</strong>.</p>
+<p>Among the one hundred players in the video, <strong>41</strong> finished with more money than they had at the start. <strong>38</strong> lost part of their bankroll but could still cover the minimum wager. The other <strong>21</strong> no longer had enough to keep playing; that does not necessarily mean their balance was zero.</p>
+<p>And how many managed to double their MXN 5,000? <strong>Only nine finished with at least MXN 10,000</strong>.</p>
+<p>The full experiment included <strong>3,000 simulated players</strong>—the one hundred in the video are part of that group. Of them, <strong>203</strong> finished with MXN 10,000 or more: approximately <strong>6.8%</strong>.</p>
+<p>That percentage is not a universal law of blackjack. It is an observed frequency under our rules, starting bankroll, wager size, and round limit. Changing any of those conditions can change the result. Nor does it mean that the remaining 93.2% lost everything: many finished with money, some even with gains, though without doubling it.</p>
+<h2 id="what-does-playing-well-really-mean">What Does Playing Well Really Mean?</h2>
+<p>We do not want to conclude that skill does not exist in blackjack. <strong>Choosing correctly among hitting, standing, doubling down, or splitting matters</strong>. There are even specific circumstances in which a player can obtain a mathematical advantage.</p>
+<p>But a good strategy does not promise a win on every hand. And three winning nights, however spectacular they may seem, do not by themselves prove that we have discovered an edge.</p>
+<p>Perhaps the hardest part of chance is not enduring losses, but interpreting wins. We remember them, search for meaning in them, and sometimes turn them into a story about ourselves.</p>
+<p>The next time someone says they know how to win at blackjack, perhaps the most interesting question is not how much money they took home.</p>
+<p><strong>Perhaps it is: “What would we need to observe to know whether they really play better?”</strong></p>
+<hr>
+<p><em>Note on the experiment.</em> Reproducible blackjack simulation with six decks, a dealer standing on soft 17, a natural-blackjack payout of 3:2, a shared basic strategy, and no card counting. Doubling down and splitting are allowed according to the rules and the bankroll available. Starting bankroll: MXN 5,000; base wager: MXN 100; maximum horizon: 1,000 rounds per player. A trajectory ends earlier if its balance falls below the minimum wager. The one hundred trajectories in the video were selected by generation order, not by their outcomes. All figures represent simulated Mexican pesos.</p>
+<p><em>References for further reading.</em> Daniel Kahneman, <em>Thinking, Fast and Slow</em>; Amos Tversky and Daniel Kahneman (1971), <a href="https://doi.org/10.1037/h0031322">“Belief in the Law of Small Numbers”</a>; Jonathan Baron and John C. Hershey (1988), <a href="https://doi.org/10.1037/0022-3514.54.4.569">“Outcome Bias in Decision Evaluation”</a>.</p>
+
+
+</article></main><footer class="site-footer"><div><span class="footer-name">Adrián Vázquez.</span><p class="micro">Research, projects and notes in progress.</p></div><span class="footer-symbol">∴</span></footer></div><script src="../../assets/site.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

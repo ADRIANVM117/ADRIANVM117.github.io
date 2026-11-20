@@ -1,6 +1,6 @@
 from pathlib import Path
 from html import escape
-from shutil import copy2
+from shutil import copy2, copytree
 root=Path(__file__).parent
 site_name='Adrián Vázquez'
 pages=['index','research','projects','writing','about','cv']
@@ -62,6 +62,13 @@ def writingcards(lang):
   out+=f'<article class="writing-item"><div class="micro muted">0{i+1} / {cat}</div><h3>{title}</h3><p>{desc}</p><span class="stub">{d["empty"]}</span></article>'
  return out+'</div>'
 
+def published_writing(lang):
+ if lang == 'es':
+  return '''<div class="writing-feature"><article class="writing-item writing-feature-copy"><div class="micro muted">01 / ENSAYO</div><h3><a class="no-external" href="writing/ganaste_pero_que_demuestra.html">Ganaste. ¿Pero qué demuestra?</a></h3><p>Sobre el blackjack, las rachas de suerte y nuestra facilidad para confundir los resultados con la habilidad.</p><a class="end-link" href="writing/ganaste_pero_que_demuestra.html">Leer ensayo ↗</a></article><div class="writing-feature-art"><img src="../img/writing/blackjack/blackjack-writing-illustration.png" alt="Cartas de blackjack y fichas sobre una mesa de juego"></div></div>'''
+ if lang == 'en':
+  return '''<div class="writing-feature"><article class="writing-item writing-feature-copy"><div class="micro muted">01 / ESSAY</div><h3><a class="no-external" href="writing/ganaste_pero_que_demuestra.html">You Won. But What Does It Prove?</a></h3><p>On blackjack, winning streaks, and our tendency to mistake outcomes for skill.</p><a class="end-link" href="writing/ganaste_pero_que_demuestra.html">Read essay ↗</a></article><div class="writing-feature-art"><img src="../img/writing/blackjack/blackjack-writing-illustration.png" alt="Blackjack cards and casino chips on a gaming table"></div></div>'''
+ return None
+
 def featured_research(lang):
  label, title, description=data[lang]['featured']
  href=f'research/projects/03_joint_resampling.html'
@@ -90,7 +97,8 @@ def inner(lang, page):
  if page=='projects':
   content=sectionhead('01',d['selected'],'PROJECTS')+f'<div class="two-column-prose"><h2>{d["projects_empty"]}</h2></div>'
  elif page=='writing':
-  content=sectionhead('01',d['writing'],'WRITING')+f'<div class="two-column-prose"><h2>{d["writing_empty"]}</h2></div>'
+  published=published_writing(lang)
+  content=sectionhead('01',d['writing'],'WRITING')+(published if published else f'<div class="two-column-prose"><h2>{d["writing_empty"]}</h2></div>')
  elif page=='about':
   content=f'''<div class="two-column-prose"><h2>{d['blurb']}</h2><div><p>{d['abouttext']}</p><p>{d['intro']}</p><div class="tag-row"><span>Actuarial science</span><span>Research</span><span>Python</span><span>Markets</span></div></div></div>'''
  else:
@@ -117,4 +125,20 @@ preview_backgrounds=preview_assets/'backgrounds'
 preview_backgrounds.mkdir(exist_ok=True)
 for asset in (root/'assets'/'backgrounds').glob('*.svg'):
  copy2(asset,preview_backgrounds/asset.name)
+preview_brands=preview_assets/'brands'
+preview_brands.mkdir(exist_ok=True)
+for asset in (root/'assets'/'brands').glob('*'):
+ copy2(asset,preview_brands/asset.name)
+# Keep the independent static preview aligned with the approved Writing essay.
+# Quarto renders the article itself; this copies that local render and its media
+# only when the source exists, so the core generator remains usable before it.
+for writing_lang in ('en','es'):
+ writing_preview_source=root/'docs'/writing_lang/'writing'/'ganaste_pero_que_demuestra.html'
+ if writing_preview_source.exists():
+  preview_writing=root/'preview'/writing_lang/'writing'
+  preview_writing.mkdir(parents=True,exist_ok=True)
+  copy2(writing_preview_source,preview_writing/'ganaste_pero_que_demuestra.html')
+writing_media=root/'img'/'writing'/'blackjack'
+if writing_media.exists():
+ copytree(writing_media,root/'preview'/'img'/'writing'/'blackjack',dirs_exist_ok=True)
 print('Created bilingual QMD and preview pages')
