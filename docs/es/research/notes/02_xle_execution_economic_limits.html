@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrián Vázquez">
+<meta name="dcterms.date" content="2026-11-24">
+<meta name="description" content="De una señal idealizada a una cartera simulada: qué cambia cuando incorporamos precios de apertura, restricciones de capital y fricciones de ejecución.">
+
+<title>De Factor Momentum a XLE: señal long/cash, ejecución y límites económicos – Adrián Vázquez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-html-e82cabd1c1379058ebcaccc337c10230.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+
+<body>
+
+<div class="site-shell research-article-shell" data-language="es"><style>#title-block-header{display:none}.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style><header class="site-header"><a class="wordmark" href="../../../index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Alternar navegación">☰</button><nav id="main-nav" class="navigation" aria-label="Navegación principal"><a class="navlink" href="../../../index.html">Inicio</a><a class="navlink current" href="../../research.html">Investigación</a><a class="navlink" href="../../projects.html">Proyectos</a><a class="navlink" href="../../writing.html">Escritura</a><a class="navlink" href="../../about.html">Sobre mí</a><a class="navlink" href="../../cv.html">CV y contacto</a><div class="platform-links" aria-label="Plataformas profesionales"><a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../../../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../../../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../../../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../../../assets/brands/medium.svg" alt=""></a></div></nav><div class="language-switch research-language-switch" data-translation-url="../../../en/research/notes/02_xle_execution_economic_limits.html"><a class="research-other-language" href="../../../en/research.html" lang="en">EN</a><span>/</span><a href="../../research.html" lang="es" class="active">ES</a><span class="translation-note">sin traducción</span></div></header><main class="inner-main research-article-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">De Factor Momentum a XLE: señal long/cash, ejecución y límites económicos</h1></header><article class="research-article"><header class="research-article-header"><div class="research-article-kicker"><span class="article-meta-item"><span class="article-meta-value">note</span></span><span class="article-meta-item article-series"><span class="article-meta-value">Factor Momentum</span><span class="article-series-number">02</span></span></div><h1>De Factor Momentum a XLE: señal long/cash, ejecución y límites económicos</h1><p class="research-article-deck article-meta-item"><span class="article-meta-value">De una señal idealizada a una cartera simulada: qué cambia cuando incorporamos precios de apertura, restricciones de capital y fricciones de ejecución.</span></p><div class="research-article-details"><span class="article-meta-item">Por <span class="article-meta-value">Adrián Vázquez
+</span></span><span class="article-meta-item">Publicado <span class="article-meta-value article-published-date"></span></span><span class="article-meta-item">Actualizado <span class="article-meta-value"></span></span><span class="article-meta-item">Estado <span class="article-meta-value">completed</span></span><span class="article-meta-item article-topics"><span class="article-meta-value">Factor Momentum
+
+Systematic Strategies
+
+Execution
+
+Portfolio Risk
+</span></span></div></header>
+
+<header id="title-block-header">
+
+<p class="author">Adrián Vázquez</p>
+
+<p class="date">2026-11-24</p>
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contenido</h2>
+   
+  <ul>
+  <li><a href="#de-una-señal-a-una-cartera-posible" id="toc-de-una-señal-a-una-cartera-posible">1. De una señal a una cartera posible</a></li>
+  <li><a href="#una-misma-señal-resultados-distintos" id="toc-una-misma-señal-resultados-distintos">2. Una misma señal, resultados distintos</a></li>
+  <li><a href="#el-costo-económico-de-operar" id="toc-el-costo-económico-de-operar">3. El costo económico de operar</a></li>
+  <li><a href="#la-fragilidad-frente-a-las-fricciones" id="toc-la-fragilidad-frente-a-las-fricciones">4. La fragilidad frente a las fricciones</a></li>
+  <li><a href="#una-simulación-favorable-todavía-no-demuestra-una-ventaja-de-inversión" id="toc-una-simulación-favorable-todavía-no-demuestra-una-ventaja-de-inversión">5. Una simulación favorable todavía no demuestra una ventaja de inversión</a></li>
+  </ul>
+</nav>
+<p><span class="article-header-details-source" data-header-details="POR ADRIÁN VÁZQUEZ · 24 NOV 2026 · FACTOR MOMENTUM · SYSTEMATIC STRATEGIES · EXECUTION · PORTFOLIO RISK" hidden=""></span></p>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const source = document.querySelector('.article-header-details-source');
+  const details = document.querySelector('.research-article-details');
+  if (source && details) details.textContent = source.dataset.headerDetails || '';
+  const kicker = document.querySelector('.research-article-kicker');
+  if (kicker && !kicker.querySelector('.article-reading-time')) {
+    const readingTime = document.createElement('span');
+    readingTime.className = 'article-reading-time';
+    readingTime.innerHTML = '<svg class="writing-book-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.75 4.75A2.75 2.75 0 0 1 5.5 2h4.25A2.25 2.25 0 0 1 12 4.25V21a2.25 2.25 0 0 0-2.25-2.25H5.5A2.75 2.75 0 0 0 2.75 21V4.75Z"/><path d="M21.25 4.75A2.75 2.75 0 0 0 18.5 2h-4.25A2.25 2.25 0 0 0 12 4.25V21a2.25 2.25 0 0 1 2.25-2.25h4.25A2.75 2.75 0 0 1 21.25 21V4.75Z"/></svg><span>10 min</span>';
+    kicker.append(readingTime);
+  }
+});
+</script>
+<style>
+.research-article-kicker .article-reading-time{display:inline-flex;align-items:center;gap:6px;color:var(--muted);white-space:nowrap}.research-article-kicker .writing-book-icon{width:13px;height:13px;flex:0 0 auto}@media(max-width:720px){.research-article-kicker .writing-book-icon{width:12px;height:12px}}
+</style>
+<style>
+.research-article .article-resource-links{margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.research-article .article-resource-links>p{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0}.research-article .article-resource-links>p>a{display:flex;align-items:center;gap:13px;min-height:54px;padding:10px 17px 10px 0;border-bottom:0;font:10px/1.55 'DM Mono',monospace;letter-spacing:.35px;color:var(--ink);transition:color .18s ease,opacity .18s ease}.research-article .article-resource-links>p>a+a{border-left:1px solid var(--line);padding-left:18px}.research-article .article-resource-links>p>a:hover{color:var(--accent);opacity:.78}.research-article .article-resource-links>p>a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.research-article .article-resource-links>p>a img{width:22px;height:22px;flex:0 0 22px;object-fit:contain}.research-article .article-resource-copy{display:flex;flex-direction:column;gap:2px}.research-article .article-resource-title{font-weight:500;color:var(--ink)}.research-article .article-resource-source{font-size:9px;color:var(--muted);letter-spacing:.55px}.research-article .article-resource-links--three>p>a:last-child{grid-column:span 2;border-left:0;border-top:1px solid var(--line);padding-left:0}@media(max-width:720px){.research-article .article-resource-links>p{grid-template-columns:1fr}.research-article .article-resource-links>p>a{min-height:50px;padding:11px 0}.research-article .article-resource-links>p>a+a,.research-article .article-resource-links--three>p>a:last-child{grid-column:auto;border-left:0;border-top:1px solid var(--line);padding-left:0}}
+</style>
+<div class="article-resource-links article-resource-links--three" aria-label="Recursos de la investigación">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/Momentum_systematic_strategies/02_factor_momentum" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/github.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Repositorio de investigación</span><span class="article-resource-source">GitHub</span></span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/factor-momentum-colab-v1.1/Momentum_systematic_strategies/02_factor_momentum/strategy_candidates/xle_systematic_momentum/notebooks/01_execution_feasibility.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Ejecutar notebook de factibilidad de ejecución</span><span class="article-resource-source">Google Colab</span></span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/factor-momentum-colab-v1.1/Momentum_systematic_strategies/02_factor_momentum/strategy_candidates/xle_systematic_momentum/notebooks/02_pre_paper_review.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Ejecutar revisión previa al artículo</span><span class="article-resource-source">Google Colab</span></span></a></p>
+</div>
+<p>En la investigación anterior encontré que una señal de momentum sistemático aplicada a XLE producía resultados históricos interesantes, aunque sensibles a los costos.</p>
+<p>Su retorno anualizado idealizado alcanzó el <strong>15.571%</strong>, ligeramente por encima del 14.879% de Buy &amp; Hold. Sin embargo, esa diferencia desaparecía al incorporar una penalización simplificada de 10 puntos básicos por cambio de posición.</p>
+<p>Además, XLE había sido seleccionada después de examinar otras alternativas. Sus resultados representaban una observación exploratoria, no evidencia independiente de una ventaja de inversión.</p>
+<p>Pero todavía quedaba una pregunta más cercana a la práctica:</p>
+<p><strong>¿Qué habría ocurrido si hubiera intentado transformar esas señales en órdenes y posiciones dentro de una cartera con capital limitado?</strong></p>
+<p>Hasta entonces, la evaluación utilizaba una regla long/cash aplicada directamente a rendimientos posteriores. No necesitaba resolver cuántas acciones comprar, cuánto efectivo conservar o a qué precio habría intentado ejecutar cada decisión.</p>
+<p>Para investigar esas diferencias, conservé la señal seleccionada de XLE y construí una simulación que incorpora precios de apertura, acciones enteras, efectivo, dividendos, eventos corporativos y fricciones operativas.</p>
+<p>Mi objetivo no era demostrar rentabilidad futura, sino comprender <strong>cómo cambia la evaluación económica cuando una señal teórica debe convertirse en una cartera simulada</strong>.</p>
+<h2 id="de-una-señal-a-una-cartera-posible">1. De una señal a una cartera posible</h2>
+<p>Una señal long/cash parece sencilla: mantener exposición cuando el modelo lo indica y permanecer en efectivo cuando no.</p>
+<p>Pero una decisión de inversión no se convierte automáticamente en una operación ejecutada.</p>
+<p>En el experimento idealizado podía aplicar un peso a los rendimientos posteriores sin preocuparme por la cantidad de acciones, el efectivo disponible o las condiciones de apertura del mercado.</p>
+<p>En una cartera, esas restricciones importan.</p>
+<p>Partí de un capital inicial de <strong>USD 10,000</strong> y utilicé la misma especificación de señal investigada anteriormente, sin introducir una nueva regla para aprovechar los resultados observados.</p>
+<p>En cada sesión, la decisión se determina con información disponible hasta el cierre de (t). Si corresponde cambiar la exposición, el simulador prepara la operación y evalúa su ejecución a la apertura de (t+1).</p>
+<p>La cantidad de acciones se calcula bajo restricciones de capital y posiciones enteras. Las compras no pueden utilizar más efectivo del disponible, y la exposición efectivamente alcanzada puede diferir de la deseada.</p>
+<p>La contabilidad también cambia. Los dividendos se acreditan como efectivo y los splits ajustan las posiciones. Además, el motor incorpora comisiones simuladas y supuestos explícitos de deslizamiento.</p>
+<p>Esto introduce una distinción importante: <strong>trabajar con precios ajustados por dividendos no es económicamente equivalente a recibir esos dividendos en efectivo dentro de una cartera que puede permanecer parcialmente desinvertida</strong>.</p>
+<p>Ambas metodologías responden preguntas diferentes.</p>
+<p>La primera permite estudiar el comportamiento idealizado de una señal. La segunda representa cómo las decisiones habrían afectado las posiciones y el patrimonio bajo reglas operativas concretas.</p>
+<p>Sin embargo, sigue siendo una simulación. Los precios históricos de apertura no contienen toda la información necesaria para reproducir una ejecución real: no observamos nuestra posición en la cola, la profundidad disponible ni los fills que habría recibido una orden específica.</p>
+<p>El siguiente paso fue observar qué resultados producía esa contabilidad y cómo se comparaban distintas estrategias bajo las mismas convenciones operativas.</p>
+<h2 id="una-misma-señal-resultados-distintos">2. Una misma señal, resultados distintos</h2>
+<p>Una vez que la señal se convierte en una cartera simulada, la pregunta deja de ser únicamente si la regla parecía prometedora en términos idealizados.</p>
+<p>Ahora necesitamos investigar <strong>cómo habría evolucionado el patrimonio bajo condiciones explícitas de implementación</strong>.</p>
+<p>Para responderla, comparé cuatro alternativas aplicadas a XLE: Systematic Momentum, TSMOM, Market Momentum y Buy &amp; Hold.</p>
+<p>Todas se evaluaron con el mismo capital inicial de USD 10,000 y bajo un escenario operativo de referencia: <strong>IBKR Pro Fixed + 5 puntos básicos de slippage adverso ilustrativo</strong>.</p>
+<p>Antes de observar el conjunto completo, conviene comparar las dos trayectorias que mejor representan el problema: Systematic Momentum y Buy &amp; Hold.</p>
+<div id="fig-systematic-vs-buyhold-nav" class="quarto-float quarto-figure quarto-figure-center" alt="GIF animado que muestra la evolución cronológica del patrimonio simulado de Systematic Momentum y Buy &amp; Hold sobre XLE bajo IBKR Pro Fixed y 5 bps de slippage adverso ilustrativo.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-systematic-vs-buyhold-nav-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/factor_momentum/02_xle_execution/systematic_vs_buyhold_nav.gif" class="img-fluid" alt="GIF animado que muestra la evolución cronológica del patrimonio simulado de Systematic Momentum y Buy &amp; Hold sobre XLE bajo IBKR Pro Fixed y 5 bps de slippage adverso ilustrativo.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-systematic-vs-buyhold-nav-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Evolución histórica del patrimonio simulado de Systematic Momentum y Buy &amp; Hold sobre XLE, bajo el escenario IBKR Pro Fixed + 5 bps. Ambas alternativas parten del mismo capital inicial y utilizan convenciones operativas comparables. Las ejecuciones y fricciones son supuestos de simulación.
+</figcaption>
+</figure>
+</div>
+<p>La animación permite observar algo que una sola cifra no muestra: el resultado económico de una estrategia no depende únicamente de dónde termina, sino también de <strong>cómo evoluciona el patrimonio durante el recorrido</strong>.</p>
+<p>En el escenario de referencia, Systematic Momentum terminó con <strong>USD 28,028.02</strong>, equivalente a un <strong>CAGR de 15.046%</strong>, un <strong>Sharpe de 0.618</strong> y un <strong>drawdown máximo de −27.805%</strong>.</p>
+<p>Pero hay una distinción que no debemos perder de vista.</p>
+<p>El CAGR operativo del 15.046% no representa simplemente el retorno idealizado de 15.571% después de descontar comisiones. Ambos experimentos utilizan convenciones diferentes de precios, dividendos, efectivo, posiciones y ejecución.</p>
+<p>Por tanto, <strong>su diferencia no identifica aisladamente el costo económico de operar</strong>.</p>
+<p>La siguiente comparación incorpora las cuatro estrategias bajo el mismo marco contable.</p>
+<div id="fig-xle-strategy-nav-comparison" class="quarto-float quarto-figure quarto-figure-center" alt="Gráfica temporal del NAV simulado de Systematic Momentum, TSMOM, Market Momentum y Buy &amp; Hold sobre XLE bajo la misma convención operativa.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-xle-strategy-nav-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/factor_momentum/02_xle_execution/xle_strategy_nav_comparison.png" class="img-fluid" alt="Gráfica temporal del NAV simulado de Systematic Momentum, TSMOM, Market Momentum y Buy &amp; Hold sobre XLE bajo la misma convención operativa.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-xle-strategy-nav-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Evolución del NAV de Systematic Momentum, TSMOM, Market Momentum y Buy &amp; Hold sobre XLE, bajo el escenario de referencia IBKR Pro Fixed + 5 bps. Las trayectorias corresponden a carteras simuladas, no a operaciones reales.
+</figcaption>
+</figure>
+</div>
+<p>Esta comparación resulta más informativa para estudiar las diferencias económicas dentro del simulador. Sin embargo, las estrategias mantienen exposiciones distintas y no necesariamente asumen el mismo riesgo.</p>
+<p>Además, una trayectoria históricamente favorable no constituye por sí sola evidencia de que la estrategia conservará ese comportamiento en el futuro.</p>
+<p>Para interpretar sus resultados necesitamos examinar también cuánto costó implementar sus decisiones.</p>
+<h2 id="el-costo-económico-de-operar">3. El costo económico de operar</h2>
+<p>Una vez que las señales se convierten en órdenes simuladas, aparece una dimensión que el experimento idealizado no representaba completamente: las fricciones necesarias para modificar una cartera.</p>
+<p>No todas las estrategias operan con la misma frecuencia.</p>
+<p>Bajo el escenario de referencia, Systematic Momentum realizó <strong>63 operaciones</strong>, frente a 87 de TSMOM, 57 de Market Momentum y una compra inicial de Buy &amp; Hold.</p>
+<p>Pero contar operaciones no es suficiente para conocer su costo económico. También importa cuánto capital se negocia y a qué precio suponemos que podemos comprar o vender.</p>
+<p>Para aproximar estas fricciones utilicé dos componentes: una estructura simulada de comisiones basada en <strong>IBKR Pro Fixed</strong> y un supuesto de <strong>5 puntos básicos de deslizamiento adverso</strong>.</p>
+<p>En Systematic Momentum, la simulación registró <strong>USD 68.23 en comisiones acumuladas</strong> y un efecto estimado de <strong>USD 455.95 por slippage</strong> durante el periodo.</p>
+<p>La distinción importa. Las comisiones son cargos explícitos de la simulación; el deslizamiento representa un deterioro supuesto respecto al precio de referencia y se incorpora en los precios de ejecución. No debemos descontarlo nuevamente del patrimonio final.</p>
+<p>También debemos reconocer qué no estamos representando. El simulador no dispone de información histórica completa sobre diferenciales bid-ask, profundidad del libro, prioridad de órdenes o liquidez disponible en cada apertura.</p>
+<p>Por tanto, <strong>una operación simulada no equivale a un fill real obtenido a través de IBKR</strong>.</p>
+<p>La utilidad de este ejercicio no consiste en reproducir perfectamente el mercado, sino en hacer explícitas algunas de las fricciones que antes permanecían fuera del modelo.</p>
+<p>Esto conduce a una pregunta más exigente: <strong>si nuestros resultados dependen de supuestos sobre los precios de ejecución, ¿qué ocurre cuando esos supuestos se vuelven menos favorables?</strong></p>
+<h2 id="la-fragilidad-frente-a-las-fricciones">4. La fragilidad frente a las fricciones</h2>
+<p>Aunque incorporamos comisiones y precios históricos de apertura, todavía existe una incertidumbre importante: desconocemos el precio exacto al que nuestras órdenes habrían podido ejecutarse.</p>
+<p>Por eso evalué cómo cambiaban los resultados al modificar el supuesto de deslizamiento adverso, manteniendo la misma estructura de comisiones.</p>
+<p>En Systematic Momentum, el <strong>CAGR simulado pasó de 15.536% sin slippage a 15.046% con 5 puntos básicos</strong>. Al aumentar el supuesto a 10 y 20 puntos básicos, descendió a <strong>14.583% y 13.590%</strong>, respectivamente.</p>
+<div id="fig-xle-slippage-sensitivity" class="quarto-float quarto-figure quarto-figure-center" alt="Gráfica de barras del CAGR anualizado de XLE Systematic Momentum bajo supuestos de slippage adverso de 0, 5, 10 y 20 puntos básicos.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-xle-slippage-sensitivity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/factor_momentum/02_xle_execution/xle_slippage_sensitivity.png" class="img-fluid" alt="Gráfica de barras del CAGR anualizado de XLE Systematic Momentum bajo supuestos de slippage adverso de 0, 5, 10 y 20 puntos básicos.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-xle-slippage-sensitivity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Sensibilidad del CAGR simulado de XLE Systematic Momentum ante supuestos de deslizamiento adverso de 0, 5, 10 y 20 puntos básicos, manteniendo las comisiones IBKR Pro Fixed. Estos costos son supuestos de simulación, no fricciones observadas en operaciones reales.
+</figcaption>
+</figure>
+</div>
+<p>La relación es clara: cuanto menos favorables suponemos los precios de ejecución, menor es el crecimiento del patrimonio.</p>
+<p>Sin embargo, esta sensibilidad no estima cuánto slippage habría experimentado realmente la estrategia. Las condiciones de liquidez, los diferenciales y los movimientos alrededor de la apertura pueden diferir de los supuestos del modelo.</p>
+<p>También estudié qué sucedía al <strong>retrasar una sesión la ejecución</strong> de las decisiones.</p>
+<p>Bajo el escenario Fixed + 5 bps, el CAGR de Systematic Momentum disminuyó de <strong>15.046% a 13.195%</strong>.</p>
+<p>El resultado muestra que el momento de ejecución puede modificar considerablemente la evaluación económica. Pero requiere una precisión: el experimento retrasado utiliza <strong>1,852 sesiones en lugar de 1,853</strong> y puede cruzar eventos corporativos.</p>
+<p>Por tanto, no constituye una comparación perfectamente aislada del efecto de esperar un día.</p>
+<p>Podemos observar sensibilidad a los supuestos sin concluir que hemos identificado causalmente el costo exacto de cada fricción.</p>
+<p><strong>Una estrategia que parece atractiva bajo determinadas condiciones de ejecución necesita demostrar que sus resultados no dependen excesivamente de supuestos favorables.</strong></p>
+<p>Y aun cuando una simulación supera estas pruebas, permanece otra pregunta: ¿cuánta evidencia estadística tenemos para confiar en sus diferencias frente a estrategias alternativas?</p>
+<h2 id="una-simulación-favorable-todavía-no-demuestra-una-ventaja-de-inversión">5. Una simulación favorable todavía no demuestra una ventaja de inversión</h2>
+<p>Hasta aquí, la señal de momentum sistemático de XLE mostró resultados históricos favorables bajo las reglas de ejecución simulada. Sin embargo, reproducir una cartera y obtener un resultado atractivo no significa que hayamos demostrado una ventaja persistente.</p>
+<p>Para examinar la incertidumbre de las diferencias entre estrategias, utilicé un <strong>bootstrap circular por bloques de 21 sesiones</strong>, con 2,000 remuestreos.</p>
+<p>En lugar de tratar cada rendimiento diario como una observación independiente, el procedimiento remuestrea segmentos consecutivos para conservar parte de la dependencia temporal.</p>
+<p>Los resultados fueron distintos según la comparación. Frente a TSMOM, el diferencial de crecimiento logarítmico favoreció a Systematic Momentum en el <strong>95.0% de las réplicas bootstrap</strong>. Frente a Market Momentum, esa proporción fue del <strong>72.6%</strong>. Sin embargo, frente a Buy &amp; Hold fue del <strong>49.6%</strong>, sin una ventaja clara bajo este procedimiento.</p>
+<p>Estas proporciones describen los diferenciales dentro del remuestreo. <strong>No representan probabilidades de que la estrategia supere a sus alternativas en el futuro.</strong></p>
+<p>Existe además una limitación importante: el bootstrap utiliza los retornos idealizados de la investigación anterior, no el patrimonio neto del simulador de ejecución. Por tanto, no cuantifica directamente la incertidumbre de los resultados operativos presentados aquí.</p>
+<p>Tampoco elimina el problema de selección. XLE fue elegida después de examinar otras alternativas sobre el mismo historial, y las evaluaciones posteriores continúan utilizando ese periodo.</p>
+<p>Una simulación más detallada no transforma automáticamente los resultados en evidencia independiente.</p>
+<p>¿Qué conseguimos entonces?</p>
+<p>Construí un entorno donde una señal matemática puede convertirse en decisiones, órdenes, posiciones y una contabilidad coherente. Pude evaluar su sensibilidad a las condiciones de ejecución e identificar restricciones que no eran visibles en el experimento idealizado.</p>
+<p>Pero todavía no he demostrado que exista alpha, que las condiciones simuladas puedan reproducirse exactamente en el mercado ni que la estrategia mantenga su comportamiento en datos futuros.</p>
+<p>El siguiente paso será conservar una especificación congelada y observar su desempeño prospectivamente, inicialmente mediante <em>paper trading</em>, distinguiendo las operaciones modeladas de las ejecuciones realmente registradas.</p>
+<p>Esta investigación comenzó preguntando si el momentum de un activo podía relacionarse con factores sistemáticos. Terminó mostrando que <strong>explicar retornos, construir señales, simular su ejecución y demostrar una ventaja económica son etapas diferentes de un mismo problema</strong>.</p>
+<p><strong>Antes de arriesgar capital real, necesito evidencia que no dependa únicamente del pasado que utilicé para desarrollar la estrategia.</strong></p>
+<div class="article-resource-links article-resource-links--three" aria-label="Recursos de la investigación">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/Momentum_systematic_strategies/02_factor_momentum" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/github.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Repositorio de investigación</span><span class="article-resource-source">GitHub</span></span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/factor-momentum-colab-v1.1/Momentum_systematic_strategies/02_factor_momentum/strategy_candidates/xle_systematic_momentum/notebooks/01_execution_feasibility.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Ejecutar notebook de factibilidad de ejecución</span><span class="article-resource-source">Google Colab</span></span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/factor-momentum-colab-v1.1/Momentum_systematic_strategies/02_factor_momentum/strategy_candidates/xle_systematic_momentum/notebooks/02_pre_paper_review.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Ejecutar revisión previa al artículo</span><span class="article-resource-source">Google Colab</span></span></a></p>
+</div>
+
+
+</article><nav class="research-article-nav" aria-label="Navegación del artículo" data-previous-url="" data-previous-title="" data-next-url="" data-next-title="" data-github-url=""><a class="article-nav-link article-previous" hidden=""><span>Artículo anterior</span><strong></strong></a><a class="article-nav-link article-back" href="../../research.html">Volver a Investigación</a><a class="article-nav-link article-next" hidden=""><span>Artículo siguiente</span><strong></strong></a><a class="article-nav-link article-source" target="_blank" rel="noopener noreferrer" hidden="">Ver código ↗</a></nav></main><footer class="site-footer"><div><span class="footer-name">Adrián Vázquez.</span><p class="micro">Investigaciones, proyectos y notas en desarrollo.</p></div><span class="footer-symbol">∴</span></footer></div><script src="../../../assets/site.js"></script><script src="../../../assets/research-article.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

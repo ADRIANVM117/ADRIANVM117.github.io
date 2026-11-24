@@ -3,6 +3,8 @@
     "listing": "/en/research.html",
     "items": [
       "/en/research/projects/03_joint_resampling.html",
+      "/en/research/notes/02_xle_execution_economic_limits.html",
+      "/en/research/notes/01_factor_momentum_attribution.html",
       "/en/research/notes/04_statistical_uncertainty.html",
       "/en/research/notes/03_economic_evaluation.html",
       "/en/research/notes/02_rebalancing_policies.html",
@@ -13,6 +15,8 @@
     "listing": "/es/research.html",
     "items": [
       "/es/research/projects/03_joint_resampling.html",
+      "/es/research/notes/02_xle_execution_economic_limits.html",
+      "/es/research/notes/01_factor_momentum_attribution.html",
       "/es/research/notes/04_statistical_uncertainty.html",
       "/es/research/notes/03_economic_evaluation.html",
       "/es/research/notes/02_rebalancing_policies.html",

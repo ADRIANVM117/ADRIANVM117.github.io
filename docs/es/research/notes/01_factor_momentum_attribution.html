@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrián Vázquez">
+<meta name="dcterms.date" content="2026-11-23">
+<meta name="description" content="De la descomposición factorial de los retornos a la evaluación de señales de inversión: por qué explicar mejor el pasado no garantiza anticipar el futuro.">
+
+<title>¿Cuánto del momentum de un activo puede atribuirse a factores sistemáticos? – Adrián Vázquez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-html-e82cabd1c1379058ebcaccc337c10230.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+
+<body>
+
+<div class="site-shell research-article-shell" data-language="es"><style>#title-block-header{display:none}.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style><header class="site-header"><a class="wordmark" href="../../../index.html">Adrián Vázquez<span class="wordmark-dot">.</span></a><button type="button" class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Alternar navegación">☰</button><nav id="main-nav" class="navigation" aria-label="Navegación principal"><a class="navlink" href="../../../index.html">Inicio</a><a class="navlink current" href="../../research.html">Investigación</a><a class="navlink" href="../../projects.html">Proyectos</a><a class="navlink" href="../../writing.html">Escritura</a><a class="navlink" href="../../about.html">Sobre mí</a><a class="navlink" href="../../cv.html">CV y contacto</a><div class="platform-links" aria-label="Plataformas profesionales"><a href="https://github.com/ADRIANVM117" target="_blank" rel="noopener noreferrer" aria-label="GitHub — Adrián Vázquez"><img src="../../../assets/brands/github.svg" alt=""></a><a href="https://www.linkedin.com/in/adrián-vazquez-1a90a01b6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn — Adrián Vázquez"><img src="../../../assets/brands/linkedin.svg" alt=""></a><a href="https://substack.com/@radian117" target="_blank" rel="noopener noreferrer" aria-label="Substack — Adrián Vázquez"><img src="../../../assets/brands/substack.svg" alt=""></a><a href="https://medium.com/@doromenoharris0" target="_blank" rel="noopener noreferrer" aria-label="Medium — Adrián Vázquez"><img src="../../../assets/brands/medium.svg" alt=""></a></div></nav><div class="language-switch research-language-switch" data-translation-url="../../../en/research/notes/01_factor_momentum_attribution.html"><a class="research-other-language" href="../../../en/research.html" lang="en">EN</a><span>/</span><a href="../../research.html" lang="es" class="active">ES</a><span class="translation-note">sin traducción</span></div></header><main class="inner-main research-article-main"><header id="title-block-header" class="quarto-title-block"><h1 class="title">¿Cuánto del momentum de un activo puede atribuirse a factores sistemáticos?</h1></header><article class="research-article"><header class="research-article-header"><div class="research-article-kicker"><span class="article-meta-item"><span class="article-meta-value">note</span></span><span class="article-meta-item article-series"><span class="article-meta-value">Factor Momentum</span><span class="article-series-number">01</span></span></div><h1>¿Cuánto del momentum de un activo puede atribuirse a factores sistemáticos?</h1><p class="research-article-deck article-meta-item"><span class="article-meta-value">De la descomposición factorial de los retornos a la evaluación de señales de inversión: por qué explicar mejor el pasado no garantiza anticipar el futuro.</span></p><div class="research-article-details"><span class="article-meta-item">Por <span class="article-meta-value">Adrián Vázquez
+</span></span><span class="article-meta-item">Publicado <span class="article-meta-value article-published-date"></span></span><span class="article-meta-item">Actualizado <span class="article-meta-value"></span></span><span class="article-meta-item">Estado <span class="article-meta-value">completed</span></span><span class="article-meta-item article-topics"><span class="article-meta-value">Factor Momentum
+
+Systematic Factors
+
+Statistical Attribution
+
+Momentum Strategies
+</span></span></div></header>
+
+<header id="title-block-header">
+
+<p class="author">Adrián Vázquez</p>
+
+<p class="date">2026-11-23</p>
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contenido</h2>
+   
+  <ul>
+  <li><a href="#descomponer-el-retorno-de-un-activo" id="toc-descomponer-el-retorno-de-un-activo">1. Descomponer el retorno de un activo</a></li>
+  <li><a href="#cuando-el-modelo-explica-más-qué-hemos-aprendido" id="toc-cuando-el-modelo-explica-más-qué-hemos-aprendido">2. Cuando el modelo explica más, ¿qué hemos aprendido?</a></li>
+  <li><a href="#del-retorno-sistemático-a-una-señal-de-momentum" id="toc-del-retorno-sistemático-a-una-señal-de-momentum">3. Del retorno sistemático a una señal de momentum</a></li>
+  <li><a href="#la-evidencia-no-favorece-a-todos-los-activos" id="toc-la-evidencia-no-favorece-a-todos-los-activos">4. La evidencia no favorece a todos los activos</a></li>
+  <li><a href="#de-una-explicación-estadística-a-una-candidata-de-inversión" id="toc-de-una-explicación-estadística-a-una-candidata-de-inversión">5. De una explicación estadística a una candidata de inversión</a></li>
+  </ul>
+</nav>
+<p><span class="article-header-details-source" data-header-details="POR ADRIÁN VÁZQUEZ · 23 NOV 2026 · FACTOR MOMENTUM · SYSTEMATIC FACTORS · STATISTICAL ATTRIBUTION · MOMENTUM STRATEGIES" hidden=""></span></p>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const source = document.querySelector('.article-header-details-source');
+  const details = document.querySelector('.research-article-details');
+  if (source && details) details.textContent = source.dataset.headerDetails || '';
+  const kicker = document.querySelector('.research-article-kicker');
+  if (kicker && !kicker.querySelector('.article-reading-time')) {
+    const readingTime = document.createElement('span');
+    readingTime.className = 'article-reading-time';
+    readingTime.innerHTML = '<svg class="writing-book-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.75 4.75A2.75 2.75 0 0 1 5.5 2h4.25A2.25 2.25 0 0 1 12 4.25V21a2.25 2.25 0 0 0-2.25-2.25H5.5A2.75 2.75 0 0 0 2.75 21V4.75Z"/><path d="M21.25 4.75A2.75 2.75 0 0 0 18.5 2h-4.25A2.25 2.25 0 0 0 12 4.25V21a2.25 2.25 0 0 1 2.25-2.25h4.25A2.75 2.75 0 0 1 21.25 21V4.75Z"/></svg><span>8–10 min</span>';
+    kicker.append(readingTime);
+  }
+});
+</script>
+<style>
+.research-article-kicker .article-reading-time{display:inline-flex;align-items:center;gap:6px;color:var(--muted);white-space:nowrap}.research-article-kicker .writing-book-icon{width:13px;height:13px;flex:0 0 auto}@media(max-width:720px){.research-article-kicker .writing-book-icon{width:12px;height:12px}}
+</style>
+<style>
+.research-article .article-resource-links{margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.research-article .article-resource-links>p{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0}.research-article .article-resource-links>p>a{display:flex;align-items:center;gap:13px;min-height:54px;padding:10px 17px 10px 0;border-bottom:0;font:10px/1.55 'DM Mono',monospace;letter-spacing:.35px;color:var(--ink);transition:color .18s ease,opacity .18s ease}.research-article .article-resource-links>p>a+a{border-left:1px solid var(--line);padding-left:18px}.research-article .article-resource-links>p>a:hover{color:var(--accent);opacity:.78}.research-article .article-resource-links>p>a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.research-article .article-resource-links>p>a img{width:22px;height:22px;flex:0 0 22px;object-fit:contain}.research-article .article-resource-copy{display:flex;flex-direction:column;gap:2px}.research-article .article-resource-title{font-weight:500;color:var(--ink)}.research-article .article-resource-source{font-size:9px;color:var(--muted);letter-spacing:.55px}.research-article .article-resource-links--three>p>a:last-child{grid-column:span 2;border-left:0;border-top:1px solid var(--line);padding-left:0}@media(max-width:720px){.research-article .article-resource-links>p{grid-template-columns:1fr}.research-article .article-resource-links>p>a{min-height:50px;padding:11px 0}.research-article .article-resource-links>p>a+a,.research-article .article-resource-links--three>p>a:last-child{grid-column:auto;border-left:0;border-top:1px solid var(--line);padding-left:0}}
+</style>
+<div class="article-resource-links article-resource-links--three" aria-label="Recursos de la investigación">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/Momentum_systematic_strategies/02_factor_momentum" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/github.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Repositorio de investigación</span><span class="article-resource-source">GitHub</span></span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/factor-momentum-colab-v1.1/Momentum_systematic_strategies/02_factor_momentum/notebooks/01_factor_momentum_foundations.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Ejecutar notebook Foundations</span><span class="article-resource-source">Google Colab</span></span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/factor-momentum-colab-v1.1/Momentum_systematic_strategies/02_factor_momentum/notebooks/02_factor_momentum_signal_test.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Ejecutar notebook Signal Test</span><span class="article-resource-source">Google Colab</span></span></a></p>
+</div>
+<p>Un modelo puede explicar gran parte de las variaciones observadas de un activo y, aun así, no ayudarnos a construir una mejor estrategia de inversión.</p>
+<p>Esta fue una de las contradicciones que encontré al investigar el momentum desde una perspectiva factorial.</p>
+<p>En QQQ, un modelo que incorpora tres proxies sistemáticos alcanzó un R² de atribución de <strong>0.972</strong>. Sin embargo, cuando utilicé el componente sistemático para construir una señal de momentum, la estrategia obtuvo un retorno anualizado bruto del <strong>12.918%</strong>, frente al <strong>19.008% de Buy &amp; Hold</strong> durante el mismo experimento idealizado.</p>
+<p>¿Cómo puede un modelo explicar tan bien los retornos observados sin traducirse en una estrategia más rentable?</p>
+<p>La respuesta comienza por reconocer que <strong>explicar un retorno, anticipar su dirección y obtener un beneficio económico son problemas diferentes</strong>.</p>
+<p>Para investigarlo, estudié siete ETFs, construí una descomposición factorial de sus retornos y evalué si el momentum sistemático podía aportar información útil frente a señales más sencillas.</p>
+<p>Mi objetivo no era encontrar el modelo con mayor R², sino comprender qué información capturaba y hasta dónde podía utilizarla para tomar decisiones de inversión.</p>
+<h2 id="descomponer-el-retorno-de-un-activo">1. Descomponer el retorno de un activo</h2>
+<p>Cuando observamos que un activo sube o baja, su movimiento no necesariamente responde a características exclusivas de ese instrumento.</p>
+<p>Parte de su comportamiento puede estar relacionado con el mercado general, con diferencias entre empresas grandes y pequeñas o con la evolución relativa de compañías de crecimiento y valor.</p>
+<p>Para estudiar esas relaciones utilicé siete ETFs: SPY, QQQ, IWM, IWD, IWF, XLE y XLF. A partir de sus retornos construí tres proxies factoriales:</p>
+<ul>
+<li><strong>MKT — Mercado:</strong> representado por SPY.</li>
+<li><strong>SIZE — Tamaño relativo:</strong> diferencia entre IWM y SPY.</li>
+<li><strong>GV — Crecimiento frente a valor:</strong> diferencia entre IWF e IWD.</li>
+</ul>
+<p>Estos proxies no son factores independientes ni perfectamente aislados. Son aproximaciones observables para estudiar movimientos comunes entre activos.</p>
+<p>Mediante regresiones OLS rodantes de <strong>252 sesiones</strong>, estimé la sensibilidad histórica de cada ETF a estos componentes.</p>
+<p>Los coeficientes se calculan utilizando información hasta la sesión anterior. Posteriormente, los factores observados al cierre permiten descomponer el retorno del día en un <strong>componente sistemático</strong>, que incluye el intercepto y las contribuciones factoriales, y un <strong>componente residual</strong>, correspondiente a lo no explicado por el modelo.</p>
+<p>Esta distinción es fundamental: <strong>atribuir un retorno después de observar los factores del día no equivale a haberlo pronosticado antes de la sesión</strong>.</p>
+<p>A continuación, utilicé ventanas de <strong>126 sesiones</strong> para estudiar el momentum acumulado de los componentes total, sistemático y residual.</p>
+<div id="fig-factor-momentum-decomposition" class="quarto-float quarto-figure quarto-figure-center" alt="Gráfica temporal de QQQ con momentum total, sistemático y residual de 126 sesiones, expresado como retorno logarítmico acumulado.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-factor-momentum-decomposition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/factor_momentum/01_foundations/momentum_decomposition_qqq.png" class="img-fluid" alt="Gráfica temporal de QQQ con momentum total, sistemático y residual de 126 sesiones, expresado como retorno logarítmico acumulado.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-factor-momentum-decomposition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Descomposición del momentum acumulado de 126 sesiones de QQQ en sus componentes sistemático y residual. Los coeficientes se estiman mediante OLS rodante y la atribución utiliza factores realizados; no representa un pronóstico de retornos futuros.
+</figcaption>
+</figure>
+</div>
+<p>Esta separación permite observar cómo se relaciona la tendencia histórica de un activo con los movimientos atribuidos a nuestros proxies.</p>
+<p>Pero introduce otra pregunta: <strong>¿explicar una mayor proporción de los retornos observados significa que hemos encontrado información más útil para anticipar el mercado?</strong></p>
+<h2 id="cuando-el-modelo-explica-más-qué-hemos-aprendido">2. Cuando el modelo explica más, ¿qué hemos aprendido?</h2>
+<p>Para examinar cuánto aportaban los componentes adicionales, comparé dos especificaciones: una con el mercado como único proxy y otra que incorpora también SIZE y GV.</p>
+<p>Los resultados mostraron mejoras importantes en el R² de atribución.</p>
+<p>En <strong>QQQ pasó de 0.880 a 0.972</strong>; en <strong>XLE, de 0.362 a 0.559</strong>; y en <strong>XLF, de 0.705 a 0.865</strong>.</p>
+<div id="fig-factor-momentum-r2" class="quarto-float quarto-figure quarto-figure-center" alt="Gráfica de barras que compara el R² de los modelos MKT y MKT más SIZE y GV para QQQ, XLE y XLF.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-factor-momentum-r2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/factor_momentum/01_foundations/factor_attribution_r2_comparison.png" class="img-fluid" alt="Gráfica de barras que compara el R² de los modelos MKT y MKT más SIZE y GV para QQQ, XLE y XLF.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-factor-momentum-r2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Comparación del R² de atribución contemporánea para QQQ, XLE y XLF. Los coeficientes se estiman con información anterior a cada sesión, mientras que los retornos factoriales utilizados para atribuir el movimiento del día se observan al cierre.
+</figcaption>
+</figure>
+</div>
+<p>El resultado de QQQ parece especialmente convincente: el modelo completo consigue explicar una proporción muy elevada de la variación de sus retornos diarios.</p>
+<p>Sin embargo, <strong>explicar el 97.2% de esa variación no significa anticipar el 97.2% de sus movimientos, ni que esa proporción de su momentum acumulado sea sistemática</strong>.</p>
+<p>Aunque las sensibilidades se estimaron con datos anteriores, el modelo necesita conocer los retornos efectivos de los proxies durante la sesión evaluada. Estamos midiendo atribución contemporánea, no precisión de un pronóstico disponible antes del movimiento.</p>
+<p>También encontré que esta capacidad de atribución no fue estable. En XLE, el R² del modelo completo descendió a <strong>0.284 durante 2023–2026</strong>, considerablemente por debajo de su resultado agregado.</p>
+<p>Esto sugiere que las relaciones entre el sector energético y nuestros proxies pueden cambiar bajo distintas condiciones de mercado.</p>
+<p>La descomposición ayuda a comprender los retornos observados. Lo que todavía necesitamos investigar es si podemos convertirla en una decisión útil para la siguiente sesión.</p>
+<h2 id="del-retorno-sistemático-a-una-señal-de-momentum">3. Del retorno sistemático a una señal de momentum</h2>
+<p>Comprender el comportamiento histórico de un activo no es lo mismo que decidir cuánto invertir mañana.</p>
+<p>Para estudiar esta segunda pregunta, construí una medida de momentum acumulado sobre <strong>126 sesiones</strong> a partir del componente sistemático.</p>
+<p>Quería investigar si la persistencia de los movimientos atribuidos a factores comunes podía aportar información útil para decidir cuándo mantener exposición.</p>
+<p>Con esa medida evalué una política <strong>long/cash</strong>: mantener exposición al activo cuando la señal lo indica y permanecer en efectivo cuando no lo hace.</p>
+<p>Aquí la cronología es fundamental.</p>
+<p>Los coeficientes factoriales utilizados para atribuir el retorno de cada sesión se estiman con información hasta el día anterior. Al cierre de (t), los factores realizados ya son observables y permiten actualizar el componente sistemático y su momentum.</p>
+<p><strong>La posición decidida con esa información se aplica únicamente al retorno posterior, en (t+1).</strong></p>
+<p>Esta separación evita utilizar el mismo retorno que intentamos evaluar para decidir retrospectivamente la posición.</p>
+<p>Para estudiar si la descomposición aportaba algo adicional, comparé Systematic Momentum con tres referencias: momentum temporal tradicional (<em>TSMOM</em>), Market Momentum y Buy &amp; Hold.</p>
+<p>La evaluación utiliza retornos logarítmicos y supone que el efectivo no genera intereses. Se trata de un experimento idealizado, sin órdenes ejecutadas ni todas las fricciones de una operación real.</p>
+<p>Respetar esta secuencia temporal es necesario para evaluar la señal, pero <strong>evitar información futura no demuestra que exista capacidad predictiva</strong>.</p>
+<p>La siguiente pregunta es económica: ¿qué sucedió cuando aplicamos la misma metodología a distintos activos?</p>
+<h2 id="la-evidencia-no-favorece-a-todos-los-activos">4. La evidencia no favorece a todos los activos</h2>
+<p>Los resultados fueron distintos según el activo.</p>
+<p>En <strong>QQQ</strong>, Systematic Momentum obtuvo un retorno anualizado bruto del <strong>12.918%</strong>, frente al <strong>19.008% de Buy &amp; Hold</strong>.</p>
+<p>En <strong>XLF</strong>, la comparación también favoreció a la estrategia pasiva: <strong>7.995% frente a 12.118%</strong>.</p>
+<p>XLE presentó un resultado diferente. Systematic Momentum alcanzó <strong>15.571% anualizado</strong>, ligeramente por encima del <strong>14.879% de Buy &amp; Hold</strong> y considerablemente superior al <strong>5.615% de TSMOM</strong>.</p>
+<div id="fig-factor-momentum-performance" class="quarto-float quarto-figure quarto-figure-center" alt="Gráfica de barras con los retornos anualizados de Systematic Momentum y Buy and Hold para QQQ, XLE y XLF.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-factor-momentum-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../../img/factor_momentum/01_foundations/idealized_signal_performance.png" class="img-fluid" alt="Gráfica de barras con los retornos anualizados de Systematic Momentum y Buy and Hold para QQQ, XLE y XLF.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-factor-momentum-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Retornos anualizados históricos de Systematic Momentum y Buy &amp; Hold en QQQ, XLE y XLF. Las señales son long/cash idealizadas, con efectivo al 0% y resultados anteriores a costos de implementación.
+</figcaption>
+</figure>
+</div>
+<p>Estos contrastes muestran que <strong>una mejor atribución factorial no se tradujo en superioridad económica generalizada</strong>.</p>
+<p>También debemos recordar que Buy &amp; Hold y las políticas long/cash mantienen exposiciones diferentes; comparar únicamente sus retornos no equivale a comparar estrategias con el mismo riesgo.</p>
+<p>El caso de XLE merece mayor atención, pero también prudencia.</p>
+<p>Al evaluar la asociación entre su momentum sistemático de 126 sesiones y los retornos futuros de 21 sesiones, encontré una correlación de Spearman cercana a <strong>−0.016</strong>. Esta relación monotónica prácticamente nula no proporciona, por sí sola, evidencia convincente de capacidad predictiva.</p>
+<p>Además, la ventaja bruta de XLE frente a Buy &amp; Hold resultó sensible a los costos.</p>
+<p>Al incorporar una penalización ilustrativa de <strong>10 puntos básicos por cambio de posición</strong>, el retorno anualizado de Systematic Momentum disminuyó de <strong>15.571% a 14.601%</strong>, quedando por debajo del 14.879% de Buy &amp; Hold.</p>
+<p>Esta sensibilidad simplificada no reproduce órdenes, precios de ejecución ni todas las fricciones de una operación real.</p>
+<p>Tampoco podemos atribuir la diferencia favorable de XLE a SIZE o GV de manera aislada: el experimento no identifica causalmente la contribución incremental de esos proxies a la estrategia.</p>
+<p>Finalmente, <strong>XLE fue seleccionada retrospectivamente después de examinar los resultados de varios activos</strong>. Su comportamiento constituye una observación exploratoria, no una validación independiente de la hipótesis.</p>
+<p>La señal merece investigarse con mayor profundidad, pero todavía no representa una ventaja de inversión demostrada.</p>
+<h2 id="de-una-explicación-estadística-a-una-candidata-de-inversión">5. De una explicación estadística a una candidata de inversión</h2>
+<p>Esta investigación comenzó preguntando cuánto del momentum de un activo podía relacionarse con movimientos sistemáticos del mercado.</p>
+<p>La descomposición factorial permitió estudiar esas relaciones y mejorar considerablemente la atribución contemporánea de los retornos. Sin embargo, encontramos que <strong>explicar mejor lo ocurrido no garantiza anticipar lo que vendrá después</strong>.</p>
+<p>Al transformar esa información en señales de inversión, obtuvimos resultados diferentes entre activos. QQQ y XLF no superaron a Buy &amp; Hold en retorno anualizado bruto, mientras que XLE presentó una ventaja histórica modesta, sensible incluso a una penalización simplificada de costos.</p>
+<p>Además, XLE fue seleccionada después de observar los resultados de varias alternativas. Por tanto, su comportamiento no constituye una validación independiente ni demuestra una ventaja predictiva persistente.</p>
+<p>Pero esa incertidumbre no significa que debamos descartar inmediatamente la hipótesis. Significa que necesitamos someterla a una evaluación diferente.</p>
+<p>Hasta aquí trabajé con señales long/cash y rendimientos idealizados. Todavía no había representado cómo esas decisiones se transformarían en órdenes, acciones enteras, efectivo disponible y operaciones sujetas a fricciones.</p>
+<p><strong>En la siguiente entrega llevaré la señal de XLE a una simulación de ejecución</strong>, incorporando precios de apertura, comisiones, deslizamiento y eventos corporativos, para investigar cómo cambian los resultados al pasar de una asignación teórica a una cartera simulada.</p>
+<p>No será una demostración de rentabilidad futura ni una validación prospectiva de la señal. Será una evaluación adicional de sus límites económicos y operativos.</p>
+<p><strong>Antes de preguntarme si una estrategia merece capital real, necesito comprender qué sucede cuando intento llevarla de una señal matemática a decisiones ejecutables.</strong></p>
+<div class="article-resource-links article-resource-links--three" aria-label="Recursos de la investigación">
+<p><a href="https://github.com/ADRIANVM117/quant-research-notes/tree/main/Momentum_systematic_strategies/02_factor_momentum" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/github.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Repositorio de investigación</span><span class="article-resource-source">GitHub</span></span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/factor-momentum-colab-v1.1/Momentum_systematic_strategies/02_factor_momentum/notebooks/01_factor_momentum_foundations.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Ejecutar notebook Foundations</span><span class="article-resource-source">Google Colab</span></span></a> <a href="https://colab.research.google.com/github/ADRIANVM117/quant-research-notes/blob/factor-momentum-colab-v1.1/Momentum_systematic_strategies/02_factor_momentum/notebooks/02_factor_momentum_signal_test.ipynb" target="_blank" rel="noopener noreferrer"><img src="../../../assets/brands/google-colab.svg" alt=""><span class="article-resource-copy"><span class="article-resource-title">Ejecutar notebook Signal Test</span><span class="article-resource-source">Google Colab</span></span></a></p>
+</div>
+
+
+</article><nav class="research-article-nav" aria-label="Navegación del artículo" data-previous-url="" data-previous-title="" data-next-url="" data-next-title="" data-github-url=""><a class="article-nav-link article-previous" hidden=""><span>Artículo anterior</span><strong></strong></a><a class="article-nav-link article-back" href="../../research.html">Volver a Investigación</a><a class="article-nav-link article-next" hidden=""><span>Artículo siguiente</span><strong></strong></a><a class="article-nav-link article-source" target="_blank" rel="noopener noreferrer" hidden="">Ver código ↗</a></nav></main><footer class="site-footer"><div><span class="footer-name">Adrián Vázquez.</span><p class="micro">Investigaciones, proyectos y notas en desarrollo.</p></div><span class="footer-symbol">∴</span></footer></div><script src="../../../assets/site.js"></script><script src="../../../assets/research-article.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
