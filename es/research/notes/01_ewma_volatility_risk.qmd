@@ -4,6 +4,7 @@ description: "Una investigación con datos reales de SPY sobre shocks, persisten
 lang: es
 author: "Adrián Vázquez"
 type: note
+research_line: volatility_targeting
 date: 2026-11-11
 status: completed
 topics: [volatility, EWMA, risk management, SPY]

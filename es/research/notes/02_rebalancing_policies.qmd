@@ -4,6 +4,7 @@ description: "De una señal EWMA a decisiones, órdenes y posiciones: qué impli
 lang: es
 author: "Adrián Vázquez"
 type: note
+research_line: volatility_targeting
 date: 2026-11-12
 status: completed
 topics: ["volatility targeting", EWMA, backtesting, rebalancing, execution]

@@ -50,9 +50,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-project','listing-website','listing-format','listing-engines','listing-language','listing-lang','listing-author','listing-description','listing-date','listing-updated','listing-type','listing-topics','listing-status','listing-series','listing-series_number','listing-github_url','listing-previous_url','listing-previous_title','listing-next_url','listing-next_title','listing-toc','listing-toc-title','listing-toc-depth','listing-title-block','listing-translation_url','listing-bibliography','listing-title','listing-header_details','listing-path','listing-outputHref','listing-date-modified','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-format','listing-engines','listing-language','listing-lang','listing-author','listing-description','listing-date','listing-updated','listing-type','listing-topics','listing-status','listing-series','listing-series_number','listing-github_url','listing-previous_url','listing-previous_title','listing-next_url','listing-next_title','listing-toc','listing-toc-title','listing-toc-depth','listing-title-block','listing-translation_url','listing-bibliography','listing-title','listing-research_line','listing-header_details','listing-path','listing-outputHref','listing-date-modified','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-project","listing-website","listing-format","listing-engines","listing-language","listing-lang","listing-author","listing-description","listing-date","listing-updated","listing-type","listing-topics","listing-status","listing-series","listing-series_number","listing-github_url","listing-previous_url","listing-previous_title","listing-next_url","listing-next_title","listing-toc","listing-toc-title","listing-toc-depth","listing-title-block","listing-translation_url","listing-bibliography","listing-title","listing-header_details","listing-path","listing-outputHref","listing-date-modified","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+      searchColumns: ["listing-project","listing-website","listing-format","listing-engines","listing-language","listing-lang","listing-author","listing-description","listing-date","listing-updated","listing-type","listing-topics","listing-status","listing-series","listing-series_number","listing-github_url","listing-previous_url","listing-previous_title","listing-next_url","listing-next_title","listing-toc","listing-toc-title","listing-toc-depth","listing-title-block","listing-translation_url","listing-bibliography","listing-title","listing-research_line","listing-header_details","listing-path","listing-outputHref","listing-date-modified","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -85,6 +85,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 <style>#title-block-header{display:none}</style>
+<link rel="stylesheet" href="../assets/research-index.css?v=20261124-2">
+<script defer="" src="../assets/research-index.js?v=20261124"></script>
 <div class="site-shell" data-language="es" data-page="research">
 <style>.platform-links{display:flex;align-items:center;gap:18px;margin-left:2px}.platform-links a{display:inline-flex;opacity:.78;transition:opacity .18s ease}.platform-links a:hover{opacity:1}.platform-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.platform-links img{width:19px;height:19px;display:block}@media(max-width:720px){.platform-links{margin:5px 0 0;gap:20px}.platform-links img{width:20px;height:20px}}</style>
 <header class="site-header">
@@ -115,13 +117,40 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
 <div class="section-heading">
 <span class="micro section-number">01 / Índice de investigación</span><span class="section-rule"></span><span class="micro right-label">UN REGISTRO EN EVOLUCIÓN</span>
 </div>
-<nav class="research-category-nav" aria-label="Categorías de investigación">
-<a href="#research-index">Todo</a><a href="#research-index">Proyectos de investigación</a><a href="#research-index">Notas de investigación</a><a href="#research-index">Diario de investigación</a>
+<div class="research-filter-controls">
+<nav class="research-category-nav research-filter-row" aria-label="Tipo de publicación">
+<button type="button" data-research-type-filter="all" aria-controls="research-index" aria-pressed="true">
+Todos
+</button>
+<button type="button" data-research-type-filter="project" aria-controls="research-index" aria-pressed="false">
+Proyectos de investigación
+</button>
+<button type="button" data-research-type-filter="note" aria-controls="research-index" aria-pressed="false">
+Notas de investigación
+</button>
+<button type="button" data-research-type-filter="journal" aria-controls="research-index" aria-pressed="false">
+Diario de investigación
+</button>
 </nav>
+<nav class="research-line-nav research-filter-row" aria-label="Línea de investigación">
+<button type="button" data-research-line-filter="all" aria-controls="research-index" aria-pressed="true">
+Todos
+</button>
+<button type="button" data-research-line-filter="portfolio_construction" aria-controls="research-index" aria-pressed="false">
+Construcción de Portafolios
+</button>
+<button type="button" data-research-line-filter="systematic_momentum" aria-controls="research-index" aria-pressed="false">
+Momentum Sistemático
+</button>
+<button type="button" data-research-line-filter="volatility_targeting" aria-controls="research-index" aria-pressed="false">
+Volatilidad Objetivo
+</button>
+</nav>
+</div>
 <div id="listing-research-index" class="quarto-listing quarto-listing-container-custom">
 <div class="research-listing list">
 
-<article class="research-entry" data-index="0" data-listing-file-modified-sort="1793313514976" data-listing-reading-time-sort="8" data-listing-word-count-sort="1423">
+<article class="research-entry" data-research-type="project" data-research-line="portfolio_construction" data-index="0" data-listing-file-modified-sort="1795542910801" data-listing-reading-time-sort="8" data-listing-word-count-sort="1423">
   <div>
     <div class="micro research-entry-meta">
       <span>Proyecto de investigación</span>
@@ -137,7 +166,7 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
   </div>
 </article>
 
-<article class="research-entry" data-index="1" data-listing-date-sort="1795500000000" data-listing-file-modified-sort="1795541143265" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2144">
+<article class="research-entry" data-research-type="note" data-research-line="systematic_momentum" data-index="1" data-listing-date-sort="1795500000000" data-listing-file-modified-sort="1795542911422" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2144">
   <div>
     <div class="micro research-entry-meta">
       <span>Nota de investigación</span>
@@ -153,7 +182,7 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
   </div>
 </article>
 
-<article class="research-entry" data-index="2" data-listing-date-sort="1795413600000" data-listing-file-modified-sort="1795541053644" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1850">
+<article class="research-entry" data-research-type="note" data-research-line="systematic_momentum" data-index="2" data-listing-date-sort="1795413600000" data-listing-file-modified-sort="1795542911123" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1850">
   <div>
     <div class="micro research-entry-meta">
       <span>Nota de investigación</span>
@@ -169,7 +198,7 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
   </div>
 </article>
 
-<article class="research-entry" data-index="3" data-listing-date-sort="1794895200000" data-listing-file-modified-sort="1794952176879" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1343">
+<article class="research-entry" data-research-type="note" data-research-line="volatility_targeting" data-index="3" data-listing-date-sort="1794895200000" data-listing-file-modified-sort="1795542913073" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1343">
   <div>
     <div class="micro research-entry-meta">
       <span>Nota de investigación</span>
@@ -185,7 +214,7 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
   </div>
 </article>
 
-<article class="research-entry" data-index="4" data-listing-date-sort="1794808800000" data-listing-file-modified-sort="1794855322159" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1446">
+<article class="research-entry" data-research-type="note" data-research-line="volatility_targeting" data-index="4" data-listing-date-sort="1794808800000" data-listing-file-modified-sort="1795542912646" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1446">
   <div>
     <div class="micro research-entry-meta">
       <span>Nota de investigación</span>
@@ -201,7 +230,7 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
   </div>
 </article>
 
-<article class="research-entry" data-index="5" data-listing-date-sort="1794463200000" data-listing-file-modified-sort="1794525058223" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1187">
+<article class="research-entry" data-research-type="note" data-research-line="volatility_targeting" data-index="5" data-listing-date-sort="1794463200000" data-listing-file-modified-sort="1795542912314" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1187">
   <div>
     <div class="micro research-entry-meta">
       <span>Nota de investigación</span>
@@ -217,7 +246,7 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
   </div>
 </article>
 
-<article class="research-entry" data-index="6" data-listing-date-sort="1794376800000" data-listing-file-modified-sort="1794450472153" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="970">
+<article class="research-entry" data-research-type="note" data-research-line="volatility_targeting" data-index="6" data-listing-date-sort="1794376800000" data-listing-file-modified-sort="1795542911966" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="970">
   <div>
     <div class="micro research-entry-meta">
       <span>Nota de investigación</span>
@@ -236,6 +265,8 @@ Una colección en evolución de investigación cuantitativa, notas técnicas, ex
 </div>
 <div class="listing-no-matching d-none">No hay resultados</div>
 </div>
+<p class="research-filter-empty" aria-live="polite" hidden="">
+</p>
 </section>
 </main>
 <footer class="site-footer">
@@ -249,6 +280,7 @@ Investigaciones, proyectos y notas en desarrollo.
 </footer>
 </div>
 <script src="../assets/site.js"></script>
+<script src="../assets/research-index.js"></script>
 
 
 

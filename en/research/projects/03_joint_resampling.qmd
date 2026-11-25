@@ -4,6 +4,7 @@ description: "Scenario construction through joint resampling of historical retur
 lang: en
 author: "Adrián Vázquez"
 type: project
+research_line: portfolio_construction
 status: completed
 topics: [Portfolio Construction, Monte Carlo, Resampling]
 series: "Portfolio Engine"

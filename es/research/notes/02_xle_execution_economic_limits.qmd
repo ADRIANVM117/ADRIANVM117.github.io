@@ -5,6 +5,7 @@ lang: es
 author: "Adrián Vázquez"
 date: 2026-11-24
 type: note
+research_line: systematic_momentum
 status: completed
 topics: ["Factor Momentum", "Systematic Strategies", "Execution", "Portfolio Risk"]
 series: "Factor Momentum"

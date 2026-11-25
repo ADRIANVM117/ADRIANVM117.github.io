@@ -4,6 +4,7 @@ description: "Assessing growth, risk-target tracking, and uncertainty through bl
 lang: en
 author: "Adrián Vázquez"
 type: note
+research_line: volatility_targeting
 date: 2026-11-17
 status: completed
 topics: ["Volatility Targeting", "Statistical Inference", Bootstrap, "Risk Management", Backtesting]

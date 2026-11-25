@@ -4,6 +4,7 @@ description: "Una evaluación de crecimiento, seguimiento del riesgo e incertidu
 lang: es
 author: "Adrián Vázquez"
 type: note
+research_line: volatility_targeting
 date: 2026-11-17
 status: completed
 topics: ["Volatility Targeting", "Statistical Inference", Bootstrap, "Risk Management", Backtesting]

@@ -4,6 +4,7 @@ description: "An economic evaluation of three rebalancing policies built on the 
 lang: en
 author: "Adrián Vázquez"
 type: note
+research_line: volatility_targeting
 date: 2026-11-16
 status: completed
 topics: ["Volatility Targeting", Backtesting, Rebalancing, "Portfolio Risk", "Economic Evaluation"]

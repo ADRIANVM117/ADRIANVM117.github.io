@@ -4,6 +4,7 @@ description: "Construcción de escenarios mediante remuestreo conjunto de retorn
 lang: es
 author: "Adrián Vázquez"
 type: project
+research_line: portfolio_construction
 status: completed
 topics: [Portfolio Construction, Monte Carlo, Resampling]
 series: "Portfolio Engine"

@@ -4,6 +4,7 @@ description: "Una evaluación económica de tres políticas de rebalanceo constr
 lang: es
 author: "Adrián Vázquez"
 type: note
+research_line: volatility_targeting
 date: 2026-11-16
 status: completed
 topics: ["Volatility Targeting", Backtesting, Rebalancing, "Portfolio Risk", "Economic Evaluation"]

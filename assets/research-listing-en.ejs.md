@@ -9,7 +9,7 @@
 </div>
 <% } %>
 <% for (const item of items) { %>
-<article class="research-entry" <%= metadataAttrs(item) %>>
+<article class="research-entry" data-research-type="<%= item.type || '' %>" data-research-line="<%= item.research_line || '' %>" <%= metadataAttrs(item) %>>
   <div>
     <div class="micro research-entry-meta">
       <% if (item.type) { %><span><%= typeLabels[item.type] || item.type %></span><% } %>
